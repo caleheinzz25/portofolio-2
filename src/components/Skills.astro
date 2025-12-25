@@ -1,0 +1,180 @@
+---
+const skillCategories = [
+  {
+    category: 'Web Fundamentals',
+    icon: '🌐',
+    skills: [
+      { name: "HTML5", icon: "fab fa-html5", color: "#E34F26" },
+      { name: "CSS3", icon: "fab fa-css3-alt", color: "#1572B6" },
+      { name: "JavaScript", icon: "fab fa-js", color: "#F7DF1E" },
+      { name: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
+      { name: "Tailwind CSS", icon: "fas fa-wind", color: "#38BDF8" },
+    ]
+  },
+  {
+    category: 'Frontend Frameworks',
+    icon: '🎨',
+    skills: [
+      { name: "React.js", icon: "fab fa-react", color: "#61DAFB" },
+      { name: "Vue.js", icon: "fab fa-vuejs", color: "#4FC08D" },
+      { name: "Svelte.js", icon: "fas fa-fire", color: "#FF3E00" },
+      { name: "Next.js", icon: "fas fa-forward", color: "#FFFFFF" },
+      { name: "SvelteKit", icon: "fas fa-seedling", color: "#FF3E00" },
+      { name: "SolidJS", icon: "fas fa-gem", color: "#2C4F7C" },
+      { name: "Astro.js", icon: "fas fa-star", color: "#FF5D01" },
+      { name: "SolidStart", icon: "fas fa-play", color: "#2C4F7C" },
+    ]
+  },
+  {
+    category: 'Backend',
+    icon: '⚙️',
+    skills: [
+      { name: "Node.js", icon: "fab fa-node-js", color: "#339933" },
+      { name: "Express.js", icon: "fas fa-code", color: "#FFFFFF" },
+      { name: "Hapi.js", icon: "fas fa-code", color: "#F6A623" },
+      { name: "Laravel", icon: "fab fa-laravel", color: "#FF2D20" },
+      { name: "Java", icon: "fab fa-java", color: "#ED8B00" },
+      { name: "Spring Boot", icon: "fas fa-leaf", color: "#6DB33F" },
+      { name: "C#", icon: "fas fa-code", color: "#512BD4" },
+      { name: ".NET", icon: "fas fa-cube", color: "#512BD4" },
+      { name: "Golang", icon: "fas fa-code", color: "#00ADD8" },
+      { name: "Go Gin", icon: "fas fa-wine-glass", color: "#00ADD8" },
+      { name: "Go Fiber", icon: "fas fa-feather", color: "#00ACD7" },
+      { name: "GORM", icon: "fas fa-database", color: "#00ADD8" },
+      { name: "Rust", icon: "fas fa-gears", color: "#DEA584" },
+      { name: "Rust Axum", icon: "fas fa-network-wired", color: "#DEA584" },
+      { name: "GraphQL", icon: "fas fa-project-diagram", color: "#E10098" },
+      { name: "gRPC", icon: "fas fa-exchange-alt", color: "#244C5A" },
+      { name: "Python", icon: "fab fa-python", color: "#3776AB" },
+    ]
+  },
+  {
+    category: 'Database',
+    icon: '🗄️',
+    skills: [
+      { name: "MongoDB", icon: "fas fa-database", color: "#47A248" },
+      { name: "PostgreSQL", icon: "fas fa-database", color: "#4169E1" },
+      { name: "Redis", icon: "fas fa-memory", color: "#DC382D" },
+      { name: "Valkey", icon: "fas fa-memory", color: "#14B8A6" },
+    ]
+  },
+  {
+    category: 'Messaging & Streaming',
+    icon: '📡',
+    skills: [
+      { name: "Kafka", icon: "fas fa-stream", color: "#231F20" },
+      { name: "RabbitMQ", icon: "fas fa-paper-plane", color: "#FF6600" },
+    ]
+  },
+  {
+    category: 'DevOps & Tools',
+    icon: '🚀',
+    skills: [
+      { name: "Docker", icon: "fab fa-docker", color: "#2496ED" },
+      { name: "Maven", icon: "fas fa-cube", color: "#C71A36" },
+      { name: "Gradle", icon: "fas fa-cogs", color: "#02303A" },
+      { name: "Bun", icon: "fas fa-bread-slice", color: "#FBF0DF" },
+      { name: "pnpm", icon: "fas fa-box", color: "#F69220" },
+      { name: "Jenkins", icon: "fas fa-robot", color: "#D24939" },
+      { name: "CI/CD", icon: "fas fa-sync", color: "#4CAF50" },
+      { name: "Nginx", icon: "fas fa-server", color: "#009639" },
+      { name: "Apache", icon: "fas fa-server", color: "#D22128" },
+      { name: "VPS", icon: "fas fa-cloud", color: "#3B82F6" },
+      { name: "Virtual Machine", icon: "fas fa-desktop", color: "#6B7280" },
+      { name: "PM2", icon: "fas fa-tasks", color: "#2B037A" },
+    ]
+  },
+  {
+    category: 'Testing & API',
+    icon: '🧪',
+    skills: [
+      { name: "Postman", icon: "fas fa-paper-plane", color: "#FF6C37" },
+      { name: "Swagger", icon: "fas fa-book", color: "#85EA2D" },
+      { name: "Playwright", icon: "fas fa-vial", color: "#2EAD33" },
+    ]
+  },
+  {
+    category: 'Big Data & Analytics',
+    icon: '📊',
+    skills: [
+      { name: "Apache Spark", icon: "fas fa-bolt", color: "#E25A1C" },
+    ]
+  },
+  {
+    category: 'Others',
+    icon: '🛠️',
+    skills: [
+      { name: "Markdown", icon: "fas fa-file-alt", color: "#FFFFFF" },
+      { name: "VS Code", icon: "fas fa-code", color: "#007ACC" },
+      { name: "Notion API", icon: "fas fa-sticky-note", color: "#FFFFFF" },
+    ]
+  }
+];
+---
+
+<section id="skills" class="py-24 px-6 bg-navy/50 overflow-hidden">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">02.</span>
+      Skills & Technologies
+    </h2>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+      {skillCategories.map((category, index) => (
+        <div 
+          class="card group relative overflow-hidden"
+          data-animate={index % 2 === 0 ? "fade-right" : "fade-left"}
+          data-delay={String(index * 100)}
+        >
+          <!-- Animated background gradient -->
+          <div class="absolute inset-0 bg-linear-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-2xl group-hover:animate-float">{category.icon}</span>
+              <h3 class="text-lg font-serif font-semibold text-light-slate group-hover:text-mint transition-colors duration-300">
+                {category.category}
+              </h3>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+              {category.skills.map((skill, skillIndex) => (
+                <span 
+                  class="skill-tag px-3 py-1.5 text-sm bg-navy border border-slate/20 rounded-full text-slate 
+                         hover:border-mint/50 hover:scale-105 hover:shadow-lg hover:shadow-mint/10
+                         transition-all duration-300 cursor-default flex items-center gap-2"
+                  style={`transition-delay: ${skillIndex * 30}ms`}
+                >
+                  <i class={skill.icon} style={`color: ${skill.color}`}></i>
+                  {skill.name}
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          <!-- Corner decorative element -->
+          <div class="absolute top-0 right-0 w-16 h-16 bg-linear-to-bl from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-bl-full"></div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Additional decorative element with animation -->
+    <div class="mt-12 text-center" data-animate="fade-up" data-delay="600">
+      <p class="text-slate text-sm">
+        ...and always eager to learn new technologies! 
+        <span class="text-mint animate-pulse">Currently exploring:</span> WebAssembly, AI/ML, Kubernetes
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card:hover .skill-tag {
+    transform: translateY(-2px);
+  }
+  
+  .skill-tag:hover i {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+// Mini Games section
+const games = [
+  {
+    name: 'Snake Game',
+    description: 'Classic snake game with modern twist - eat food, grow longer!',
+    icon: '🐍',
+    status: 'available',
+    href: '/games/snake'
+  },
+  {
+    name: 'Memory Match',
+    description: 'Test your memory with this card matching game',
+    icon: '🃏',
+    status: 'planned',
+    href: null
+  },
+  {
+    name: 'Typing Speed',
+    description: 'Challenge your typing speed and accuracy',
+    icon: '⌨️',
+    status: 'planned',
+    href: null
+  },
+  {
+    name: 'More Coming',
+    description: 'More exciting mini games are being developed!',
+    icon: '🎮',
+    status: 'development',
+    href: null
+  }
+];
+---
+
+<section id="mini-games" class="py-24 px-6 overflow-hidden">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">05.</span>
+      Mini Games
+    </h2>
+    
+    <p class="text-slate mb-8 max-w-2xl" data-animate="fade-up" data-delay="100">
+      Take a break and enjoy some fun mini games! More games coming soon.
+    </p>
+    
+    <div class="grid sm:grid-cols-2 gap-6">
+      {games.map((game, index) => (
+        <div 
+          class="game-card group relative overflow-hidden bg-light-navy border border-slate/10 rounded-lg p-6
+                 hover:border-mint/30 transition-all duration-300"
+          data-animate={index % 2 === 0 ? "fade-right" : "fade-left"}
+          data-delay={String(index * 150)}
+        >
+          <!-- Animated background gradient -->
+          <div class="absolute inset-0 bg-linear-to-br from-mint/5 to-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl group-hover:animate-bounce">{game.icon}</span>
+                <h3 class="text-xl font-serif font-semibold text-light-slate group-hover:text-mint transition-colors duration-300">
+                  {game.name}
+                </h3>
+              </div>
+              
+              <span class={`text-xs px-2 py-1 rounded-full font-mono ${
+                game.status === 'available' 
+                  ? 'bg-green-500/20 text-green-400'
+                  : game.status === 'development' 
+                    ? 'bg-yellow-500/20 text-yellow-400' 
+                    : 'bg-slate/20 text-slate'
+              }`}>
+                {game.status === 'available' ? '✅ Ready' : game.status === 'development' ? '🛠️ In Dev' : '📋 Planned'}
+              </span>
+            </div>
+            
+            <p class="text-slate text-sm leading-relaxed">
+              {game.description}
+            </p>
+            
+            {/* Play button */}
+            {game.status === 'available' && game.href ? (
+              <a 
+                href={game.href}
+                class="mt-4 w-full py-2 px-4 bg-mint/10 border border-mint/50 rounded-lg text-mint 
+                       hover:bg-mint hover:text-navy transition-all duration-300
+                       flex items-center justify-center gap-2 font-semibold"
+              >
+                <span>▶</span>
+                <span>Play Now</span>
+              </a>
+            ) : (
+              <button 
+                class="mt-4 w-full py-2 px-4 bg-navy border border-slate/20 rounded-lg text-slate 
+                       transition-all duration-300 flex items-center justify-center gap-2 
+                       opacity-50 cursor-not-allowed"
+                disabled
+              >
+                <span>▶</span>
+                <span>Coming Soon</span>
+              </button>
+            )}
+          </div>
+          
+          <!-- Corner decorative element -->
+          <div class="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-bl-full"></div>
+          <div class="absolute bottom-0 left-0 w-16 h-16 bg-linear-to-tr from-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Call to action -->
+    <div class="mt-12 text-center" data-animate="fade-up" data-delay="600">
+      <p class="text-slate text-sm">
+        Have a game idea? 
+        <a href="#contact" class="text-mint hover:underline">Let me know!</a>
+        <span class="ml-2 animate-pulse">🎯</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px -15px rgba(100, 255, 218, 0.2);
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .group:hover .group-hover\:animate-bounce {
+    animation: bounce 0.6s ease-in-out infinite;
+  }
+</style>

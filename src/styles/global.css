@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/* Custom theme configuration for Tailwind 4 */
+@theme {
+    --color-navy: #0A192F;
+    --color-mint: #64FFDA;
+    --color-light-slate: #CCD6F6;
+    --color-slate: #8892B0;
+
+    --font-family-mono: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-family-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+    --animate-fade-in: fade-in 0.6s ease-out forwards;
+    --animate-fade-up: fade-up 0.6s ease-out forwards;
+    --animate-slide-in-left: slide-in-left 0.6s ease-out forwards;
+    --animate-slide-in-right: slide-in-right 0.6s ease-out forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Base styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-navy);
+    color: var(--color-light-slate);
+    font-family: var(--font-family-mono);
+}
+
+::selection {
+    background-color: var(--color-mint);
+    color: var(--color-navy);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--color-navy);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-slate);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-mint);
+}
+
+/* Component classes */
+.section-heading {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-family: var(--font-family-serif);
+    font-weight: 700;
+    color: var(--color-light-slate);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .section-heading {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+    }
+}
+
+.section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: rgba(136, 146, 176, 0.3);
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-mint);
+    color: var(--color-mint);
+    border-radius: 0.25rem;
+    font-family: var(--font-family-mono);
+    font-size: 0.875rem;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+}
+
+.link-hover {
+    color: var(--color-slate);
+    transition: color 0.3s;
+}
+
+.link-hover:hover {
+    color: var(--color-mint);
+}
+
+.card {
+    background-color: rgba(10, 25, 47, 0.5);
+    border: 1px solid rgba(136, 146, 176, 0.2);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s;
+}
+
+.card:hover {
+    border-color: rgba(100, 255, 218, 0.3);
+    transform: translateY(-4px);
+}
+
+/* Animation delay utilities */
+.delay-100 {
+    animation-delay: 100ms;
+}
+
+.delay-200 {
+    animation-delay: 200ms;
+}
+
+.delay-300 {
+    animation-delay: 300ms;
+}
+
+.delay-400 {
+    animation-delay: 400ms;
+}
+
+.delay-500 {
+    animation-delay: 500ms;
+}
+
+.delay-600 {
+    animation-delay: 600ms;
+}
+
+.delay-700 {
+    animation-delay: 700ms;
+}
+
+.delay-800 {
+    animation-delay: 800ms;
+}

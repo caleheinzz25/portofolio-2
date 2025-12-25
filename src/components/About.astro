@@ -1,0 +1,94 @@
+---
+---
+
+<section id="about" class="py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">01.</span>
+      About Me
+    </h2>
+    
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="space-y-4 text-slate">
+        <p data-animate="fade-up" data-delay="100">
+          Hello! I'm Hisyam, a passionate software engineer based in Indonesia. 
+          I enjoy creating things that live on the internet, whether that be websites, 
+          applications, or anything in between.
+        </p>
+        
+        <p data-animate="fade-up" data-delay="200">
+          My interest in web development started back in 2018 when I decided to try 
+          editing custom themes — turns out hacking together a custom button 
+          taught me a lot about HTML & CSS!
+        </p>
+        
+        <p data-animate="fade-up" data-delay="300">
+          Fast-forward to today, I've had the privilege of working at 
+          <span class="text-mint hover:underline cursor-default transition-all duration-300">startups</span>, 
+          <span class="text-mint hover:underline cursor-default transition-all duration-300">agencies</span>, and 
+          <span class="text-mint hover:underline cursor-default transition-all duration-300">enterprises</span>. 
+          My main focus these days is building accessible, inclusive products and 
+          digital experiences for a variety of clients.
+        </p>
+        
+        <p data-animate="fade-up" data-delay="400">
+          Here are a few technologies I've been working with recently:
+        </p>
+        
+        <ul class="grid grid-cols-2 gap-2 pt-2">
+          {['TypeScript', 'React', 'Node.js', 'Next.js', 'PostgreSQL', 'Docker'].map((tech, index) => (
+            <li 
+              class="flex items-center gap-2 text-sm hover:translate-x-2 transition-transform duration-300" 
+              data-animate="fade-right"
+              data-delay={String(500 + index * 100)}
+            >
+              <span class="text-mint">▹</span>
+              <span class="hover:text-mint transition-colors duration-300">{tech}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      
+      <div class="flex justify-center md:justify-end" data-animate="fade-left" data-delay="300">
+        <div class="relative w-64 h-64 group">
+          <!-- Decorative elements with hover effects -->
+          <div class="absolute inset-0 border-2 border-mint/30 rounded-lg translate-x-4 translate-y-4 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-mint/10 to-transparent rounded-lg opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <!-- Animated glow effect -->
+          <div class="absolute -inset-1 bg-gradient-to-r from-mint/20 via-mint/10 to-mint/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+          
+          <!-- Code block decoration with typing effect -->
+          <div class="relative h-full bg-navy/90 rounded-lg border border-slate/20 p-4 font-mono text-xs overflow-hidden backdrop-blur-sm group-hover:border-mint/30 transition-colors duration-300">
+            <!-- Window controls -->
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/60 hover:bg-yellow-500 transition-colors cursor-pointer"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/60 hover:bg-green-500 transition-colors cursor-pointer"></span>
+              <span class="ml-auto text-slate/50 text-[10px]">about.js</span>
+            </div>
+            
+            <!-- Code with line numbers -->
+            <div class="flex gap-3">
+              <div class="text-slate/30 select-none">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+              </div>
+              <pre class="text-slate leading-relaxed"><code><span class="text-mint">const</span> <span class="text-light-slate">developer</span> = {`{`}
+  <span class="text-slate">name:</span> <span class="text-mint">'Hisyam'</span>,
+  <span class="text-slate">role:</span> <span class="text-mint">'Engineer'</span>,
+  <span class="text-slate">loves:</span> <span class="text-mint">'Code'</span>,
+{`}`};</code></pre>
+            </div>
+            
+            <!-- Blinking cursor -->
+            <span class="inline-block w-2 h-4 bg-mint/80 ml-1 animate-blink"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

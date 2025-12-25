@@ -1,0 +1,103 @@
+---
+import { getUserEvents } from '../lib/github.js';
+import { GITHUB_ACCESS_TOKEN } from 'astro:env/server';
+
+const allEvents = await getUserEvents(GITHUB_ACCESS_TOKEN);
+const events = allEvents.slice(0, 8);
+
+/**
+ * Format date to "dd MMM yyyy"
+ */
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+
+/**
+ * Truncate text to specified length
+ */
+function truncate(text: string | null, maxLength: number): string {
+  if (!text) return '';
+  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+}
+---
+
+<section id="activity" class="py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">03.</span>
+      Recent Activity
+    </h2>
+    
+    {events.length === 0 ? (
+      <div class="text-center py-12 text-slate" data-animate="fade-up">
+        <p class="text-lg">No recent activity to display.</p>
+        <p class="text-sm mt-2">GitHub data not available at build time.</p>
+      </div>
+    ) : (
+      <div class="relative" data-animate="fade-up" data-delay="200">
+        <!-- Vertical line -->
+        <div class="absolute left-4 md:left-8 top-0 bottom-0 w-px bg-slate/30"></div>
+        
+        <div class="space-y-8">
+          {events.map((event, index) => (
+            <div 
+              class="relative pl-12 md:pl-20 group"
+              data-animate="fade-right"
+              data-delay={String(300 + index * 100)}
+            >
+              <!-- Timeline dot -->
+              <div 
+                class={`absolute left-2 md:left-6 top-1 w-4 h-4 rounded-full border-2 
+                  ${event.type === 'CreateEvent' 
+                    ? 'bg-mint/20 border-mint' 
+                    : 'bg-slate/20 border-slate'
+                  } 
+                  group-hover:scale-125 transition-transform duration-300`}
+              >
+                <div 
+                  class={`absolute inset-1 rounded-full 
+                    ${event.type === 'CreateEvent' ? 'bg-mint' : 'bg-slate'}`}
+                ></div>
+              </div>
+              
+              <!-- Content card -->
+              <div class="card group-hover:border-mint/20 transition-all duration-300">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+                  <div class="flex-1">
+                    <!-- Event type -->
+                    <span class={`font-mono font-semibold text-sm 
+                      ${event.type === 'CreateEvent' ? 'text-mint' : 'text-light-slate'}`}>
+                      {event.type.replace('Event', '')}
+                    </span>
+                    
+                    <!-- Repo name -->
+                    <h4 class="text-lg font-semibold text-light-slate mt-1 group-hover:text-mint transition-colors duration-300">
+                      {event.repoName}
+                    </h4>
+                    
+                    <!-- Commit message -->
+                    {event.commitMessage && (
+                      <p class="text-slate text-sm italic mt-2">
+                        {truncate(event.commitMessage, 60)}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <!-- Date -->
+                  <time class="text-slate text-sm font-mono whitespace-nowrap">
+                    {formatDate(event.created_at)}
+                  </time>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</section>

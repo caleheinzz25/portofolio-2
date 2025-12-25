@@ -1,0 +1,133 @@
+---
+// Shared scroll animation script - include once in layout
+---
+
+<script>
+  // Intersection Observer for scroll animations
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, parseInt(delay));
+      }
+    });
+  }, observerOptions);
+  
+  // Observe all elements with data-animate attribute
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+<style is:global>
+  /* Scroll animation base styles */
+  [data-animate] {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  [data-animate="fade-up"] {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  [data-animate="fade-up"].visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  [data-animate="fade-down"] {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  
+  [data-animate="fade-down"].visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  [data-animate="fade-right"] {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  
+  [data-animate="fade-right"].visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  [data-animate="fade-left"] {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  
+  [data-animate="fade-left"].visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  [data-animate="fade-in"] {
+    opacity: 0;
+  }
+  
+  [data-animate="fade-in"].visible {
+    opacity: 1;
+  }
+  
+  [data-animate="scale-up"] {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  
+  [data-animate="scale-up"].visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  [data-animate="zoom-in"] {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  
+  [data-animate="zoom-in"].visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  /* Blinking cursor animation */
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  .animate-blink {
+    animation: blink 1s infinite;
+  }
+  
+  /* Floating animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Pulse glow animation */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(100, 255, 218, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(100, 255, 218, 0.6); }
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+</style>
