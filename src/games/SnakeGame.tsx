@@ -1,4 +1,4 @@
-import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import { createSignal, onMount, onCleanup } from "solid-js";
 
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type Position = { x: number; y: number };
