@@ -1,8 +1,11 @@
 ---
-// Animated Interactive Parallax Background with Mouse Reactivity & CSS Scroll Timelines
+// Animated Interactive 3D Parallax Background & Card Tilt Engine
 ---
 
 <div class="parallax-container fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+  <!-- Interactive Cursor Ambient Glow Spotlight -->
+  <div id="parallax-spotlight" class="fixed top-0 left-0 w-[450px] h-[450px] -ml-[225px] -mt-[225px] rounded-full bg-mint/10 blur-3xl opacity-0 transition-opacity duration-700 pointer-events-none z-0"></div>
+
   <!-- Glowing Animated Parallax Orbs -->
   <div class="parallax-wrapper parallax-slow absolute -top-40 -left-40">
     <div class="w-96 h-96 rounded-full bg-mint/15 blur-3xl animate-orb-drift-1"></div>
@@ -116,7 +119,7 @@
 </style>
 
 <script>
-  // Interactive Smooth Mouse Parallax & Scroll Fallback
+  // Interactive Smooth Mouse Parallax, Cursor Spotlight & 3D Card Tilt Engine
   const layers = [
     { selector: '.parallax-slow', scrollSpeed: 0.15, mouseFactor: 25 },
     { selector: '.parallax-medium', scrollSpeed: -0.25, mouseFactor: -35 },
@@ -125,23 +128,46 @@
     { selector: '.parallax-grid', scrollSpeed: -0.08, mouseFactor: -10 }
   ];
 
-  let mouseX = 0;
-  let mouseY = 0;
+  let rawMouseX = window.innerWidth / 2;
+  let rawMouseY = window.innerHeight / 2;
+  let normalizedMouseX = 0;
+  let normalizedMouseY = 0;
   let currentMouseX = 0;
   let currentMouseY = 0;
+  let spotlightX = rawMouseX;
+  let spotlightY = rawMouseY;
+
+  const spotlightEl = document.getElementById('parallax-spotlight');
   const nativeScrollSupported = CSS.supports('(animation-timeline: scroll()) and (animation-range: entry)');
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!isReducedMotion) {
     window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5);
-      mouseY = (e.clientY / window.innerHeight - 0.5);
+      rawMouseX = e.clientX;
+      rawMouseY = e.clientY;
+      normalizedMouseX = (e.clientX / window.innerWidth - 0.5);
+      normalizedMouseY = (e.clientY / window.innerHeight - 0.5);
+      if (spotlightEl && spotlightEl.style.opacity === '0') {
+        spotlightEl.style.opacity = '1';
+      }
     }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+      if (spotlightEl) spotlightEl.style.opacity = '0';
+    });
 
     function renderLoop() {
       // Lerp for smooth mouse movement inertia
-      currentMouseX += (mouseX - currentMouseX) * 0.05;
-      currentMouseY += (mouseY - currentMouseY) * 0.05;
+      currentMouseX += (normalizedMouseX - currentMouseX) * 0.06;
+      currentMouseY += (normalizedMouseY - currentMouseY) * 0.06;
+
+      // Lerp spotlight
+      spotlightX += (rawMouseX - spotlightX) * 0.08;
+      spotlightY += (rawMouseY - spotlightY) * 0.08;
+
+      if (spotlightEl) {
+        spotlightEl.style.transform = `translate3d(${spotlightX.toFixed(2)}px, ${spotlightY.toFixed(2)}px, 0)`;
+      }
 
       const scrollY = window.scrollY;
 
@@ -158,5 +184,37 @@
     }
 
     renderLoop();
+
+    // Attach 3D Tilt Parallax to Cards
+    function setupCardTilt() {
+      const cards = document.querySelectorAll('.card, .project-card, .game-card');
+      cards.forEach((card) => {
+        const htmlCard = card as HTMLElement;
+        htmlCard.style.transition = 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease';
+
+        htmlCard.addEventListener('mousemove', (e: MouseEvent) => {
+          const rect = htmlCard.getBoundingClientRect();
+          const cardX = e.clientX - rect.left;
+          const cardY = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((cardY - centerY) / centerY) * -8;
+          const rotateY = ((cardX - centerX) / centerX) * 8;
+
+          htmlCard.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        htmlCard.addEventListener('mouseleave', () => {
+          htmlCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupCardTilt);
+    } else {
+      setupCardTilt();
+    }
   }
 </script>
