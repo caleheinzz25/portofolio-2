@@ -1,0 +1,731 @@
+---
+import ApiPlaygroundComponent from "./ApiPlayground";
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Read song files for embedded Music Player tab
+const songDir = path.join(process.cwd(), 'public', 'song');
+let songFiles: string[] = [];
+try {
+  songFiles = fs.readdirSync(songDir)
+    .filter((f: string) => f.endsWith('.mp3'))
+    .sort();
+} catch (e) {
+  songFiles = [];
+}
+
+const songs = songFiles.map((file: string) => {
+  const name = file.replace('.mp3', '').replace(/^\d+\s/, '');
+  return { file: `/song/${file}`, name };
+});
+
+const games = [
+  {
+    name: 'Snake Game',
+    description: 'Classic arcade snake game - eat food, grow longer, score high!',
+    icon: '🐍',
+    status: 'available',
+    href: '/games/snake'
+  },
+  {
+    name: 'Memory Match',
+    description: 'Test and train your memory with card pair matching.',
+    icon: '🃏',
+    status: 'available',
+    href: '/games/memory-match'
+  },
+  {
+    name: 'Typing Speed',
+    description: 'Challenge your typing speed and accuracy (WPM test).',
+    icon: '⌨️',
+    status: 'available',
+    href: '/games/typing-speed'
+  }
+];
+---
+
+<!-- Fixed Floating Trigger Button for Interactive Playground Hub -->
+<button
+  id="hub-toggle-btn"
+  class="fixed bottom-6 right-6 z-[90] bg-navy/90 border border-mint/50 hover:border-mint text-mint hover:bg-mint/10 shadow-lg hover:shadow-mint/20 backdrop-blur-md px-4 py-2.5 rounded-xl flex items-center gap-2.5 font-mono text-sm tracking-wide cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 group select-none"
+  aria-label="Toggle Dev Playground Hub Modal"
+  title="Open Interactive Dev Suite (Ctrl+Space)"
+>
+  <span class="text-mint font-bold text-base group-hover:animate-pulse">&gt;_</span>
+  <span class="text-xs text-light-slate/90 font-semibold tracking-tight">Playground</span>
+  <kbd class="text-[10px] bg-slate/20 text-slate px-1.5 py-0.5 rounded border border-slate/30 font-mono hidden sm:inline">Ctrl+Space</kbd>
+</button>
+
+<!-- Fullscreen Pop-up Modal Overlay Container -->
+<div
+  id="hub-modal-overlay"
+  class="fixed inset-0 z-[100] bg-navy/95 backdrop-blur-xl flex flex-col items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-300 transform scale-98 font-mono text-light-slate select-text overflow-hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Dev Suite & Interactive Hub"
+>
+  <!-- Background CRT & Glow -->
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,232,162,0.06)_0%,transparent_70%)] z-0"></div>
+
+  <!-- Modal Main Window -->
+  <div class="relative w-full max-w-5xl h-[88vh] max-h-[850px] bg-navy/90 border border-mint/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-10 backdrop-blur-2xl">
+    
+    <!-- Modal Window Header Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-light-navy/80 border-b border-slate/20 select-none z-20">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 mr-2">
+          <button id="hub-close-dot" class="w-3 h-3 rounded-full bg-rose-500/80 hover:bg-rose-500 cursor-pointer" title="Close"></button>
+          <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+        </div>
+        <span class="text-sm font-serif font-bold text-light-slate flex items-center gap-2">
+          <span class="text-mint">⚡</span> Dev Suite & Interactive Hub
+        </span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex items-center gap-1 bg-navy/80 p-1 rounded-xl border border-slate/20 text-xs font-mono">
+        <button
+          class="hub-tab-btn active px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+          data-tab="terminal"
+        >
+          <span>💻</span> <span class="hidden sm:inline">Terminal</span>
+        </button>
+        <button
+          class="hub-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+          data-tab="api"
+        >
+          <span>⚡</span> <span class="hidden sm:inline">API Demo</span>
+        </button>
+        <button
+          class="hub-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+          data-tab="music"
+        >
+          <span>🎵</span> <span class="hidden sm:inline">Music</span>
+        </button>
+        <button
+          class="hub-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+          data-tab="games"
+        >
+          <span>🎮</span> <span class="hidden sm:inline">Mini Games</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <kbd class="hidden md:inline text-[11px] text-slate bg-slate/20 px-2 py-0.5 rounded border border-slate/30">Esc</kbd>
+        <button
+          id="hub-close-btn"
+          class="text-slate hover:text-mint p-1.5 focus:outline-none transition-colors cursor-pointer"
+          aria-label="Close Modal"
+          title="Close Modal"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Content Panels Container -->
+    <div class="flex-1 overflow-hidden relative bg-navy/60">
+      
+      <!-- TAB 1: Terminal Shell -->
+      <div id="tab-panel-terminal" class="hub-tab-panel active h-full flex flex-col p-4 md:p-6 overflow-hidden">
+        <!-- CRT Scanline Overlay -->
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-25 z-10"></div>
+        <div id="hub-terminal-output" class="flex-1 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-4 z-20 scrollbar-thin scrollbar-thumb-slate/30">
+          <!-- Terminal content injected dynamically -->
+        </div>
+      </div>
+
+      <!-- TAB 2: API Demo Playground -->
+      <div id="tab-panel-api" class="hub-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="mb-4">
+            <h4 class="text-base font-serif font-bold text-light-slate">Interactive API Playground</h4>
+            <p class="text-xs text-slate">Test live HTTP REST requests, measure response latency & inspect payloads.</p>
+          </div>
+          <ApiPlaygroundComponent client:idle />
+        </div>
+      </div>
+
+      <!-- TAB 3: Music Player -->
+      <div id="tab-panel-music" class="hub-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+        <div class="max-w-3xl mx-auto space-y-6">
+          <div class="mb-2">
+            <h4 class="text-base font-serif font-bold text-light-slate">Background Music Player</h4>
+            <p class="text-xs text-slate">Listen to curated tracks with real-time visualizer.</p>
+          </div>
+
+          <!-- Music Player Card -->
+          <div class="music-player-card bg-light-navy/50 border border-slate/20 rounded-xl p-6 relative overflow-hidden backdrop-blur-md">
+            <!-- Visualizer Background -->
+            <div class="visualizer-bg" id="hub-visualizer-bg">
+              {Array.from({length: 20}).map((_, i) => (
+                <div class="viz-bar" style={`--i: ${i}; left: ${i * 5}%`}></div>
+              ))}
+            </div>
+
+            <!-- Now Playing -->
+            <div class="now-playing flex items-center gap-4 mb-5 relative z-10">
+              <div class="album-art relative w-16 h-16 rounded-full bg-mint/10 border-2 border-mint/30 flex items-center justify-center text-2xl shrink-0" id="hub-album-art">
+                <span>🎵</span>
+              </div>
+              <div class="song-info overflow-hidden">
+                <h4 class="song-title font-serif text-lg text-light-slate truncate" id="hub-song-title">Select a song</h4>
+                <p class="song-artist text-xs text-mint font-mono mt-0.5">Maher Zain</p>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container flex items-center gap-3 mb-4 relative z-10 font-mono text-xs text-slate">
+              <span id="hub-current-time">0:00</span>
+              <div class="progress-bar flex-1 h-1.5 bg-slate/20 rounded-full cursor-pointer relative hover:h-2 transition-all" id="hub-progress-bar">
+                <div class="progress-fill h-full bg-linear-to-r from-mint to-ocean rounded-full w-0" id="hub-progress-fill"></div>
+              </div>
+              <span id="hub-duration-time">0:00</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="player-controls flex items-center justify-center gap-4 relative z-10">
+              <button class="control-btn text-slate hover:text-mint transition-colors p-2" id="hub-prev-btn" title="Previous">
+                <i class="fas fa-step-backward"></i>
+              </button>
+              <button class="play-btn w-12 h-12 rounded-full border-2 border-mint/40 text-mint hover:bg-mint/10 flex items-center justify-center text-lg transition-transform hover:scale-105" id="hub-play-btn" title="Play/Pause">
+                <i class="fas fa-play" id="hub-play-icon"></i>
+              </button>
+              <button class="control-btn text-slate hover:text-mint transition-colors p-2" id="hub-next-btn" title="Next">
+                <i class="fas fa-step-forward"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Playlist -->
+          <div class="playlist-container bg-navy/80 border border-slate/15 rounded-xl overflow-hidden">
+            <div class="p-3 border-b border-slate/15 flex items-center justify-between text-xs text-light-slate font-semibold">
+              <span class="flex items-center gap-2"><i class="fas fa-list text-mint"></i> Playlist</span>
+              <span class="text-slate font-mono">{songs.length} songs</span>
+            </div>
+            <div class="playlist-scroll max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate/30" id="hub-playlist">
+              {songs.map((song, index) => (
+                <button
+                  class="playlist-item w-full px-4 py-2.5 flex items-center gap-3 text-xs text-slate hover:text-light-slate hover:bg-mint/5 border-b border-slate/10 transition-colors text-left cursor-pointer"
+                  data-index={index}
+                  data-src={song.file}
+                  data-name={song.name}
+                >
+                  <span class="font-mono text-mint/70">{String(index + 1).padStart(2, '0')}</span>
+                  <span class="flex-1 truncate">{song.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Mini Games Suite -->
+      <div id="tab-panel-games" class="hub-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+        <div class="max-w-4xl mx-auto space-y-6">
+          <div class="mb-2">
+            <h4 class="text-base font-serif font-bold text-light-slate">Mini Games Arcade</h4>
+            <p class="text-xs text-slate">Play retro arcade games directly in your browser.</p>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-4">
+            {games.map((game) => (
+              <div class="card bg-light-navy/40 border border-slate/20 rounded-xl p-5 hover:border-mint/40 transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                  <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">{game.icon}</div>
+                  <h5 class="text-base font-serif font-bold text-light-slate group-hover:text-mint transition-colors mb-2">
+                    {game.name}
+                  </h5>
+                  <p class="text-xs text-slate leading-relaxed mb-4">
+                    {game.description}
+                  </p>
+                </div>
+                <a
+                  href={game.href}
+                  class="btn-primary text-xs py-2 px-3 font-mono font-semibold flex items-center justify-center gap-1.5 w-full"
+                >
+                  <span>▶ Play Now</span>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  #hub-modal-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+
+  .hub-tab-btn.active {
+    background-color: var(--color-mint);
+    color: var(--color-navy);
+    font-weight: 700;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 40%, transparent);
+  }
+
+  /* Custom music styles */
+  .visualizer-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.08;
+  }
+  .viz-bar {
+    position: absolute;
+    bottom: 0;
+    width: 4%;
+    background: linear-gradient(to top, var(--color-mint), transparent);
+    border-radius: 4px 4px 0 0;
+    height: 15%;
+  }
+  .visualizer-bg.playing .viz-bar {
+    animation: vizPulse 0.8s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+  @keyframes vizPulse {
+    0% { height: 10%; }
+    100% { height: calc(25% + var(--i) * 3%); }
+  }
+
+  .playlist-item.active {
+    background-color: rgba(249, 232, 162, 0.1);
+    color: var(--color-mint);
+    border-left: 3px solid var(--color-mint);
+  }
+</style>
+
+<script is:inline define:vars={{ songs }}>
+  window.__hubSongs = songs;
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("hub-toggle-btn");
+    const overlay = document.getElementById("hub-modal-overlay");
+    const closeBtn = document.getElementById("hub-close-btn");
+    const closeDot = document.getElementById("hub-close-dot");
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>(".hub-tab-btn");
+    const tabPanels = document.querySelectorAll<HTMLElement>(".hub-tab-panel");
+    const terminalOutput = document.getElementById("hub-terminal-output");
+
+    if (!overlay) return;
+
+    let isOpen = false;
+    let commandHistory: string[] = [];
+    let historyIndex = -1;
+
+    // Terminal ASCII Banner
+    const BANNER_ASCII = `
+ <span class="text-mint font-bold">_     _ _                       _ _ </span>
+<span class="text-mint font-bold">| |__ (_) |  _   _  __ _ _ __ ___ | (_)</span>
+<span class="text-mint font-bold">| '_ \\| | | | | | | / _\` | '_ \` _ \\| | |</span>
+<span class="text-mint font-bold">| | | | | | | |_| | (_| | | | | | | | |</span>
+<span class="text-mint font-bold">|_| |_|_|_|  \\__, |\\__,_|_| |_| |_|_|_|</span>
+<span class="text-mint font-bold">             |___/                     </span>
+`;
+
+    const WELCOME_HEADER = `
+<div class="border-b border-slate/20 pb-3 mb-4 space-y-1">
+  <pre class="text-mint leading-tight font-mono text-[10px] sm:text-xs overflow-x-auto select-none">${BANNER_ASCII}</pre>
+  <p class="text-light-slate font-semibold">Welcome to <span class="text-mint">hisyam-cli v1.0.0</span> - Interactive Portfolio Shell</p>
+  <p class="text-slate text-xs">Type <span class="text-mint font-bold">'help'</span> to view available commands or switch tabs.</p>
+</div>
+`;
+
+    const THEMES = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+
+    function switchTab(targetTab: string) {
+      tabBtns.forEach((btn) => {
+        const tab = btn.dataset.tab;
+        if (tab === targetTab) {
+          btn.classList.add("active");
+          btn.classList.remove("text-slate");
+        } else {
+          btn.classList.remove("active");
+          btn.classList.add("text-slate");
+        }
+      });
+
+      tabPanels.forEach((panel) => {
+        if (panel.id === `tab-panel-${targetTab}`) {
+          panel.classList.remove("hidden");
+        } else {
+          panel.classList.add("hidden");
+        }
+      });
+
+      if (targetTab === "terminal") {
+        ensureInputForm();
+        setTimeout(() => focusTerminalInput(), 50);
+      }
+    }
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        if (tab) switchTab(tab);
+      });
+    });
+
+    function openModal(initialTab?: string) {
+      isOpen = true;
+      overlay?.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+
+      if (initialTab) {
+        switchTab(initialTab);
+      } else {
+        if (!terminalOutput || terminalOutput.children.length === 0) {
+          initTerminalContent();
+        } else {
+          ensureInputForm();
+          setTimeout(() => focusTerminalInput(), 50);
+        }
+      }
+    }
+
+    function closeModal() {
+      isOpen = false;
+      overlay?.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+
+    function toggleModal() {
+      if (isOpen) closeModal();
+      else openModal();
+    }
+
+    // Terminal helper methods
+    function createInputLineHTML(): string {
+      return `
+        <form id="hub-terminal-form" class="flex items-center gap-2 mt-2">
+          <label for="hub-terminal-input" class="text-mint font-bold select-none flex-shrink-0">guest@hisyam-cli:~$</label>
+          <input
+            id="hub-terminal-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            class="flex-1 bg-transparent border-none outline-none text-light-slate font-mono text-xs sm:text-sm focus:outline-none focus:ring-0 p-0 m-0"
+            placeholder="type a command..."
+          />
+        </form>
+      `;
+    }
+
+    function ensureInputForm() {
+      if (!terminalOutput) return;
+      let form = document.getElementById("hub-terminal-form");
+      if (!form) {
+        const container = document.createElement("div");
+        container.innerHTML = createInputLineHTML();
+        terminalOutput.appendChild(container.firstElementChild as HTMLElement);
+        setupTerminalListeners();
+      }
+    }
+
+    function focusTerminalInput() {
+      ensureInputForm();
+      const input = document.getElementById("hub-terminal-input") as HTMLInputElement | null;
+      input?.focus();
+    }
+
+    function initTerminalContent() {
+      if (!terminalOutput) return;
+      terminalOutput.innerHTML = WELCOME_HEADER;
+      ensureInputForm();
+      focusTerminalInput();
+    }
+
+    function setupTerminalListeners() {
+      const form = document.getElementById("hub-terminal-form") as HTMLFormElement | null;
+      const input = document.getElementById("hub-terminal-input") as HTMLInputElement | null;
+
+      if (!form || !input) return;
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const cmd = input.value.trim();
+        if (cmd) executeCommand(cmd);
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (commandHistory.length > 0) {
+            if (historyIndex === -1) historyIndex = commandHistory.length - 1;
+            else if (historyIndex > 0) historyIndex--;
+            input.value = commandHistory[historyIndex] || "";
+          }
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (historyIndex !== -1) {
+            if (historyIndex < commandHistory.length - 1) {
+              historyIndex++;
+              input.value = commandHistory[historyIndex] || "";
+            } else {
+              historyIndex = -1;
+              input.value = "";
+            }
+          }
+        }
+      });
+    }
+
+    function appendCommandLog(cmd: string) {
+      if (!terminalOutput) return;
+      const oldForm = document.getElementById("hub-terminal-form");
+      if (oldForm) {
+        const log = document.createElement("div");
+        log.className = "flex items-center gap-2 my-1";
+        log.innerHTML = `<span class="text-mint font-bold select-none">guest@hisyam-cli:~$</span> <span class="text-light-slate">${escapeHTML(cmd)}</span>`;
+        oldForm.replaceWith(log);
+      }
+    }
+
+    function escapeHTML(str: string): string {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function executeCommand(rawCmd: string) {
+      const trimmed = rawCmd.trim();
+      if (!trimmed) return;
+
+      commandHistory.push(trimmed);
+      historyIndex = -1;
+      appendCommandLog(trimmed);
+
+      const parts = trimmed.split(/\s+/);
+      const command = parts[0].toLowerCase();
+      const args = parts.slice(1);
+
+      switch (command) {
+        case "help":
+          renderResponse(`
+<div class="text-slate space-y-1 my-2">
+  <p class="text-mint font-bold mb-2">Available Commands:</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 font-mono text-xs">
+    <div><span class="text-mint font-semibold">help</span>         - Available commands</div>
+    <div><span class="text-mint font-semibold">about</span>        - About Hisyam</div>
+    <div><span class="text-mint font-semibold">skills</span>       - View tech stack</div>
+    <div><span class="text-mint font-semibold">projects</span>     - Explore projects</div>
+    <div><span class="text-mint font-semibold">contact</span>      - Contact info</div>
+    <div><span class="text-mint font-semibold">api</span>          - Open API Demo tab</div>
+    <div><span class="text-mint font-semibold">music</span>        - Open Music Player tab</div>
+    <div><span class="text-mint font-semibold">games</span>        - Open Mini Games tab</div>
+    <div><span class="text-mint font-semibold">theme [name]</span> - Change color theme</div>
+    <div><span class="text-mint font-semibold">clear</span>        - Clear terminal screen</div>
+    <div><span class="text-mint font-semibold">exit</span>         - Close playground modal</div>
+  </div>
+</div>
+          `);
+          break;
+
+        case "api":
+          switchTab("api");
+          break;
+        case "music":
+          switchTab("music");
+          break;
+        case "games":
+          switchTab("games");
+          break;
+
+        case "about":
+          renderResponse(`<p class="text-light-slate my-1">Software Engineer specializing in modern web applications & scalable tools.</p>`, '#about');
+          break;
+
+        case "skills":
+          renderResponse(`<p class="text-light-slate my-1">TypeScript, React, Astro, SolidJS, Node.js, Tailwind CSS, PostgreSQL, Docker.</p>`, '#skills');
+          break;
+
+        case "projects":
+          renderResponse(`<p class="text-light-slate my-1">Check out featured repositories & open source contributions.</p>`, '#projects');
+          break;
+
+        case "contact":
+          renderResponse(`<p class="text-light-slate my-1">Get in touch via email or GitHub profile.</p>`, '#contact');
+          break;
+
+        case "theme":
+          if (args.length > 0 && THEMES.includes(args[0].toLowerCase())) {
+            document.documentElement.setAttribute('data-theme', args[0].toLowerCase());
+            try { localStorage.setItem('portfolio-accent', args[0].toLowerCase()); } catch (e) {}
+            renderResponse(`<p class="text-mint my-1">Theme set to '${args[0].toLowerCase()}'.</p>`);
+          } else {
+            renderResponse(`<p class="text-slate my-1">Valid themes: ${THEMES.join(', ')}</p>`);
+          }
+          break;
+
+        case "clear":
+          initTerminalContent();
+          break;
+
+        case "exit":
+          closeModal();
+          ensureInputForm();
+          break;
+
+        default:
+          renderResponse(`<p class="text-rose-400 my-1">Command not found: '${escapeHTML(trimmed)}'. Type 'help'.</p>`);
+          break;
+      }
+    }
+
+    function renderResponse(htmlContent: string, scrollTargetId?: string) {
+      if (!terminalOutput) return;
+
+      const resp = document.createElement("div");
+      resp.className = "response-block my-2";
+      resp.innerHTML = htmlContent;
+      terminalOutput.appendChild(resp);
+
+      ensureInputForm();
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      focusTerminalInput();
+
+      if (scrollTargetId) {
+        const el = document.querySelector(scrollTargetId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    toggleBtn?.addEventListener("click", toggleModal);
+    closeBtn?.addEventListener("click", closeModal);
+    closeDot?.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal();
+      else if (document.getElementById("tab-panel-terminal")?.classList.contains("hidden") === false) {
+        const sel = window.getSelection();
+        if (!sel || sel.toString().length === 0) focusTerminalInput();
+      }
+    });
+
+    // Shortcuts: Ctrl+Space or Alt+P
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if ((e.ctrlKey && e.code === "Space") || (e.altKey && (e.key === "p" || e.key === "P"))) {
+        e.preventDefault();
+        toggleModal();
+      } else if (e.key === "Escape" && isOpen) {
+        e.preventDefault();
+        closeModal();
+      }
+    });
+
+    // Nav links targeting #interactive-hub or #api-playground or #music or #mini-games
+    document.querySelectorAll('a[href="#interactive-hub"], a[href="#api-playground"], a[href="#music"], a[href="#mini-games"]').forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = (link as HTMLAnchorElement).getAttribute("href");
+        e.preventDefault();
+        if (href === "#api-playground") openModal("api");
+        else if (href === "#music") openModal("music");
+        else if (href === "#mini-games") openModal("games");
+        else openModal();
+      });
+    });
+
+    // Audio player logic for embedded music tab
+    const songs = (window as any).__hubSongs || [];
+    if (songs.length > 0) {
+      const audio = new Audio();
+      let currentMusicIdx = -1;
+      let isPlayingMusic = false;
+
+      const hubPlayBtn = document.getElementById("hub-play-btn");
+      const hubPlayIcon = document.getElementById("hub-play-icon");
+      const hubPrevBtn = document.getElementById("hub-prev-btn");
+      const hubNextBtn = document.getElementById("hub-next-btn");
+      const hubSongTitle = document.getElementById("hub-song-title");
+      const hubProgressFill = document.getElementById("hub-progress-fill");
+      const hubCurrentTime = document.getElementById("hub-current-time");
+      const hubDurationTime = document.getElementById("hub-duration-time");
+      const hubPlaylist = document.getElementById("hub-playlist");
+      const hubAlbumArt = document.getElementById("hub-album-art");
+      const hubVizBg = document.getElementById("hub-visualizer-bg");
+
+      function formatT(s: number) {
+        if (isNaN(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return `${m}:${sec < 10 ? '0' : ''}${sec}`;
+      }
+
+      function loadMusic(idx: number) {
+        if (idx < 0 || idx >= songs.length) return;
+        currentMusicIdx = idx;
+        audio.src = songs[idx].file;
+        if (hubSongTitle) hubSongTitle.textContent = songs[idx].name;
+        hubPlaylist?.querySelectorAll(".playlist-item").forEach((el, i) => {
+          el.classList.toggle("active", i === idx);
+        });
+      }
+
+      function playMusic() {
+        if (currentMusicIdx === -1) loadMusic(0);
+        audio.play();
+        isPlayingMusic = true;
+        if (hubPlayIcon) hubPlayIcon.className = "fas fa-pause";
+        hubAlbumArt?.classList.add("spinning");
+        hubVizBg?.classList.add("playing");
+      }
+
+      function pauseMusic() {
+        audio.pause();
+        isPlayingMusic = false;
+        if (hubPlayIcon) hubPlayIcon.className = "fas fa-play";
+        hubAlbumArt?.classList.remove("spinning");
+        hubVizBg?.classList.remove("playing");
+      }
+
+      hubPlayBtn?.addEventListener("click", () => {
+        if (isPlayingMusic) pauseMusic();
+        else playMusic();
+      });
+
+      hubNextBtn?.addEventListener("click", () => {
+        let nxt = currentMusicIdx + 1;
+        if (nxt >= songs.length) nxt = 0;
+        loadMusic(nxt);
+        playMusic();
+      });
+
+      hubPrevBtn?.addEventListener("click", () => {
+        let prv = currentMusicIdx - 1;
+        if (prv < 0) prv = songs.length - 1;
+        loadMusic(prv);
+        playMusic();
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        const pct = (audio.currentTime / audio.duration) * 100 || 0;
+        if (hubProgressFill) hubProgressFill.style.width = pct + "%";
+        if (hubCurrentTime) hubCurrentTime.textContent = formatT(audio.currentTime);
+      });
+
+      audio.addEventListener("loadedmetadata", () => {
+        if (hubDurationTime) hubDurationTime.textContent = formatT(audio.duration);
+      });
+
+      hubPlaylist?.addEventListener("click", (e) => {
+        const item = (e.target as HTMLElement).closest(".playlist-item") as HTMLElement | null;
+        if (!item) return;
+        const idx = parseInt(item.dataset.index || '0');
+        loadMusic(idx);
+        playMusic();
+      });
+    }
+  });
+</script>
