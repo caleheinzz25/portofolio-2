@@ -5,7 +5,6 @@ const navItems = [
   { name: "Skills", href: "#skills" },
   { name: "Activity", href: "#activity" },
   { name: "Projects", href: "#projects" },
-  { name: "Playground", href: "#interactive-hub" },
   { name: "Contact", href: "#contact" },
 ];
 ---
@@ -23,7 +22,7 @@ const navItems = [
     </a>
 
     <!-- Desktop Navigation -->
-    <ul class="hidden md:flex items-center gap-8">
+    <ul class="hidden md:flex items-center gap-6">
       {
         navItems.map((item, index) => (
           <li
@@ -39,7 +38,10 @@ const navItems = [
           </li>
         ))
       }
-      <li class="opacity-0 animate-fade-in" style="animation-delay: 500ms">
+      <li class="opacity-0 animate-fade-in flex items-center gap-3" style="animation-delay: 500ms">
+        <a href="#interactive-hub" class="btn-primary text-sm flex items-center gap-1.5" id="nav-playground-btn">
+          <span class="font-bold text-mint">&gt;_</span> Playground
+        </a>
         <a href="/resume.pdf" class="btn-primary text-sm" target="_blank">
           Resume
         </a>
@@ -81,10 +83,13 @@ const navItems = [
           ))
         }
         <li
-          class="mobile-nav-item pt-2"
+          class="mobile-nav-item pt-2 flex items-center gap-3"
           style={`--item-index: ${navItems.length};`}
         >
-          <a href="/resume.pdf" class="btn-primary text-sm px-6 py-2.5" target="_blank"> Resume </a>
+          <a href="#interactive-hub" class="btn-primary text-sm px-5 py-2 flex items-center gap-1.5">
+            <span class="font-bold text-mint">&gt;_</span> Playground
+          </a>
+          <a href="/resume.pdf" class="btn-primary text-sm px-5 py-2" target="_blank"> Resume </a>
         </li>
       </ul>
     </div>
