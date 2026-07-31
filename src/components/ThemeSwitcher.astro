@@ -1,0 +1,107 @@
+---
+const themes = [
+  { name: 'gold', label: 'Gold', color: '#f59e0b' },
+  { name: 'emerald', label: 'Emerald', color: '#10b981' },
+  { name: 'rose', label: 'Rose', color: '#f43f5e' },
+  { name: 'violet', label: 'Violet', color: '#8b5cf6' },
+  { name: 'cyan', label: 'Cyan', color: '#06b6d4' },
+];
+---
+
+<script is:inline>
+  (function () {
+    try {
+      var savedTheme = localStorage.getItem('portfolio-accent');
+      var validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+      if (savedTheme && validThemes.indexOf(savedTheme) !== -1) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'gold');
+      }
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'gold');
+    }
+  })();
+</script>
+
+<div
+  class="fixed bottom-5 right-5 z-50 flex items-center gap-1.5 p-1.5 bg-navy/90 backdrop-blur-md border border-slate/20 rounded-full shadow-xl transition-all duration-300 hover:border-slate/40"
+  role="region"
+  aria-label="Theme Accent Switcher"
+>
+  <div class="flex items-center justify-center w-7 h-7 text-mint" aria-hidden="true" title="Theme Accent Swatches">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.63 1.9-1.5.17-.76-.23-1.5-.9-1.9-.38-.23-.6-.65-.6-1.1 0-.83.67-1.5 1.5-1.5H16c3.3 0 6-2.7 6-6 0-5.5-4.5-10-10-10z"></path>
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+    </svg>
+  </div>
+  <div class="h-4 w-px bg-slate/20" aria-hidden="true"></div>
+  <div class="flex items-center gap-1.5">
+    {
+      themes.map((theme) => (
+        <button
+          type="button"
+          data-theme-option={theme.name}
+          aria-label={`Switch theme to ${theme.label}`}
+          title={`${theme.label} theme`}
+          class="w-5 h-5 rounded-full transition-all duration-200 hover:scale-125 focus:outline-none focus:ring-2 focus:ring-slate/50 cursor-pointer relative"
+          style={`background-color: ${theme.color};`}
+        >
+          <span class="sr-only">{theme.label}</span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  function setupThemeSwitcher() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-option]');
+    const validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+
+    function getActiveTheme(): string {
+      return document.documentElement.getAttribute('data-theme') || 'gold';
+    }
+
+    function updateActiveState() {
+      const currentTheme = getActiveTheme();
+      buttons.forEach((btn) => {
+        const theme = btn.getAttribute('data-theme-option');
+        if (theme === currentTheme) {
+          btn.setAttribute('aria-pressed', 'true');
+          btn.classList.add('ring-2', 'ring-white', 'scale-110');
+        } else {
+          btn.setAttribute('aria-pressed', 'false');
+          btn.classList.remove('ring-2', 'ring-white', 'scale-110');
+        }
+      });
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-theme-option');
+        if (theme && validThemes.includes(theme)) {
+          document.documentElement.setAttribute('data-theme', theme);
+          try {
+            localStorage.setItem('portfolio-accent', theme);
+          } catch (e) {
+            // localStorage might be unavailable or throw in private modes
+          }
+          updateActiveState();
+        }
+      });
+    });
+
+    updateActiveState();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupThemeSwitcher);
+  } else {
+    setupThemeSwitcher();
+  }
+  document.addEventListener('astro:page-load', setupThemeSwitcher);
+</script>

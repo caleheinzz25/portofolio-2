@@ -9,6 +9,16 @@ const featuredRepos = repos.slice(0, 3);
 const otherRepos = repos.slice(3); // All remaining repos
 const initialShowCount = 6;
 const hasMoreProjects = otherRepos.length > initialShowCount;
+
+// Extract all unique technology tags across repositories
+const allTags = [
+  'All',
+  ...Array.from(
+    new Set(
+      repos.flatMap((repo) => (repo.tags && repo.tags.length > 0 ? repo.tags : [repo.language || 'Misc']))
+    )
+  ).sort()
+];
 ---
 
 <section id="projects" class="py-24 px-6">
@@ -25,132 +35,170 @@ const hasMoreProjects = otherRepos.length > initialShowCount;
       </div>
     ) : (
       <>
+        <!-- Tech Filter Bar & Counter -->
+        <div class="mb-12" data-animate="fade-up" data-delay="100">
+          <div class="flex flex-wrap items-center justify-center gap-2 mb-4" id="project-filter-bar">
+            {allTags.map((tag, index) => (
+              <button
+                type="button"
+                class={`filter-btn px-4 py-1.5 text-xs sm:text-sm font-mono rounded-full border transition-all duration-300 cursor-pointer ${
+                  index === 0
+                    ? 'active bg-mint text-navy font-semibold border-mint shadow-md shadow-mint/20 scale-105'
+                    : 'border-slate/30 text-slate bg-navy/60 hover:border-mint/50 hover:text-mint'
+                }`}
+                data-filter={tag}
+                aria-pressed={index === 0 ? "true" : "false"}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+          
+          <div class="text-center font-mono text-xs text-slate" id="filter-count-indicator">
+            Showing <span id="matching-count" class="text-mint font-semibold">{featuredRepos.length + Math.min(initialShowCount, otherRepos.length)}</span> of <span id="total-count">{repos.length}</span> projects
+          </div>
+        </div>
+
         <!-- Featured Projects -->
-        <div class="space-y-24 mb-20">
-          {featuredRepos.map((repo, index) => (
-            <div 
-              class={`relative grid md:grid-cols-12 gap-4 items-center ${index % 2 === 1 ? 'md:text-right' : ''}`}
-              data-animate={index % 2 === 0 ? "fade-right" : "fade-left"}
-              data-delay={String(index * 200)}
-            >
-              <!-- Project Image Placeholder -->
-              <div class={`md:col-span-7 ${index % 2 === 1 ? 'md:col-start-6' : ''}`}>
-                <div class="relative group overflow-hidden rounded-lg">
-                  <div class="absolute inset-0 bg-mint/20 mix-blend-multiply group-hover:bg-transparent transition-all duration-500 z-10"></div>
-                  <div class="aspect-video bg-linear-to-br from-slate/20 to-navy rounded-lg border border-slate/20 flex items-center justify-center 
-                              group-hover:scale-105 group-hover:border-mint/30 transition-all duration-500">
-                    <span class="text-6xl opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-500">💻</span>
+        <div id="featured-projects-container" class="space-y-24 mb-20">
+          {featuredRepos.map((repo, index) => {
+            const repoTags = repo.tags && repo.tags.length > 0 ? repo.tags : [repo.language || 'Misc'];
+            return (
+              <div 
+                class={`project-item relative grid md:grid-cols-12 gap-4 items-center ${index % 2 === 1 ? 'md:text-right' : ''}`}
+                data-animate={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-delay={String(index * 200)}
+                data-tags={JSON.stringify(repoTags)}
+                data-featured="true"
+              >
+                <!-- Project Image Placeholder -->
+                <div class={`md:col-span-7 ${index % 2 === 1 ? 'md:col-start-6' : ''}`}>
+                  <div class="relative group overflow-hidden rounded-lg">
+                    <div class="absolute inset-0 bg-mint/20 mix-blend-multiply group-hover:bg-transparent transition-all duration-500 z-10"></div>
+                    <div class="aspect-video bg-linear-to-br from-slate/20 to-navy rounded-lg border border-slate/20 flex items-center justify-center 
+                                group-hover:scale-105 group-hover:border-mint/30 transition-all duration-500">
+                      <span class="text-6xl opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-500">💻</span>
+                    </div>
+                    <!-- Shine effect on hover -->
+                    <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   </div>
-                  <!-- Shine effect on hover -->
-                  <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                </div>
-              </div>
-              
-              <!-- Project Content -->
-              <div class={`md:col-span-6 md:row-start-1 z-10 ${index % 2 === 1 ? 'md:col-start-1' : 'md:col-start-6'}`}>
-                <p class="text-mint font-mono text-sm mb-2">Featured Project</p>
-                <h3 class="text-2xl font-serif font-bold text-light-slate mb-4 hover:text-mint transition-colors duration-300">
-                  <a href={repo.html_url} class="group/link inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                    {repo.name}
-                    <svg class="w-4 h-4 opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                  </a>
-                </h3>
-                
-                <div class="bg-navy/90 backdrop-blur-sm p-6 rounded-lg shadow-xl border border-slate/10 mb-4 
-                            hover:border-mint/20 hover:shadow-mint/5 transition-all duration-300">
-                  <p class="text-slate leading-relaxed">{repo.description || 'No description provided.'}</p>
                 </div>
                 
-                <ul class={`flex flex-wrap gap-3 mb-4 font-mono text-sm text-slate ${index % 2 === 1 ? 'md:justify-end' : ''}`}>
-                  <li class="hover:text-mint transition-colors duration-300 hover:-translate-y-0.5">
-                    {repo.language || 'Misc'}
-                  </li>
-                  {repo.stargazers_count > 0 && (
-                    <li class="flex items-center gap-1 text-mint">
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                      </svg>
-                      {repo.stargazers_count}
-                    </li>
-                  )}
-                </ul>
-                
-                <div class={`flex gap-4 ${index % 2 === 1 ? 'md:justify-end' : ''}`}>
-                  <a href={repo.html_url} class="text-light-slate hover:text-mint hover:scale-110 transition-all duration-300" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                    </svg>
-                  </a>
-                  {repo.homepage && (
-                    <a href={repo.homepage} class="text-light-slate hover:text-mint hover:scale-110 transition-all duration-300" aria-label="Live Demo" target="_blank" rel="noopener noreferrer">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                <!-- Project Content -->
+                <div class={`md:col-span-6 md:row-start-1 z-10 ${index % 2 === 1 ? 'md:col-start-1' : 'md:col-start-6'}`}>
+                  <p class="text-mint font-mono text-sm mb-2">Featured Project</p>
+                  <h3 class="text-2xl font-serif font-bold text-light-slate mb-4 hover:text-mint transition-colors duration-300">
+                    <a href={repo.html_url} class="group/link inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                      {repo.name}
+                      <svg class="w-4 h-4 opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                       </svg>
                     </a>
-                  )}
+                  </h3>
+                  
+                  <div class="bg-navy/90 backdrop-blur-sm p-6 rounded-lg shadow-xl border border-slate/10 mb-4 
+                              hover:border-mint/20 hover:shadow-mint/5 transition-all duration-300">
+                    <p class="text-slate leading-relaxed">{repo.description || 'No description provided.'}</p>
+                  </div>
+                  
+                  <ul class={`flex flex-wrap gap-3 mb-4 font-mono text-sm text-slate ${index % 2 === 1 ? 'md:justify-end' : ''}`}>
+                    {repoTags.map((tag) => (
+                      <li class="hover:text-mint transition-colors duration-300 hover:-translate-y-0.5">
+                        {tag}
+                      </li>
+                    ))}
+                    {repo.stargazers_count > 0 && (
+                      <li class="flex items-center gap-1 text-mint">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        {repo.stargazers_count}
+                      </li>
+                    )}
+                  </ul>
+                  
+                  <div class={`flex gap-4 ${index % 2 === 1 ? 'md:justify-end' : ''}`}>
+                    <a href={repo.html_url} class="text-light-slate hover:text-mint hover:scale-110 transition-all duration-300" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>
+                    </a>
+                    {repo.homepage && (
+                      <a href={repo.homepage} class="text-light-slate hover:text-mint hover:scale-110 transition-all duration-300" aria-label="Live Demo" target="_blank" rel="noopener noreferrer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
         <!-- Other Projects -->
         {otherRepos.length > 0 && (
-          <>
-            <h3 class="text-xl font-serif font-bold text-light-slate text-center mb-8" data-animate="fade-up" data-delay="200">
+          <div id="other-projects-section">
+            <h3 id="other-projects-heading" class="text-xl font-serif font-bold text-light-slate text-center mb-8" data-animate="fade-up" data-delay="200">
               Other Noteworthy Projects
             </h3>
             
             <div id="other-projects-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {otherRepos.map((repo, index) => (
-                <div 
-                  class={`project-card card group relative overflow-hidden ${index >= initialShowCount ? 'hidden' : ''}`}
-                  data-animate="scale-up"
-                  data-delay={String(300 + (index % initialShowCount) * 100)}
-                >
-                  <!-- Hover gradient -->
-                  <div class="absolute inset-0 bg-linear-to-t from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-4">
-                      <span class="text-mint text-3xl group-hover:animate-float">📁</span>
-                      <div class="flex items-center gap-3">
-                        {repo.stargazers_count > 0 && (
-                          <span class="flex items-center gap-1 text-sm text-slate">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              {otherRepos.map((repo, index) => {
+                const repoTags = repo.tags && repo.tags.length > 0 ? repo.tags : [repo.language || 'Misc'];
+                return (
+                  <div 
+                    class={`project-item project-card card group relative overflow-hidden ${index >= initialShowCount ? 'hidden' : ''}`}
+                    data-animate="scale-up"
+                    data-delay={String(300 + (index % initialShowCount) * 100)}
+                    data-tags={JSON.stringify(repoTags)}
+                    data-other-index={index}
+                  >
+                    <!-- Hover gradient -->
+                    <div class="absolute inset-0 bg-linear-to-t from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <div class="relative z-10">
+                      <div class="flex justify-between items-start mb-4">
+                        <span class="text-mint text-3xl group-hover:animate-float">📁</span>
+                        <div class="flex items-center gap-3">
+                          {repo.stargazers_count > 0 && (
+                            <span class="flex items-center gap-1 text-sm text-slate">
+                              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                              </svg>
+                              {repo.stargazers_count}
+                            </span>
+                          )}
+                          <a href={repo.html_url} class="text-slate hover:text-mint hover:rotate-12 transition-all duration-300" target="_blank" rel="noopener noreferrer">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                             </svg>
-                            {repo.stargazers_count}
+                          </a>
+                        </div>
+                      </div>
+                      <h4 class="text-lg font-semibold text-light-slate group-hover:text-mint transition-colors duration-300 mb-2">
+                        {repo.name}
+                      </h4>
+                      <p class="text-sm text-slate mb-3 line-clamp-2">
+                        {repo.description || 'No description provided.'}
+                      </p>
+                      <div class="flex flex-wrap gap-2 mt-auto">
+                        {repoTags.map((tag) => (
+                          <span class="text-xs text-slate group-hover:text-light-slate transition-colors duration-300">
+                            {tag}
                           </span>
-                        )}
-                        <a href={repo.html_url} class="text-slate hover:text-mint hover:rotate-12 transition-all duration-300" target="_blank" rel="noopener noreferrer">
-                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                          </svg>
-                        </a>
+                        ))}
                       </div>
                     </div>
-                    <h4 class="text-lg font-semibold text-light-slate group-hover:text-mint transition-colors duration-300 mb-2">
-                      {repo.name}
-                    </h4>
-                    <p class="text-sm text-slate mb-3 line-clamp-2">
-                      {repo.description || 'No description provided.'}
-                    </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                      <span class="text-xs text-slate group-hover:text-light-slate transition-colors duration-300">
-                        {repo.language || 'Misc'}
-                      </span>
-                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
             <!-- Show More Button -->
             {hasMoreProjects && (
-              <div class="text-center mt-10">
+              <div id="show-more-container" class="text-center mt-10">
                 <button 
                   id="show-more-btn"
                   class="btn-primary inline-flex items-center gap-2 px-6 py-3 group relative overflow-hidden"
@@ -166,51 +214,186 @@ const hasMoreProjects = otherRepos.length > initialShowCount;
                 </button>
               </div>
             )}
-          </>
+          </div>
         )}
+
+        <!-- No Matching Projects State -->
+        <div id="no-filter-results" class="hidden text-center py-12 text-slate font-mono">
+          <p class="text-lg">No projects match technology "<span id="missing-tag-name" class="text-mint font-semibold"></span>"</p>
+          <button id="reset-filter-btn" type="button" class="mt-4 text-xs text-mint underline cursor-pointer hover:text-light-slate transition-colors">
+            Show all projects
+          </button>
+        </div>
       </>
     )}
   </div>
 </section>
 
 <script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const allProjectItems = document.querySelectorAll<HTMLElement>('.project-item');
+  const matchingCountEl = document.getElementById('matching-count');
   const showMoreBtn = document.getElementById('show-more-btn') as HTMLElement | null;
-  const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
-  
-  if (showMoreBtn && projectCards.length > 0) {
+  const showMoreContainer = document.getElementById('show-more-container') as HTMLElement | null;
+  const noResultsEl = document.getElementById('no-filter-results') as HTMLElement | null;
+  const missingTagNameEl = document.getElementById('missing-tag-name');
+  const resetFilterBtn = document.getElementById('reset-filter-btn') as HTMLButtonElement | null;
+
+  const featuredCount = document.querySelectorAll('.project-item[data-featured="true"]').length;
+  const totalOtherCount = parseInt(showMoreBtn?.dataset.total || '0', 10);
+  let visibleCount = parseInt(showMoreBtn?.dataset.visible || '6', 10);
+  let activeFilter = 'All';
+
+  function showElement(el: HTMLElement) {
+    if ((el as any)._animTimeout) {
+      clearTimeout((el as any)._animTimeout);
+      (el as any)._animTimeout = null;
+    }
+    if (el.style.display === 'none' || el.classList.contains('hidden')) {
+      el.classList.remove('hidden');
+      el.style.display = '';
+      el.style.opacity = '0';
+      el.style.transform = 'scale(0.95)';
+      void el.offsetWidth;
+    }
+    el.style.transition = 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    el.style.opacity = '1';
+    el.style.transform = 'scale(1)';
+  }
+
+  function hideElement(el: HTMLElement) {
+    if ((el as any)._animTimeout) {
+      clearTimeout((el as any)._animTimeout);
+      (el as any)._animTimeout = null;
+    }
+    el.style.transition = 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    el.style.opacity = '0';
+    el.style.transform = 'scale(0.95)';
+    (el as any)._animTimeout = setTimeout(() => {
+      el.style.display = 'none';
+      el.classList.add('hidden');
+      (el as any)._animTimeout = null;
+    }, 300);
+  }
+
+  function applyFilter(selectedTag: string) {
+    activeFilter = selectedTag;
+    let matchingCount = 0;
+
+    // Update filter pill button styles
+    filterButtons.forEach((btn) => {
+      const isSelected = btn.dataset.filter === selectedTag;
+      btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      if (isSelected) {
+        btn.className = 'filter-btn active px-4 py-1.5 text-xs sm:text-sm font-mono rounded-full border transition-all duration-300 cursor-pointer bg-mint text-navy font-semibold border-mint shadow-md shadow-mint/20 scale-105';
+      } else {
+        btn.className = 'filter-btn px-4 py-1.5 text-xs sm:text-sm font-mono rounded-full border transition-all duration-300 cursor-pointer border-slate/30 text-slate bg-navy/60 hover:border-mint/50 hover:text-mint';
+      }
+    });
+
+    // Process each project card
+    allProjectItems.forEach((card) => {
+      let tags: string[] = [];
+      try {
+        tags = JSON.parse(card.dataset.tags || '[]');
+      } catch (e) {
+        tags = [];
+      }
+
+      const matches = selectedTag === 'All' || tags.some(t => t.toLowerCase() === selectedTag.toLowerCase());
+
+      if (selectedTag === 'All') {
+        const isFeatured = card.dataset.featured === 'true';
+        if (isFeatured) {
+          showElement(card);
+          matchingCount++;
+        } else {
+          const otherIndex = parseInt(card.dataset.otherIndex || '0', 10);
+          if (otherIndex < visibleCount) {
+            showElement(card);
+            matchingCount++;
+          } else {
+            hideElement(card);
+          }
+        }
+      } else {
+        if (matches) {
+          showElement(card);
+          matchingCount++;
+        } else {
+          hideElement(card);
+        }
+      }
+    });
+
+    // Update show more button container visibility
+    if (showMoreContainer) {
+      if (selectedTag === 'All') {
+        if (visibleCount < totalOtherCount) {
+          showElement(showMoreContainer);
+        } else {
+          hideElement(showMoreContainer);
+        }
+      } else {
+        hideElement(showMoreContainer);
+      }
+    }
+
+    // Update counter
+    if (matchingCountEl) {
+      matchingCountEl.textContent = matchingCount.toString();
+    }
+
+    // Update no results empty state
+    if (noResultsEl && missingTagNameEl) {
+      if (matchingCount === 0) {
+        missingTagNameEl.textContent = selectedTag;
+        showElement(noResultsEl);
+      } else {
+        hideElement(noResultsEl);
+      }
+    }
+  }
+
+  // Bind filter button click events
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.filter || 'All';
+      applyFilter(tag);
+    });
+  });
+
+  // Bind reset filter button click
+  if (resetFilterBtn) {
+    resetFilterBtn.addEventListener('click', () => {
+      applyFilter('All');
+    });
+  }
+
+  // Bind Show More pagination click
+  if (showMoreBtn) {
     const ITEMS_PER_LOAD = 6;
-    let visibleCount = parseInt(showMoreBtn.dataset.visible || '6');
-    const totalCount = parseInt(showMoreBtn.dataset.total || '0');
-    
     showMoreBtn.addEventListener('click', () => {
-      const newVisibleCount = Math.min(visibleCount + ITEMS_PER_LOAD, totalCount);
-      
-      // Show next batch of cards with animation
-      projectCards.forEach((card, index) => {
-        if (index >= visibleCount && index < newVisibleCount) {
-          card.classList.remove('hidden');
-          card.style.opacity = '0';
-          card.style.transform = 'scale(0.9)';
-          
-          // Stagger animation
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-          }, (index - visibleCount) * 100);
+      const newVisibleCount = Math.min(visibleCount + ITEMS_PER_LOAD, totalOtherCount);
+
+      allProjectItems.forEach((card) => {
+        if (card.dataset.featured !== 'true') {
+          const otherIndex = parseInt(card.dataset.otherIndex || '0', 10);
+          if (otherIndex >= visibleCount && otherIndex < newVisibleCount) {
+            showElement(card);
+          }
         }
       });
-      
+
       visibleCount = newVisibleCount;
       showMoreBtn.dataset.visible = visibleCount.toString();
-      
-      // Hide button if all projects are visible
-      if (visibleCount >= totalCount) {
-        showMoreBtn.style.opacity = '0';
-        showMoreBtn.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-          showMoreBtn.style.display = 'none';
-        }, 300);
+
+      if (activeFilter === 'All' && matchingCountEl) {
+        matchingCountEl.textContent = (featuredCount + visibleCount).toString();
+      }
+
+      if (visibleCount >= totalOtherCount && showMoreContainer) {
+        hideElement(showMoreContainer);
       }
     });
   }

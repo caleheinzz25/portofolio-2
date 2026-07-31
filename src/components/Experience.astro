@@ -1,0 +1,189 @@
+---
+interface ExperienceItem {
+  id: string;
+  role: string;
+  company: string;
+  companyUrl?: string;
+  location: string;
+  period: string;
+  type: string;
+  description: string[];
+  skills: string[];
+}
+
+const experiences: ExperienceItem[] = [
+  {
+    id: "senior-fullstack",
+    role: "Senior Full Stack Engineer",
+    company: "Tech Corp",
+    companyUrl: "https://github.com/caleheinzz25",
+    location: "Jakarta, Indonesia (Hybrid)",
+    period: "2024 — Present",
+    type: "Full-time",
+    description: [
+      "Architected and deployed high-performance micro-frontends and microservices, improving dynamic page load times by 40%.",
+      "Mentored engineering team members, standardizing code quality with Astro, React, TypeScript, and automated CI/CD pipelines.",
+      "Engineered real-time web socket streams and data aggregation pipelines supporting over 100k active users daily."
+    ],
+    skills: ["TypeScript", "React", "Next.js", "Node.js", "PostgreSQL", "Docker", "Tailwind CSS"]
+  },
+  {
+    id: "frontend-specialist",
+    role: "Frontend Specialist",
+    company: "WebStudio Agency",
+    companyUrl: "https://github.com/caleheinzz25",
+    location: "Bandung, Indonesia (Remote)",
+    period: "2022 — 2024",
+    type: "Full-time",
+    description: [
+      "Led client-facing frontend architecture for 12+ modern web applications with focus on accessibility (WCAG AA) and responsive design.",
+      "Optimized Core Web Vitals across client portals, boosting average LCP score by 35% and maintaining INP under 100ms.",
+      "Implemented modular design systems with Tailwind CSS, SolidJS, and reusable stateful components."
+    ],
+    skills: ["React.js", "Vue.js", "Tailwind CSS", "SolidJS", "GraphQL", "REST APIs", "Jest"]
+  },
+  {
+    id: "swe-intern",
+    role: "Software Engineer Intern",
+    company: "Cloud Systems Inc",
+    companyUrl: "https://github.com/caleheinzz25",
+    location: "Jakarta, Indonesia",
+    period: "2021 — 2022",
+    type: "Internship",
+    description: [
+      "Developed backend REST API endpoints using Golang and Express.js, handling query optimization for database operations.",
+      "Built automated integration test suites and containerized deployment scripts using Docker and GitHub Actions.",
+      "Collaborated with UI/UX designers to translate Figma designs into pixel-perfect responsive web pages."
+    ],
+    skills: ["Golang", "JavaScript", "Express.js", "MongoDB", "Git", "Docker"]
+  },
+  {
+    id: "open-source",
+    role: "Open Source Contributor",
+    company: "Ecosystem & Community",
+    companyUrl: "https://github.com/caleheinzz25",
+    location: "Global",
+    period: "2020 — Present",
+    type: "Open Source",
+    description: [
+      "Actively contributed bug fixes, documentation, and feature enhancements to developer tooling and Astro ecosystem plugins.",
+      "Published and maintained open-source developer utilities and template starters with active community engagement.",
+      "Engaged in technical code reviews and community discussions to improve web software performance and developer experience."
+    ],
+    skills: ["Astro", "TypeScript", "SolidJS", "Tailwind CSS", "Git", "Open Source"]
+  }
+];
+---
+
+<section id="experience" class="py-24 px-6 relative overflow-hidden">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">02.</span>
+      Career Experience
+    </h2>
+
+    <div class="relative mt-12">
+      <!-- Vertical Glowing Timeline Spine -->
+      <div 
+        class="absolute left-4 md:left-1/2 top-2 bottom-2 w-0.5 -translate-x-1/2 bg-linear-to-b from-mint/60 via-slate/30 to-mint/20 rounded-full"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Timeline Items -->
+      <div class="space-y-12 md:space-y-16">
+        {experiences.map((exp, index) => {
+          const isEven = index % 2 === 0;
+          return (
+            <div 
+              class="relative flex flex-col md:flex-row items-center group"
+              data-animate={isEven ? "fade-right" : "fade-left"}
+              data-delay={String(100 + index * 150)}
+            >
+              <!-- Timeline Node Badge -->
+              <div class="absolute left-4 md:left-1/2 top-0 md:top-6 -translate-x-1/2 z-20 flex items-center justify-center">
+                <div class="w-7 h-7 rounded-full bg-navy border-2 border-mint flex items-center justify-center shadow-[0_0_12px_rgba(249,232,162,0.5)] group-hover:scale-125 group-hover:shadow-[0_0_20px_rgba(249,232,162,0.9)] transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-mint group-hover:animate-ping"></div>
+                </div>
+              </div>
+
+              <!-- Card Wrapper -->
+              <div 
+                class={`w-full md:w-1/2 pl-12 ${
+                  isEven 
+                    ? 'md:pl-0 md:pr-10 md:text-right md:ml-0 md:mr-auto' 
+                    : 'md:pl-10 md:text-left md:ml-auto md:mr-0'
+                }`}
+              >
+                <div class="card group-hover:border-mint/40 hover:shadow-xl hover:shadow-mint/5 transition-all duration-300 relative overflow-hidden">
+                  <!-- Hover Gradient Glow -->
+                  <div class="absolute inset-0 bg-linear-to-br from-mint/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                  <div class="relative z-10">
+                    <!-- Role & Company -->
+                    <div class="flex flex-col gap-1 mb-2">
+                      <h3 class="text-xl font-serif font-bold text-light-slate group-hover:text-mint transition-colors duration-300">
+                        {exp.role}
+                      </h3>
+                      <div class={`text-mint font-mono text-sm font-semibold flex items-center gap-2 ${isEven ? 'md:justify-end' : 'justify-start'}`}>
+                        {exp.companyUrl ? (
+                          <a 
+                            href={exp.companyUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="hover:underline inline-flex items-center gap-1"
+                          >
+                            @{exp.company}
+                            <svg class="w-3 h-3 opacity-70 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                          </a>
+                        ) : (
+                          <span>@{exp.company}</span>
+                        )}
+                        <span class="text-xs px-2 py-0.5 rounded border border-slate/30 text-slate bg-navy/80 font-normal">
+                          {exp.type}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Date & Location -->
+                    <div class={`text-slate font-mono text-xs mb-4 flex items-center gap-3 ${isEven ? 'md:justify-end' : 'justify-start'}`}>
+                      <span class="inline-flex items-center gap-1">
+                        <i class="far fa-calendar-alt text-mint/80"></i>
+                        {exp.period}
+                      </span>
+                      <span>•</span>
+                      <span class="inline-flex items-center gap-1">
+                        <i class="fas fa-map-marker-alt text-mint/80"></i>
+                        {exp.location}
+                      </span>
+                    </div>
+
+                    <!-- Achievements & Bullet Points -->
+                    <ul class="space-y-2 text-slate text-sm leading-relaxed mb-5 text-left">
+                      {exp.description.map((bullet) => (
+                        <li class="flex items-start gap-2">
+                          <span class="text-mint shrink-0 mt-1">▹</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <!-- Tech Stack Pills -->
+                    <div class={`flex flex-wrap gap-2 pt-3 border-t border-slate/10 ${isEven ? 'md:justify-end' : 'justify-start'}`}>
+                      {exp.skills.map((skill) => (
+                        <span class="px-2.5 py-1 text-xs font-mono bg-navy border border-slate/20 rounded-full text-slate group-hover:border-mint/40 group-hover:text-light-slate transition-all duration-300">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>

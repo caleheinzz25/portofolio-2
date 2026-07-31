@@ -2,6 +2,8 @@
 import "../styles/global.css";
 import ScrollAnimations from "../components/ScrollAnimations.astro";
 import ParallaxBackground from "../components/ParallaxBackground.astro";
+import ThemeSwitcher from "../components/ThemeSwitcher.astro";
+import TerminalOverlay from "../components/TerminalOverlay.astro";
 
 interface Props {
   title?: string;
@@ -44,6 +46,8 @@ const {
   <body class="antialiased relative">
     <ParallaxBackground />
     <slot />
+    <ThemeSwitcher />
+    <TerminalOverlay />
     <ScrollAnimations />
   </body>
 </html>

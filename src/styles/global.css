@@ -4,7 +4,11 @@
 @theme {
     --color-navy: #0D1B2A;
     --color-light-navy: #1B2A4A;
-    --color-mint: #F9E8A2;
+    --color-accent: var(--color-accent);
+    --color-accent-hover: var(--color-accent-hover);
+    --color-accent-glow: var(--color-accent-glow);
+    --color-accent-light: var(--color-accent-light);
+    --color-mint: var(--color-accent, #f59e0b);
     --color-light-slate: #B4E1EB;
     --color-slate: #95BDD7;
     --color-ocean: #78A4CB;
@@ -16,6 +20,61 @@
     --animate-fade-up: fade-up 0.6s ease-out forwards;
     --animate-slide-in-left: slide-in-left 0.6s ease-out forwards;
     --animate-slide-in-right: slide-in-right 0.6s ease-out forwards;
+}
+
+/* Theme accent custom properties & presets */
+:root {
+    --color-accent: #f59e0b;
+    --color-accent-hover: #d97706;
+    --color-accent-glow: rgba(245, 158, 11, 0.35);
+    --color-accent-light: rgba(245, 158, 11, 0.15);
+    --color-accent-rgb: 245, 158, 11;
+    --color-mint: var(--color-accent, #f59e0b);
+}
+
+[data-theme="gold"] {
+    --color-accent: #f59e0b;
+    --color-accent-hover: #d97706;
+    --color-accent-glow: rgba(245, 158, 11, 0.35);
+    --color-accent-light: rgba(245, 158, 11, 0.15);
+    --color-accent-rgb: 245, 158, 11;
+    --color-mint: var(--color-accent, #f59e0b);
+}
+
+[data-theme="emerald"] {
+    --color-accent: #10b981;
+    --color-accent-hover: #059669;
+    --color-accent-glow: rgba(16, 185, 129, 0.35);
+    --color-accent-light: rgba(16, 185, 129, 0.15);
+    --color-accent-rgb: 16, 185, 129;
+    --color-mint: var(--color-accent, #f59e0b);
+}
+
+[data-theme="rose"] {
+    --color-accent: #f43f5e;
+    --color-accent-hover: #e11d48;
+    --color-accent-glow: rgba(244, 63, 94, 0.35);
+    --color-accent-light: rgba(244, 63, 94, 0.15);
+    --color-accent-rgb: 244, 63, 94;
+    --color-mint: var(--color-accent, #f59e0b);
+}
+
+[data-theme="violet"] {
+    --color-accent: #8b5cf6;
+    --color-accent-hover: #7c3aed;
+    --color-accent-glow: rgba(139, 92, 246, 0.35);
+    --color-accent-light: rgba(139, 92, 246, 0.15);
+    --color-accent-rgb: 139, 92, 246;
+    --color-mint: var(--color-accent, #f59e0b);
+}
+
+[data-theme="cyan"] {
+    --color-accent: #06b6d4;
+    --color-accent-hover: #0891b2;
+    --color-accent-glow: rgba(6, 182, 212, 0.35);
+    --color-accent-light: rgba(6, 182, 212, 0.15);
+    --color-accent-rgb: 6, 182, 212;
+    --color-mint: var(--color-accent, #f59e0b);
 }
 
 @keyframes fade-in {
@@ -139,7 +198,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: rgba(249, 232, 162, 0.15);
+    background-color: var(--color-accent-light);
     transform: translateY(-2px);
 }
 
@@ -162,7 +221,7 @@ body {
 }
 
 .card:hover {
-    border-color: rgba(249, 232, 162, 0.4);
+    border-color: var(--color-accent-glow);
     transform: translateY(-4px);
 }
 

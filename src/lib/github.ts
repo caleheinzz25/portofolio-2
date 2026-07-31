@@ -5,6 +5,7 @@ export interface GithubRepo {
     language: string | null;
     stargazers_count: number;
     homepage: string | null;
+    tags?: string[];
 }
 
 export interface GithubEvent {
@@ -21,6 +22,16 @@ interface CacheEntry<T> {
 
 const GITHUB_USERNAME = 'caleheinzz25';
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+/**
+ * Mapping of repository names to specific technology tags
+ */
+export const REPO_TECH_MAP: Record<string, string[]> = {
+    'portofolio-2': ['Astro', 'SolidJS', 'Tailwind CSS', 'TypeScript'],
+    'typing-speed': ['React', 'TypeScript', 'Tailwind CSS'],
+    'snake-game': ['TypeScript', 'HTML5', 'CSS3'],
+    'memory-match': ['SolidJS', 'TypeScript', 'Tailwind CSS'],
+};
 
 const cache = new Map<string, CacheEntry<unknown>>();
 
@@ -89,14 +100,19 @@ export async function getPinnedRepos(token: string | undefined): Promise<GithubR
 
         const repos = await response.json();
 
-        const mapped: GithubRepo[] = repos.map((repo: any) => ({
-            name: repo.name,
-            html_url: repo.html_url,
-            description: repo.description,
-            language: repo.language,
-            stargazers_count: repo.stargazers_count,
-            homepage: repo.homepage || null
-        }));
+        const mapped: GithubRepo[] = repos.map((repo: any) => {
+            const tags = REPO_TECH_MAP[repo.name] || [repo.language || 'Misc'];
+
+            return {
+                name: repo.name,
+                html_url: repo.html_url,
+                description: repo.description,
+                language: repo.language,
+                stargazers_count: repo.stargazers_count,
+                homepage: repo.homepage || null,
+                tags
+            };
+        });
 
         setInCache(cacheKey, mapped);
         console.log('\x1b[32m✔ GitHub repos fetched successfully\x1b[0m');
