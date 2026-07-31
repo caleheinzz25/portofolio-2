@@ -441,7 +441,7 @@ export default function ApiPlayground() {
   };
 
   return (
-    <div class="card bg-light-navy/40 border border-slate/20 rounded-xl p-4 sm:p-6 shadow-2xl backdrop-blur-md">
+    <div class="bg-light-navy/40 border border-slate/20 rounded-xl p-4 sm:p-6 shadow-2xl backdrop-blur-md">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left Pane: Request Config */}
