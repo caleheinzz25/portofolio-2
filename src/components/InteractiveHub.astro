@@ -314,6 +314,14 @@ const games = [
     let isOpen = false;
     let commandHistory: string[] = [];
     let historyIndex = -1;
+    const sessionStartTime = Date.now();
+
+    const KNOWN_COMMANDS = [
+      "help", "about", "skills", "projects", "contact",
+      "whoami", "neofetch", "date", "uptime", "history",
+      "fetch", "echo", "api", "music", "games", "theme",
+      "clear", "exit", "ls", "cat", "pwd", "sudo"
+    ];
 
     // Terminal ASCII Banner
     const BANNER_ASCII = `
@@ -328,12 +336,20 @@ const games = [
     const WELCOME_HEADER = `
 <div class="border-b border-slate/20 pb-3 mb-4 space-y-1">
   <pre class="text-mint leading-tight font-mono text-[10px] sm:text-xs overflow-x-auto select-none">${BANNER_ASCII}</pre>
-  <p class="text-light-slate font-semibold">Welcome to <span class="text-mint">hisyam-cli v1.0.0</span> - Interactive Portfolio Shell</p>
-  <p class="text-slate text-xs">Type <span class="text-mint font-bold">'help'</span> to view available commands or switch tabs.</p>
+  <p class="text-light-slate font-semibold">Welcome to <span class="text-mint">hisyam-cli v1.1.0</span> - Interactive Developer Shell</p>
+  <p class="text-slate text-xs">Type <span class="text-mint font-bold">'help'</span> to view commands or <span class="text-mint font-bold">'neofetch'</span> for system specs. Press <kbd class="px-1 py-0.5 rounded bg-slate/20 text-mint text-[10px]">Tab</kbd> to autocomplete.</p>
 </div>
 `;
 
     const THEMES = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+
+    function getFormattedUptime(): string {
+      const diffMs = Date.now() - sessionStartTime;
+      const totalSec = Math.floor(diffMs / 1000);
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return m > 0 ? `${m}m ${s}s` : `${s}s`;
+    }
 
     function switchTab(targetTab: string) {
       tabBtns.forEach((btn) => {
@@ -450,7 +466,20 @@ const games = [
       });
 
       input.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowUp") {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          const val = input.value.trim().toLowerCase();
+          if (!val) return;
+          const matches = KNOWN_COMMANDS.filter((c) => c.startsWith(val));
+          if (matches.length === 1) {
+            input.value = matches[0];
+          } else if (matches.length > 1) {
+            appendCommandLog(input.value);
+            renderResponse(`
+              <p class="text-slate text-xs my-1">Matches: ${matches.map((m) => `<span class="text-mint font-semibold">${m}</span>`).join(", ")}</p>
+            `);
+          }
+        } else if (e.key === "ArrowUp") {
           e.preventDefault();
           if (commandHistory.length > 0) {
             if (historyIndex === -1) historyIndex = commandHistory.length - 1;
@@ -487,7 +516,7 @@ const games = [
       return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function executeCommand(rawCmd: string) {
+    async function executeCommand(rawCmd: string) {
       const trimmed = rawCmd.trim();
       if (!trimmed) return;
 
@@ -503,9 +532,15 @@ const games = [
         case "help":
           renderResponse(`
 <div class="text-slate space-y-1 my-2">
-  <p class="text-mint font-bold mb-2">Available Commands:</p>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 font-mono text-xs">
+  <p class="text-mint font-bold mb-2">Available Shell Commands:</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs">
     <div><span class="text-mint font-semibold">help</span>         - Available commands</div>
+    <div><span class="text-mint font-semibold">neofetch</span>     - Display system & portfolio specs</div>
+    <div><span class="text-mint font-semibold">whoami</span>       - Display visitor browser/OS info</div>
+    <div><span class="text-mint font-semibold">fetch &lt;url&gt;</span>  - HTTP GET request inline</div>
+    <div><span class="text-mint font-semibold">date / uptime</span>- Session timing metrics</div>
+    <div><span class="text-mint font-semibold">history</span>      - Command history log</div>
+    <div><span class="text-mint font-semibold">echo [text]</span>   - Print text with color flags</div>
     <div><span class="text-mint font-semibold">about</span>        - About Hisyam</div>
     <div><span class="text-mint font-semibold">skills</span>       - View tech stack</div>
     <div><span class="text-mint font-semibold">projects</span>     - Explore projects</div>
@@ -519,6 +554,142 @@ const games = [
   </div>
 </div>
           `);
+          break;
+
+        case "neofetch":
+          const activeTheme = document.documentElement.getAttribute('data-theme') || 'gold (default)';
+          renderResponse(`
+<div class="my-3 p-3 bg-navy/90 rounded border border-slate/20 font-mono text-xs flex flex-col sm:flex-row gap-4 items-start">
+  <pre class="text-mint font-bold text-[10px] leading-none select-none">
+   ╔═════════════╗
+   ║  M.Hisyam   ║
+   ║  Developer  ║
+   ╚═════════════╝
+  </pre>
+  <div class="space-y-1 text-xs">
+    <p class="text-mint font-bold border-b border-slate/20 pb-1 mb-1">guest@hisyam-portfolio</p>
+    <p><span class="text-mint font-semibold">OS:</span> Web Browser Shell</p>
+    <p><span class="text-mint font-semibold">Host:</span> MHisyam Developer Portfolio v2.0</p>
+    <p><span class="text-mint font-semibold">Stack:</span> Astro v5 + SolidJS + Tailwind CSS v4</p>
+    <p><span class="text-mint font-semibold">Uptime:</span> ${getFormattedUptime()}</p>
+    <p><span class="text-mint font-semibold">Shell:</span> hisyam-cli v1.1.0</p>
+    <p><span class="text-mint font-semibold">Theme:</span> ${activeTheme}</p>
+    <p><span class="text-mint font-semibold">Sections:</span> 6 Main Narrative Sections</p>
+    <div class="flex gap-1.5 mt-2 pt-1 border-t border-slate/20">
+      <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-purple-400 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+    </div>
+  </div>
+</div>
+          `);
+          break;
+
+        case "whoami":
+          const userAgent = navigator.userAgent;
+          let browserName = "Unknown Browser";
+          if (userAgent.includes("Firefox")) browserName = "Mozilla Firefox";
+          else if (userAgent.includes("Chrome")) browserName = "Google Chrome / Chromium";
+          else if (userAgent.includes("Safari")) browserName = "Apple Safari";
+          else if (userAgent.includes("Edg")) browserName = "Microsoft Edge";
+
+          const screenRes = `${window.screen.width} × ${window.screen.height}`;
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+          const isOnline = navigator.onLine ? "✔ Connected (Online)" : "✖ Offline";
+
+          renderResponse(`
+<div class="my-2 p-3 bg-navy/80 rounded border border-slate/20 font-mono text-xs space-y-1">
+  <p class="text-mint font-bold border-b border-slate/20 pb-1 mb-2">Visitor Client Diagnostics:</p>
+  <p><span class="text-mint">Browser:</span> ${browserName}</p>
+  <p><span class="text-mint">Screen:</span> ${screenRes}</p>
+  <p><span class="text-mint">Language:</span> ${navigator.language}</p>
+  <p><span class="text-mint">Timezone:</span> ${tz}</p>
+  <p><span class="text-mint">Status:</span> ${isOnline}</p>
+</div>
+          `);
+          break;
+
+        case "date":
+          renderResponse(`<p class="text-mint my-1">📅 ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'medium' })}</p>`);
+          break;
+
+        case "uptime":
+          renderResponse(`<p class="text-mint my-1">⏱️ Current session uptime: ${getFormattedUptime()}</p>`);
+          break;
+
+        case "history":
+          if (commandHistory.length === 0) {
+            renderResponse(`<p class="text-slate my-1">No command history recorded.</p>`);
+          } else {
+            const historyHTML = commandHistory
+              .map((c, idx) => `<div class="flex items-center gap-3"><span class="text-slate font-mono w-6 text-right">${idx + 1}.</span> <span class="text-light-slate">${escapeHTML(c)}</span></div>`)
+              .join("");
+            renderResponse(`
+<div class="my-2 space-y-1 font-mono text-xs">
+  <p class="text-mint font-bold mb-1">Session Command History:</p>
+  ${historyHTML}
+</div>
+            `);
+          }
+          break;
+
+        case "echo":
+          let colorClass = "text-light-slate";
+          let textToEcho = args.join(" ");
+
+          if (args[0]?.startsWith("--")) {
+            const flag = args[0].toLowerCase();
+            if (flag === "--mint") colorClass = "text-mint font-semibold";
+            else if (flag === "--red") colorClass = "text-red-400 font-semibold";
+            else if (flag === "--amber") colorClass = "text-amber-300 font-semibold";
+            else if (flag === "--purple") colorClass = "text-purple-400 font-semibold";
+            else if (flag === "--emerald") colorClass = "text-emerald-400 font-semibold";
+            textToEcho = args.slice(1).join(" ");
+          }
+
+          renderResponse(`<p class="${colorClass} my-1">${escapeHTML(textToEcho || "")}</p>`);
+          break;
+
+        case "fetch":
+          if (args.length === 0) {
+            renderResponse(`<p class="text-rose-400 my-1">Usage: fetch &lt;url&gt; (e.g. 'fetch https://catfact.ninja/fact')</p>`);
+            break;
+          }
+
+          let fetchUrl = args[0];
+          if (!fetchUrl.startsWith("http://") && !fetchUrl.startsWith("https://")) {
+            fetchUrl = "https://" + fetchUrl;
+          }
+
+          renderResponse(`<p class="text-slate text-xs animate-pulse my-1">⚡ Fetching ${escapeHTML(fetchUrl)}...</p>`);
+          
+          try {
+            const startT = performance.now();
+            const res = await fetch(fetchUrl);
+            const duration = Math.round(performance.now() - startT);
+            const text = await res.text();
+
+            let formatted = text;
+            try {
+              formatted = JSON.stringify(JSON.parse(text), null, 2);
+            } catch (e) {}
+
+            const truncated = formatted.length > 1500 ? formatted.slice(0, 1500) + "\n... (truncated)" : formatted;
+
+            renderResponse(`
+<div class="my-2 p-3 bg-navy/90 rounded border border-slate/20 font-mono text-xs space-y-2">
+  <div class="flex items-center justify-between border-b border-slate/20 pb-1">
+    <span class="text-mint font-bold">GET ${escapeHTML(fetchUrl)}</span>
+    <span class="${res.ok ? 'text-emerald-400' : 'text-rose-400'} font-bold">${res.status} ${res.statusText || 'OK'} (${duration}ms)</span>
+  </div>
+  <pre class="text-slate overflow-x-auto whitespace-pre">${escapeHTML(truncated)}</pre>
+</div>
+            `);
+          } catch (err: any) {
+            renderResponse(`<p class="text-rose-400 my-1">Failed to fetch ${escapeHTML(fetchUrl)}: ${escapeHTML(err?.message || "CORS or Network Error")}</p>`);
+          }
           break;
 
         case "api":
@@ -564,6 +735,31 @@ const games = [
         case "exit":
           closeModal();
           ensureInputForm();
+          break;
+
+        // Easter eggs & Unix shortcuts
+        case "sudo":
+          renderResponse(`<p class="text-amber-400 my-1">Nice try! You don't have root access on this portfolio 😏</p>`);
+          break;
+        case "rm":
+        case "rmdir":
+          renderResponse(`<p class="text-rose-400 my-1">Whoa there! This portfolio is read-only 🛡️</p>`);
+          break;
+        case "hello":
+        case "hi":
+          renderResponse(`<p class="text-mint my-1">Hey there! 👋 Type <span class="font-bold">'help'</span> to get started.</p>`);
+          break;
+        case "ls":
+          renderResponse(`<p class="text-slate my-1">📁 <span class="text-mint font-semibold">about/</span>  📁 <span class="text-mint font-semibold">experience/</span>  📁 <span class="text-mint font-semibold">skills/</span>  📁 <span class="text-mint font-semibold">activity/</span>  📁 <span class="text-mint font-semibold">projects/</span>  📁 <span class="text-mint font-semibold">contact/</span></p>`);
+          break;
+        case "cat":
+          renderResponse(`<p class="text-slate my-1">🐱 Meow! Try running <span class="text-mint font-bold">'fetch https://catfact.ninja/fact'</span> for a cat fact.</p>`);
+          break;
+        case "pwd":
+          renderResponse(`<p class="text-slate my-1">/home/guest/hisyam-portfolio</p>`);
+          break;
+        case "cd":
+          renderResponse(`<p class="text-slate my-1">Can't cd — this is a single-page web app! 😄</p>`);
           break;
 
         default:
