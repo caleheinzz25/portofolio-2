@@ -862,6 +862,16 @@ const games = [
         return `${m}:${sec < 10 ? '0' : ''}${sec}`;
       }
 
+      function loadSavedTrackIndex(): number {
+        try {
+          const saved = localStorage.getItem('music-player-last-track');
+          const parsed = saved !== null ? parseInt(saved, 10) : 0;
+          return isNaN(parsed) || parsed < 0 || parsed >= songs.length ? 0 : parsed;
+        } catch (e) {
+          return 0;
+        }
+      }
+
       function loadMusic(idx: number) {
         if (idx < 0 || idx >= songs.length) return;
         currentMusicIdx = idx;
@@ -870,7 +880,14 @@ const games = [
         hubPlaylist?.querySelectorAll(".playlist-item").forEach((el, i) => {
           el.classList.toggle("active", i === idx);
         });
+        try {
+          localStorage.setItem('music-player-last-track', String(idx));
+        } catch (e) {}
       }
+
+      // Preload last selected track from localStorage
+      const savedTrackIdx = loadSavedTrackIndex();
+      loadMusic(savedTrackIdx);
 
       function playMusic() {
         if (currentMusicIdx === -1) loadMusic(0);
