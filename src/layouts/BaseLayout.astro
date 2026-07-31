@@ -4,6 +4,7 @@ import ScrollAnimations from "../components/ScrollAnimations.astro";
 import ParallaxBackground from "../components/ParallaxBackground.astro";
 import ThemeSwitcher from "../components/ThemeSwitcher.astro";
 import TerminalOverlay from "../components/TerminalOverlay.astro";
+import ApiPlaygroundOverlay from "../components/ApiPlaygroundOverlay.astro";
 
 interface Props {
   title?: string;
@@ -48,6 +49,7 @@ const {
     <slot />
     <ThemeSwitcher />
     <TerminalOverlay />
+    <ApiPlaygroundOverlay />
     <ScrollAnimations />
   </body>
 </html>
