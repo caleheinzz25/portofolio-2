@@ -100,10 +100,15 @@ const games = [
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="text-xs font-mono text-slate flex items-center gap-1.5 bg-navy/80 px-2.5 py-1 rounded-lg border border-slate/20">
-          <kbd class="text-[10px] font-bold text-mint bg-slate/20 px-1.5 py-0.5 rounded border border-slate/30">Esc</kbd>
+        <button
+          id="hub-esc-badge"
+          class="text-xs font-mono text-slate flex items-center gap-1.5 bg-navy/80 px-2.5 py-1 rounded-lg border border-slate/20 hover:border-mint/50 hover:text-mint transition-all duration-200 cursor-pointer group"
+          title="Click or press Esc to close modal"
+          aria-label="Close Playground Modal"
+        >
+          <kbd class="text-[10px] font-bold text-mint bg-slate/20 px-1.5 py-0.5 rounded border border-slate/30 group-hover:bg-mint/20">Esc</kbd>
           <span class="text-[11px] hidden sm:inline">to close</span>
-        </span>
+        </button>
       </div>
     </div>
 
@@ -294,10 +299,7 @@ const games = [
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const toggleBtn = document.getElementById("hub-toggle-btn");
     const overlay = document.getElementById("hub-modal-overlay");
-    const closeBtn = document.getElementById("hub-close-btn");
-    const closeDot = document.getElementById("hub-close-dot");
     const tabBtns = document.querySelectorAll<HTMLButtonElement>(".hub-tab-btn");
     const tabPanels = document.querySelectorAll<HTMLElement>(".hub-tab-panel");
     const terminalOutput = document.getElementById("hub-terminal-output");
@@ -779,9 +781,8 @@ const games = [
       }
     }
 
-    toggleBtn?.addEventListener("click", toggleModal);
-    closeBtn?.addEventListener("click", closeModal);
-    closeDot?.addEventListener("click", closeModal);
+    const escBadge = document.getElementById("hub-esc-badge");
+    escBadge?.addEventListener("click", closeModal);
 
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeModal();
@@ -791,16 +792,21 @@ const games = [
       }
     });
 
-    // Shortcuts: Ctrl+Space or Alt+P
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if ((e.ctrlKey && e.code === "Space") || (e.altKey && (e.key === "p" || e.key === "P"))) {
-        e.preventDefault();
-        toggleModal();
-      } else if (e.key === "Escape" && isOpen) {
-        e.preventDefault();
-        closeModal();
-      }
-    });
+    // Shortcuts: Ctrl+Space or Alt+P to toggle, Esc to close
+    window.addEventListener(
+      "keydown",
+      (e: KeyboardEvent) => {
+        if ((e.ctrlKey && e.code === "Space") || (e.altKey && (e.key === "p" || e.key === "P"))) {
+          e.preventDefault();
+          toggleModal();
+        } else if ((e.key === "Escape" || e.key === "Esc" || e.code === "Escape") && isOpen) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeModal();
+        }
+      },
+      true
+    );
 
     // Nav links targeting #interactive-hub or #api-playground or #music or #mini-games
     document.querySelectorAll('a[href="#interactive-hub"], a[href="#api-playground"], a[href="#music"], a[href="#mini-games"]').forEach((link) => {
