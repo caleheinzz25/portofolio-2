@@ -229,17 +229,39 @@ function highlightJsonHTML(jsonStr: string): string {
   );
 }
 
+function loadSavedStorage<T>(key: string, fallback: T): T {
+  try {
+    const item = typeof window !== "undefined" ? localStorage.getItem(key) : null;
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function saveStorage(key: string, data: any) {
+  try {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+  } catch (e) {}
+}
+
 export default function ApiPlayground() {
   const [selectedPresetId, setSelectedPresetId] = createSignal<string>(ALL_PRESETS[0].id);
   const [url, setUrl] = createSignal<string>(ALL_PRESETS[0].url);
   const [method, setMethod] = createSignal<HttpMethod>(ALL_PRESETS[0].method);
   const [requestBody, setRequestBody] = createSignal<string>(ALL_PRESETS[0].defaultBody || "{}");
   
-  // Custom Headers
-  const [headers, setHeaders] = createSignal<HeaderPair[]>([
-    { key: "Accept", value: "application/json" }
-  ]);
+  // Custom Headers (persisted in localStorage)
+  const [headers, setHeadersSignal] = createSignal<HeaderPair[]>(
+    loadSavedStorage<HeaderPair[]>("api-playground-headers", [{ key: "Accept", value: "application/json" }])
+  );
   const [showHeadersEditor, setShowHeadersEditor] = createSignal<boolean>(false);
+
+  const setHeaders = (newHeaders: HeaderPair[]) => {
+    setHeadersSignal(newHeaders);
+    saveStorage("api-playground-headers", newHeaders);
+  };
 
   // Request/Response State
   const [isLoading, setIsLoading] = createSignal<boolean>(false);
@@ -256,8 +278,15 @@ export default function ApiPlayground() {
   const [copied, setCopied] = createSignal<boolean>(false);
   const [isExpanded, setIsExpanded] = createSignal<boolean>(false);
 
-  // History Log
-  const [history, setHistory] = createSignal<HistoryItem[]>([]);
+  // History Log (persisted in localStorage)
+  const [history, setHistorySignal] = createSignal<HistoryItem[]>(
+    loadSavedStorage<HistoryItem[]>("api-playground-history", [])
+  );
+
+  const setHistory = (newHistory: HistoryItem[]) => {
+    setHistorySignal(newHistory);
+    saveStorage("api-playground-history", newHistory);
+  };
 
   const handlePresetChange = (presetId: string) => {
     setSelectedPresetId(presetId);
