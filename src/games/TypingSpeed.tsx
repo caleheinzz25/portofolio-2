@@ -406,16 +406,16 @@ export default function TypingSpeed() {
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 0.8rem;
                     font-weight: 600;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     background: transparent;
                     cursor: pointer;
                     transition: all 0.25s ease;
                 }
-                .ts-diff-btn:hover { color: #CCD6F6; background: rgba(100, 255, 218, 0.06); }
+                .ts-diff-btn:hover { color: var(--color-light-slate); background: color-mix(in srgb, var(--color-mint) 6%, transparent); }
                 .ts-diff-btn.active {
-                    color: #0A192F;
-                    background: #64FFDA;
-                    box-shadow: 0 0 16px rgba(100, 255, 218, 0.3);
+                    color: var(--color-navy);
+                    background: var(--color-mint);
+                    box-shadow: 0 0 16px color-mix(in srgb, var(--color-mint) 30%, transparent);
                 }
 
                 /* Idle */
@@ -430,25 +430,25 @@ export default function TypingSpeed() {
                 .ts-idle-title {
                     font-size: 1.5rem;
                     font-weight: 800;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     font-family: ui-serif, Georgia, serif;
                     margin: 0;
                 }
                 .ts-idle-desc {
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-size: 0.85rem;
                     text-align: center;
                     line-height: 1.6;
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     margin: 0;
                 }
-                .ts-idle-desc strong { color: #64FFDA; }
+                .ts-idle-desc strong { color: var(--color-mint); }
 
                 .ts-start-btn {
                     padding: 0.65rem 2rem;
-                    border: 1px solid #64FFDA;
-                    background: rgba(100, 255, 218, 0.1);
-                    color: #64FFDA;
+                    border: 1px solid var(--color-mint);
+                    background: color-mix(in srgb, var(--color-mint) 10%, transparent);
+                    color: var(--color-mint);
                     border-radius: 0.5rem;
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 0.9rem;
@@ -458,9 +458,9 @@ export default function TypingSpeed() {
                     margin-top: 0.5rem;
                 }
                 .ts-start-btn:hover {
-                    background: #64FFDA;
-                    color: #0A192F;
-                    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+                    background: var(--color-mint);
+                    color: var(--color-navy);
+                    box-shadow: 0 0 20px color-mix(in srgb, var(--color-mint) 30%, transparent);
                 }
 
                 /* Countdown */
@@ -474,13 +474,13 @@ export default function TypingSpeed() {
                 .ts-countdown-num {
                     font-size: 4rem;
                     font-weight: 900;
-                    color: #64FFDA;
+                    color: var(--color-mint);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     animation: ts-pulse 1s ease-in-out infinite;
-                    text-shadow: 0 0 30px rgba(100, 255, 218, 0.4);
+                    text-shadow: 0 0 30px color-mix(in srgb, var(--color-mint) 40%, transparent);
                 }
                 .ts-countdown-label {
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-size: 0.9rem;
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     margin: 0;
@@ -499,17 +499,17 @@ export default function TypingSpeed() {
                     position: relative;
                     width: 100%;
                     height: 28px;
-                    background: rgba(10, 25, 47, 0.6);
+                    background: color-mix(in srgb, var(--color-navy) 60%, transparent);
                     border-radius: 0.5rem;
-                    border: 1px solid rgba(136, 146, 176, 0.15);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 15%, transparent);
                     overflow: hidden;
                 }
                 .ts-timer-fill {
                     height: 100%;
-                    background: linear-gradient(90deg, #64FFDA, #48c9a8);
+                    background: linear-gradient(90deg, var(--color-mint), var(--color-ocean));
                     border-radius: 0.5rem;
                     transition: width 1s linear;
-                    box-shadow: 0 0 12px rgba(100, 255, 218, 0.2);
+                    box-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 20%, transparent);
                 }
                 .ts-timer-text {
                     position: absolute;
@@ -520,7 +520,7 @@ export default function TypingSpeed() {
                     font-size: 0.75rem;
                     font-weight: 700;
                     font-family: ui-monospace, SFMono-Regular, monospace;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     text-shadow: 0 1px 3px rgba(0,0,0,0.5);
                 }
 
@@ -540,30 +540,30 @@ export default function TypingSpeed() {
                     font-size: 0.6rem;
                     text-transform: uppercase;
                     letter-spacing: 0.1em;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                 }
                 .ts-live-value {
                     font-size: 1.2rem;
                     font-weight: 700;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                 }
-                .ts-accent { color: #64FFDA; }
+                .ts-accent { color: var(--color-mint); }
 
                 /* Text area */
                 .ts-text-area {
                     padding: 1.25rem;
-                    background: rgba(10, 25, 47, 0.5);
+                    background: color-mix(in srgb, var(--color-navy) 50%, transparent);
                     border-radius: 0.75rem;
-                    border: 1px solid rgba(136, 146, 176, 0.1);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 10%, transparent);
                     cursor: text;
                     max-height: 200px;
                     overflow-y: auto;
                     line-height: 2;
                 }
                 .ts-text-area::-webkit-scrollbar { width: 4px; }
-                .ts-text-area::-webkit-scrollbar-thumb { background: #8892B040; border-radius: 4px; }
+                .ts-text-area::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-slate) 25%, transparent); border-radius: 4px; }
 
                 .ts-text-block {
                     font-family: ui-monospace, SFMono-Regular, monospace;
@@ -574,12 +574,12 @@ export default function TypingSpeed() {
 
                 /* Characters */
                 .ts-ch {
-                    color: #8892B060;
+                    color: color-mix(in srgb, var(--color-slate) 40%, transparent);
                     transition: color 0.08s;
                     border-radius: 2px;
                 }
                 .ts-ch.correct {
-                    color: #64FFDA;
+                    color: var(--color-mint);
                 }
                 .ts-ch.wrong {
                     color: #ef4444;
@@ -587,8 +587,8 @@ export default function TypingSpeed() {
                     border-radius: 2px;
                 }
                 .ts-ch.current {
-                    color: #CCD6F6;
-                    border-left: 2px solid #64FFDA;
+                    color: var(--color-light-slate);
+                    border-left: 2px solid var(--color-mint);
                     animation: ts-blink 0.8s ease-in-out infinite;
                     margin-left: -1px;
                     padding-left: 1px;
@@ -598,20 +598,20 @@ export default function TypingSpeed() {
                 .ts-input {
                     width: 100%;
                     padding: 0.75rem 1rem;
-                    background: rgba(10, 25, 47, 0.6);
-                    border: 1px solid rgba(136, 146, 176, 0.2);
+                    background: color-mix(in srgb, var(--color-navy) 60%, transparent);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 20%, transparent);
                     border-radius: 0.5rem;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 1rem;
                     outline: none;
                     transition: border-color 0.25s;
                 }
                 .ts-input:focus {
-                    border-color: rgba(100, 255, 218, 0.4);
-                    box-shadow: 0 0 16px rgba(100, 255, 218, 0.08);
+                    border-color: color-mix(in srgb, var(--color-mint) 40%, transparent);
+                    box-shadow: 0 0 16px color-mix(in srgb, var(--color-mint) 8%, transparent);
                 }
-                .ts-input::placeholder { color: #8892B040; }
+                .ts-input::placeholder { color: color-mix(in srgb, var(--color-slate) 30%, transparent); }
 
                 /* Results */
                 .ts-results {
@@ -626,7 +626,7 @@ export default function TypingSpeed() {
                 .ts-results-title {
                     font-size: 1.5rem;
                     font-weight: 800;
-                    color: #64FFDA;
+                    color: var(--color-mint);
                     font-family: ui-serif, Georgia, serif;
                     margin: 0;
                 }
@@ -643,26 +643,26 @@ export default function TypingSpeed() {
                     align-items: center;
                     gap: 0.2rem;
                     padding: 0.75rem 0.5rem;
-                    background: rgba(10, 25, 47, 0.5);
-                    border: 1px solid rgba(136, 146, 176, 0.12);
+                    background: color-mix(in srgb, var(--color-navy) 50%, transparent);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 12%, transparent);
                     border-radius: 0.75rem;
                 }
                 .ts-result-highlight {
-                    border-color: rgba(100, 255, 218, 0.3);
-                    box-shadow: 0 0 20px rgba(100, 255, 218, 0.08);
+                    border-color: color-mix(in srgb, var(--color-mint) 30%, transparent);
+                    box-shadow: 0 0 20px color-mix(in srgb, var(--color-mint) 8%, transparent);
                 }
                 .ts-result-num {
                     font-size: 1.3rem;
                     font-weight: 800;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                 }
-                .ts-result-highlight .ts-result-num { color: #64FFDA; }
+                .ts-result-highlight .ts-result-num { color: var(--color-mint); }
                 .ts-result-label {
                     font-size: 0.6rem;
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     text-align: center;
                 }
@@ -684,7 +684,7 @@ export default function TypingSpeed() {
                     50% { transform: scale(1.1); opacity: 0.8; }
                 }
                 @keyframes ts-blink {
-                    0%, 100% { border-left-color: #64FFDA; }
+                    0%, 100% { border-left-color: var(--color-mint); }
                     50% { border-left-color: transparent; }
                 }
                 @keyframes ts-fade-in {

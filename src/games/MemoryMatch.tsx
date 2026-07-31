@@ -316,10 +316,10 @@ export default function MemoryMatch() {
                 .mm-difficulty-bar {
                     display: flex;
                     gap: 0.5rem;
-                    background: rgba(10, 25, 47, 0.6);
+                    background: color-mix(in srgb, var(--color-navy) 60%, transparent);
                     padding: 0.25rem;
                     border-radius: 0.75rem;
-                    border: 1px solid rgba(136, 146, 176, 0.15);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 15%, transparent);
                 }
                 .mm-diff-btn {
                     padding: 0.4rem 1rem;
@@ -328,19 +328,19 @@ export default function MemoryMatch() {
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 0.8rem;
                     font-weight: 600;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     background: transparent;
                     cursor: pointer;
                     transition: all 0.25s ease;
                 }
                 .mm-diff-btn:hover {
-                    color: #CCD6F6;
-                    background: rgba(100, 255, 218, 0.06);
+                    color: var(--color-light-slate);
+                    background: color-mix(in srgb, var(--color-mint) 6%, transparent);
                 }
                 .mm-diff-btn.active {
-                    color: #0A192F;
-                    background: #64FFDA;
-                    box-shadow: 0 0 16px rgba(100, 255, 218, 0.3);
+                    color: var(--color-navy);
+                    background: var(--color-mint);
+                    box-shadow: 0 0 16px color-mix(in srgb, var(--color-mint) 30%, transparent);
                 }
 
                 /* Stats */
@@ -361,22 +361,22 @@ export default function MemoryMatch() {
                     font-size: 0.65rem;
                     text-transform: uppercase;
                     letter-spacing: 0.1em;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                 }
                 .mm-stat-value {
                     font-size: 1.15rem;
                     font-weight: 700;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                     font-family: ui-monospace, SFMono-Regular, monospace;
                 }
                 .mm-stat-total {
                     font-size: 0.8rem;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     font-weight: 400;
                 }
                 .mm-score {
-                    color: #64FFDA;
+                    color: var(--color-mint);
                 }
                 .mm-combo {
                     font-size: 0.85rem;
@@ -398,27 +398,24 @@ export default function MemoryMatch() {
                 /* Card */
                 .mm-card {
                     aspect-ratio: 1;
-                    background: none;
-                    border: none;
-                    padding: 0;
+                    position: relative;
                     cursor: pointer;
-                    perspective: 800px;
+                    border: none;
+                    background: transparent;
+                    padding: 0;
                     outline: none;
                 }
                 .mm-card:focus-visible .mm-card-inner {
-                    box-shadow: 0 0 0 2px #64FFDA;
-                }
-                .mm-card.matched {
-                    cursor: default;
+                    box-shadow: 0 0 0 2px var(--color-mint);
                 }
 
                 .mm-card-inner {
                     position: relative;
                     width: 100%;
                     height: 100%;
-                    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                     transform-style: preserve-3d;
-                    border-radius: 0.75rem;
+                    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    border-radius: 0.6rem;
                 }
 
                 .mm-card.flipped .mm-card-inner,
@@ -426,74 +423,71 @@ export default function MemoryMatch() {
                     transform: rotateY(180deg);
                 }
 
-                .mm-card-front,
-                .mm-card-back {
+                .mm-card-face {
                     position: absolute;
                     inset: 0;
+                    backface-visibility: hidden;
+                    border-radius: 0.6rem;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border-radius: 0.75rem;
-                    backface-visibility: hidden;
-                    -webkit-backface-visibility: hidden;
                 }
 
+                /* Front (hidden) */
                 .mm-card-front {
-                    background: linear-gradient(135deg, #112240 0%, #1a3356 100%);
-                    border: 1px solid rgba(136, 146, 176, 0.15);
-                    transition: border-color 0.25s, box-shadow 0.25s;
+                    background: color-mix(in srgb, var(--color-light-navy) 70%, transparent);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 20%, transparent);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    transition: all 0.25s;
                 }
                 .mm-card:not(.flipped):not(.matched):hover .mm-card-front {
-                    border-color: rgba(100, 255, 218, 0.35);
-                    box-shadow: 0 0 20px rgba(100, 255, 218, 0.08);
+                    border-color: color-mix(in srgb, var(--color-mint) 40%, transparent);
+                    background: color-mix(in srgb, var(--color-light-navy) 90%, transparent);
+                    transform: scale(1.02);
                 }
-                .mm-card-icon {
-                    font-size: 1.4rem;
-                    color: #8892B0;
-                    opacity: 0.5;
-                    font-weight: 700;
-                    font-family: ui-monospace, SFMono-Regular, monospace;
+                .mm-card-pattern {
+                    font-size: 1.2rem;
+                    opacity: 0.4;
+                    color: var(--color-slate);
                 }
 
+                /* Back (revealed) */
                 .mm-card-back {
-                    background: linear-gradient(135deg, #0d2137 0%, #163a5a 100%);
-                    border: 1px solid rgba(100, 255, 218, 0.25);
+                    background: color-mix(in srgb, var(--color-light-navy) 95%, transparent);
+                    border: 1px solid color-mix(in srgb, var(--color-mint) 40%, transparent);
                     transform: rotateY(180deg);
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
                 }
                 .mm-card-emoji {
                     font-size: 2rem;
                 }
-
-                /* Matched glow */
                 .mm-card.matched .mm-card-back {
-                    border-color: rgba(100, 255, 218, 0.45);
-                    box-shadow: 0 0 24px rgba(100, 255, 218, 0.12);
-                    opacity: 0.7;
-                }
-                .mm-card.just-matched .mm-card-back {
+                    border-color: var(--color-mint);
+                    background: color-mix(in srgb, var(--color-mint) 12%, transparent);
+                    box-shadow: 0 0 0 2px var(--color-mint);
                     animation: mm-match-glow 0.6s ease;
                 }
 
-                /* Win overlay */
-                .mm-overlay {
+                /* Win Overlay */
+                .mm-win-overlay {
                     position: absolute;
                     inset: -1rem;
+                    background: color-mix(in srgb, var(--color-navy) 92%, transparent);
+                    backdrop-filter: blur(8px);
+                    border-radius: 1rem;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: rgba(10, 25, 47, 0.85);
-                    backdrop-filter: blur(8px);
-                    border-radius: 1rem;
                     z-index: 20;
-                    animation: mm-fade-in 0.4s ease;
+                    animation: mm-fade-in 0.3s ease;
                 }
-                .mm-win-card {
+                .mm-win-content {
                     text-align: center;
                     padding: 2rem;
-                    background: linear-gradient(145deg, #112240 0%, #1a3356 100%);
-                    border: 1px solid rgba(100, 255, 218, 0.3);
+                    background: color-mix(in srgb, var(--color-light-navy) 90%, transparent);
+                    border: 1px solid color-mix(in srgb, var(--color-mint) 30%, transparent);
                     border-radius: 1rem;
-                    box-shadow: 0 0 60px rgba(100, 255, 218, 0.12);
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
                     animation: mm-scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                 }
                 .mm-win-icon {
@@ -504,7 +498,7 @@ export default function MemoryMatch() {
                 .mm-win-title {
                     font-size: 1.75rem;
                     font-weight: 800;
-                    color: #64FFDA;
+                    color: var(--color-mint);
                     margin: 0 0 1rem;
                     font-family: ui-serif, Georgia, serif;
                 }
@@ -522,13 +516,13 @@ export default function MemoryMatch() {
                 }
                 .mm-win-stat span {
                     font-size: 0.7rem;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                 }
                 .mm-win-stat strong {
                     font-size: 1.25rem;
-                    color: #CCD6F6;
+                    color: var(--color-light-slate);
                 }
                 .mm-best {
                     font-size: 0.85rem;
@@ -542,9 +536,9 @@ export default function MemoryMatch() {
 
                 .mm-play-again {
                     padding: 0.6rem 2rem;
-                    border: 1px solid #64FFDA;
-                    background: rgba(100, 255, 218, 0.1);
-                    color: #64FFDA;
+                    border: 1px solid var(--color-mint);
+                    background: color-mix(in srgb, var(--color-mint) 10%, transparent);
+                    color: var(--color-mint);
                     border-radius: 0.5rem;
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 0.9rem;
@@ -553,9 +547,9 @@ export default function MemoryMatch() {
                     transition: all 0.25s;
                 }
                 .mm-play-again:hover {
-                    background: #64FFDA;
-                    color: #0A192F;
-                    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+                    background: var(--color-mint);
+                    color: var(--color-navy);
+                    box-shadow: 0 0 20px color-mix(in srgb, var(--color-mint) 30%, transparent);
                 }
 
                 /* Controls */
@@ -565,9 +559,9 @@ export default function MemoryMatch() {
                 }
                 .mm-reset-btn {
                     padding: 0.5rem 1.25rem;
-                    border: 1px solid rgba(136, 146, 176, 0.3);
+                    border: 1px solid color-mix(in srgb, var(--color-slate) 30%, transparent);
                     background: transparent;
-                    color: #8892B0;
+                    color: var(--color-slate);
                     border-radius: 0.5rem;
                     font-family: ui-monospace, SFMono-Regular, monospace;
                     font-size: 0.8rem;

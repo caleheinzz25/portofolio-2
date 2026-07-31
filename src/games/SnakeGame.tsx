@@ -168,8 +168,8 @@ export default function SnakeGame() {
                         class="absolute inset-0 opacity-10"
                         style={{
                             "background-image": `
-              linear-gradient(to right, #64ffda 1px, transparent 1px),
-              linear-gradient(to bottom, #64ffda 1px, transparent 1px)
+              linear-gradient(to right, var(--color-mint) 1px, transparent 1px),
+              linear-gradient(to bottom, var(--color-mint) 1px, transparent 1px)
             `,
                             "background-size": `${CELL_SIZE}px ${CELL_SIZE}px`,
                         }}

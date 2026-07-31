@@ -2,10 +2,12 @@
 
 /* Custom theme configuration for Tailwind 4 */
 @theme {
-    --color-navy: #0A192F;
-    --color-mint: #64FFDA;
-    --color-light-slate: #CCD6F6;
-    --color-slate: #8892B0;
+    --color-navy: #0D1B2A;
+    --color-light-navy: #1B2A4A;
+    --color-mint: #F9E8A2;
+    --color-light-slate: #B4E1EB;
+    --color-slate: #95BDD7;
+    --color-ocean: #78A4CB;
 
     --font-family-mono: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --font-family-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -119,11 +121,14 @@ body {
     content: '';
     flex: 1;
     height: 1px;
-    background-color: rgba(136, 146, 176, 0.3);
+    background-color: rgba(149, 189, 215, 0.3);
 }
 
 .btn-primary {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     border: 1px solid var(--color-mint);
     color: var(--color-mint);
@@ -134,7 +139,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: rgba(100, 255, 218, 0.1);
+    background-color: rgba(249, 232, 162, 0.15);
     transform: translateY(-2px);
 }
 
@@ -148,8 +153,8 @@ body {
 }
 
 .card {
-    background-color: rgba(10, 25, 47, 0.5);
-    border: 1px solid rgba(136, 146, 176, 0.2);
+    background-color: rgba(13, 27, 42, 0.6);
+    border: 1px solid rgba(149, 189, 215, 0.2);
     border-radius: 0.5rem;
     padding: 1.5rem;
     backdrop-filter: blur(4px);
@@ -157,7 +162,7 @@ body {
 }
 
 .card:hover {
-    border-color: rgba(100, 255, 218, 0.3);
+    border-color: rgba(249, 232, 162, 0.4);
     transform: translateY(-4px);
 }
 

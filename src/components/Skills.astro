@@ -23,6 +23,7 @@ const skillCategories = [
       { name: "SolidJS", icon: "fas fa-gem", color: "#2C4F7C" },
       { name: "Astro.js", icon: "fas fa-star", color: "#FF5D01" },
       { name: "SolidStart", icon: "fas fa-play", color: "#2C4F7C" },
+      { name: "Tauri", icon: "fas fa-shield-halved", color: "#24C8DB" },
     ]
   },
   {
@@ -75,6 +76,7 @@ const skillCategories = [
       { name: "Gradle", icon: "fas fa-cogs", color: "#02303A" },
       { name: "Bun", icon: "fas fa-bread-slice", color: "#FBF0DF" },
       { name: "pnpm", icon: "fas fa-box", color: "#F69220" },
+      { name: "Cargo", icon: "fas fa-box-open", color: "#DEA584" },
       { name: "Jenkins", icon: "fas fa-robot", color: "#D24939" },
       { name: "CI/CD", icon: "fas fa-sync", color: "#4CAF50" },
       { name: "Nginx", icon: "fas fa-server", color: "#009639" },
@@ -130,8 +132,7 @@ const skillCategories = [
           <div class="absolute inset-0 bg-linear-to-br from-mint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div class="relative z-10">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="text-2xl group-hover:animate-float">{category.icon}</span>
+            <div class="mb-4">
               <h3 class="text-lg font-serif font-semibold text-light-slate group-hover:text-mint transition-colors duration-300">
                 {category.category}
               </h3>

@@ -174,8 +174,8 @@ const hasMoreProjects = otherRepos.length > initialShowCount;
 </section>
 
 <script>
-  const showMoreBtn = document.getElementById('show-more-btn');
-  const projectCards = document.querySelectorAll('.project-card');
+  const showMoreBtn = document.getElementById('show-more-btn') as HTMLElement | null;
+  const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
   
   if (showMoreBtn && projectCards.length > 0) {
     const ITEMS_PER_LOAD = 6;

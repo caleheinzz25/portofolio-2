@@ -146,7 +146,7 @@ const songs = songFiles.map((file: string) => {
     position: absolute;
     bottom: 0;
     width: 3%;
-    background: linear-gradient(to top, #64FFDA, transparent);
+    background: linear-gradient(to top, var(--color-mint), transparent);
     border-radius: 4px 4px 0 0;
     height: 10%;
     transition: height 0.15s ease;
@@ -174,12 +174,12 @@ const songs = songFiles.map((file: string) => {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(100, 255, 218, 0.2), rgba(100, 255, 218, 0.05));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-mint) 20%, transparent), color-mix(in srgb, var(--color-mint) 5%, transparent));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 2px solid rgba(100, 255, 218, 0.2);
+    border: 2px solid color-mix(in srgb, var(--color-mint) 20%, transparent);
   }
   .album-art.spinning {
     animation: spin 4s linear infinite;
@@ -192,7 +192,7 @@ const songs = songFiles.map((file: string) => {
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    border: 2px solid rgba(100, 255, 218, 0.3);
+    border: 2px solid color-mix(in srgb, var(--color-mint) 30%, transparent);
     opacity: 0;
   }
   .album-art.spinning .album-pulse {
@@ -207,7 +207,7 @@ const songs = songFiles.map((file: string) => {
     font-family: 'Playfair Display', serif;
     font-size: 1.125rem;
     font-weight: 600;
-    color: #CCD6F6;
+    color: var(--color-light-slate);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -215,7 +215,7 @@ const songs = songFiles.map((file: string) => {
   }
   .song-artist {
     font-size: 0.8rem;
-    color: #64FFDA;
+    color: var(--color-mint);
     margin-top: 0.15rem;
     font-family: monospace;
   }
@@ -231,7 +231,7 @@ const songs = songFiles.map((file: string) => {
   }
   .time-label {
     font-size: 0.7rem;
-    color: #8892B0;
+    color: var(--color-slate);
     font-family: monospace;
     min-width: 36px;
     text-align: center;
@@ -239,7 +239,7 @@ const songs = songFiles.map((file: string) => {
   .progress-bar {
     flex: 1;
     height: 4px;
-    background: rgba(136, 146, 176, 0.2);
+    background: color-mix(in srgb, var(--color-slate) 20%, transparent);
     border-radius: 999px;
     cursor: pointer;
     position: relative;
@@ -248,7 +248,7 @@ const songs = songFiles.map((file: string) => {
   .progress-bar:hover { height: 6px; }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #64FFDA, #4fd1c5);
+    background: linear-gradient(90deg, var(--color-mint), var(--color-ocean));
     border-radius: 999px;
     width: 0%;
     transition: width 0.1s linear;
@@ -259,11 +259,11 @@ const songs = songFiles.map((file: string) => {
     left: 0%;
     width: 12px;
     height: 12px;
-    background: #64FFDA;
+    background: var(--color-mint);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
     transition: transform 0.15s;
-    box-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-mint) 50%, transparent);
   }
   .progress-bar:hover .progress-thumb { transform: translate(-50%, -50%) scale(1); }
 
@@ -280,7 +280,7 @@ const songs = songFiles.map((file: string) => {
   .control-btn {
     background: none;
     border: none;
-    color: #8892B0;
+    color: var(--color-slate);
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.25s;
@@ -291,21 +291,21 @@ const songs = songFiles.map((file: string) => {
     justify-content: center;
     border-radius: 50%;
   }
-  .control-btn:hover { color: #64FFDA; background: rgba(100, 255, 218, 0.08); }
+  .control-btn:hover { color: var(--color-mint); background: color-mix(in srgb, var(--color-mint) 8%, transparent); }
   .control-btn.small { font-size: 0.85rem; width: 36px; height: 36px; }
-  .control-btn.active { color: #64FFDA; }
+  .control-btn.active { color: var(--color-mint); }
   .play-btn {
     width: 56px;
     height: 56px;
     font-size: 1.25rem;
-    border: 2px solid rgba(100, 255, 218, 0.4) !important;
-    color: #64FFDA !important;
-    background: rgba(100, 255, 218, 0.08) !important;
+    border: 2px solid color-mix(in srgb, var(--color-mint) 40%, transparent) !important;
+    color: var(--color-mint) !important;
+    background: color-mix(in srgb, var(--color-mint) 8%, transparent) !important;
   }
   .play-btn:hover {
-    background: rgba(100, 255, 218, 0.15) !important;
+    background: color-mix(in srgb, var(--color-mint) 15%, transparent) !important;
     transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-mint) 20%, transparent);
   }
 
   /* Volume */
@@ -320,14 +320,14 @@ const songs = songFiles.map((file: string) => {
   .volume-bar {
     width: 100px;
     height: 4px;
-    background: rgba(136, 146, 176, 0.2);
+    background: color-mix(in srgb, var(--color-slate) 20%, transparent);
     border-radius: 999px;
     cursor: pointer;
     overflow: hidden;
   }
   .volume-fill {
     height: 100%;
-    background: #64FFDA;
+    background: var(--color-mint);
     border-radius: 999px;
     transition: width 0.1s;
   }
@@ -335,8 +335,8 @@ const songs = songFiles.map((file: string) => {
   /* Playlist */
   .playlist-container {
     margin-top: 1.5rem;
-    background: rgba(10, 25, 47, 0.5);
-    border: 1px solid rgba(136, 146, 176, 0.1);
+    background: color-mix(in srgb, var(--color-navy) 60%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-slate) 15%, transparent);
     border-radius: 0.75rem;
     overflow: hidden;
   }
@@ -344,17 +344,17 @@ const songs = songFiles.map((file: string) => {
     padding: 1rem 1.25rem;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #CCD6F6;
-    border-bottom: 1px solid rgba(136, 146, 176, 0.1);
+    color: var(--color-light-slate);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-slate) 15%, transparent);
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
-  .playlist-title i { color: #64FFDA; }
+  .playlist-title i { color: var(--color-mint); }
   .song-count {
     margin-left: auto;
     font-size: 0.75rem;
-    color: #8892B0;
+    color: var(--color-slate);
     font-family: monospace;
   }
   .playlist-scroll {
@@ -363,7 +363,7 @@ const songs = songFiles.map((file: string) => {
   }
   .playlist-scroll::-webkit-scrollbar { width: 4px; }
   .playlist-scroll::-webkit-scrollbar-track { background: transparent; }
-  .playlist-scroll::-webkit-scrollbar-thumb { background: rgba(136, 146, 176, 0.3); border-radius: 999px; }
+  .playlist-scroll::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-slate) 30%, transparent); border-radius: 999px; }
 
   .playlist-item {
     display: flex;
@@ -373,19 +373,19 @@ const songs = songFiles.map((file: string) => {
     padding: 0.7rem 1.25rem;
     background: none;
     border: none;
-    color: #8892B0;
+    color: var(--color-slate);
     cursor: pointer;
     text-align: left;
     transition: all 0.2s;
     font-size: 0.85rem;
     font-family: inherit;
-    border-bottom: 1px solid rgba(136, 146, 176, 0.05);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-slate) 5%, transparent);
   }
-  .playlist-item:hover { background: rgba(100, 255, 218, 0.05); color: #CCD6F6; }
+  .playlist-item:hover { background: color-mix(in srgb, var(--color-mint) 5%, transparent); color: var(--color-light-slate); }
   .playlist-item.active {
-    background: rgba(100, 255, 218, 0.08);
-    color: #64FFDA;
-    border-left: 3px solid #64FFDA;
+    background: color-mix(in srgb, var(--color-mint) 8%, transparent);
+    color: var(--color-mint);
+    border-left: 3px solid var(--color-mint);
   }
   .playlist-num {
     font-family: monospace;
@@ -400,7 +400,7 @@ const songs = songFiles.map((file: string) => {
     text-overflow: ellipsis;
   }
   .playlist-playing-icon {
-    color: #64FFDA;
+    color: var(--color-mint);
     font-size: 0.75rem;
     opacity: 0;
     transition: opacity 0.2s;
@@ -414,7 +414,7 @@ const songs = songFiles.map((file: string) => {
   }
 </style>
 
-<script define:vars={{ songs }}>
+<script is:inline define:vars={{ songs }}>
   window.__musicSongs = songs;
 </script>
 
