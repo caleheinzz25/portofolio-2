@@ -17,9 +17,9 @@ const navItems = [
     <!-- Logo -->
     <a
       href="/"
-      class="text-mint font-serif text-2xl font-bold opacity-0 animate-fade-in"
+      class="text-mint font-serif text-2xl font-bold opacity-0 animate-fade-in tracking-tight"
     >
-      MH
+      MHisyam
     </a>
 
     <!-- Desktop Navigation -->
@@ -32,9 +32,9 @@ const navItems = [
           >
             <a
               href={item.href}
-              class="text-slate hover:text-mint transition-colors duration-300 text-sm"
+              class="nav-link text-slate hover:text-mint transition-colors duration-300 text-sm font-medium"
             >
-              <span class="text-mint">0{index + 1}.</span> {item.name}
+              {item.name}
             </a>
           </li>
         ))
@@ -49,61 +49,152 @@ const navItems = [
     <!-- Mobile Menu Button -->
     <button
       id="mobile-menu-btn"
-      class="md:hidden text-mint p-2 opacity-0 animate-fade-in"
+      class="hamburger-btn md:hidden p-2 opacity-0 animate-fade-in w-10 h-10 flex flex-col justify-center items-center gap-[5px] focus:outline-none group cursor-pointer"
       aria-label="Toggle menu"
     >
-      <svg
-        class="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
+      <span class="hamburger-line line-1 w-6 h-[2px] bg-mint rounded-full"></span>
+      <span class="hamburger-line line-2 w-6 h-[2px] bg-mint rounded-full"></span>
+      <span class="hamburger-line line-3 w-6 h-[2px] bg-mint rounded-full"></span>
     </button>
   </nav>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile Menu Dropdown -->
   <div
     id="mobile-menu"
-    class="hidden md:hidden bg-navy/95 backdrop-blur-md border-t border-slate/10"
+    class="mobile-dropdown md:hidden bg-navy/95 backdrop-blur-md border-b border-slate/10 shadow-2xl"
   >
-    <ul class="flex flex-col items-center gap-6 py-8">
-      {
-        navItems.map((item, index) => (
-          <li>
-            <a
-              href={item.href}
-              class="text-slate hover:text-mint transition-colors duration-300"
+    <div class="mobile-dropdown-inner">
+      <ul class="flex flex-col items-center gap-5 py-8">
+        {
+          navItems.map((item, index) => (
+            <li
+              class="mobile-nav-item"
+              style={`--item-index: ${index};`}
             >
-              <span class="text-mint">0{index + 1}.</span> {item.name}
-            </a>
-          </li>
-        ))
-      }
-      <li>
-        <a href="/resume.pdf" class="btn-primary" target="_blank"> Resume </a>
-      </li>
-    </ul>
+              <a
+                href={item.href}
+                class="nav-link text-slate hover:text-mint transition-colors duration-300 font-medium text-base block py-1"
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+        <li
+          class="mobile-nav-item pt-2"
+          style={`--item-index: ${navItems.length};`}
+        >
+          <a href="/resume.pdf" class="btn-primary text-sm px-6 py-2.5" target="_blank"> Resume </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </header>
+
+<style>
+  .nav-link {
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-mint);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    border-radius: 2px;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-mint) 50%, transparent);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Hamburger button morphing animation */
+  .hamburger-line {
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.68, -0.6, 0.32, 1.6), opacity 0.25s ease, box-shadow 0.3s ease;
+  }
+
+  .hamburger-btn:hover .hamburger-line {
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-mint) 60%, transparent);
+  }
+
+  .hamburger-btn.is-active .line-1 {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger-btn.is-active .line-2 {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger-btn.is-active .line-3 {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile dropdown animation using CSS Grid accordion expansion */
+  .mobile-dropdown {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .mobile-dropdown.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-dropdown-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Staggered item entrance slide & fade */
+  .mobile-nav-item {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0ms;
+  }
+
+  .mobile-dropdown.is-open .mobile-nav-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--item-index, 0) * 40ms + 60ms);
+  }
+</style>
 
 <script>
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
   const mobileMenu = document.getElementById("mobile-menu");
 
   mobileMenuBtn?.addEventListener("click", () => {
-    mobileMenu?.classList.toggle("hidden");
+    const isOpen = mobileMenu?.classList.contains("is-open");
+    if (isOpen) {
+      mobileMenuBtn.classList.remove("is-active");
+      mobileMenu?.classList.remove("is-open");
+    } else {
+      mobileMenuBtn.classList.add("is-active");
+      mobileMenu?.classList.add("is-open");
+    }
   });
 
   // Close menu when clicking on links
   mobileMenu?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      mobileMenu.classList.add("hidden");
+      mobileMenuBtn?.classList.remove("is-active");
+      mobileMenu?.classList.remove("is-open");
     });
   });
 </script>

@@ -1,19 +1,67 @@
 ---
-// Parallax Background component with CSS scroll-driven animation & JS fallback
+// Animated Interactive Parallax Background with Mouse Reactivity & CSS Scroll Timelines
 ---
 
 <div class="parallax-container fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-  <!-- Ambient Parallax Orbs -->
-  <div class="parallax-layer parallax-slow absolute -top-40 -left-40 w-96 h-96 rounded-full bg-mint/10 blur-3xl"></div>
-  <div class="parallax-layer parallax-medium absolute top-1/3 -right-32 w-80 h-80 rounded-full bg-light-slate/10 blur-3xl"></div>
-  <div class="parallax-layer parallax-fast absolute top-2/3 left-1/4 w-[500px] h-[500px] rounded-full bg-ocean/15 blur-3xl"></div>
-  <div class="parallax-layer parallax-slow absolute -bottom-20 right-10 w-96 h-96 rounded-full bg-mint/10 blur-3xl"></div>
+  <!-- Glowing Animated Parallax Orbs -->
+  <div class="parallax-wrapper parallax-slow absolute -top-40 -left-40">
+    <div class="w-96 h-96 rounded-full bg-mint/15 blur-3xl animate-orb-drift-1"></div>
+  </div>
+
+  <div class="parallax-wrapper parallax-medium absolute top-1/3 -right-32">
+    <div class="w-80 h-80 rounded-full bg-light-slate/15 blur-3xl animate-orb-drift-2"></div>
+  </div>
+
+  <div class="parallax-wrapper parallax-fast absolute top-2/3 left-1/4">
+    <div class="w-[500px] h-[500px] rounded-full bg-ocean/20 blur-3xl animate-orb-pulse"></div>
+  </div>
+
+  <div class="parallax-wrapper parallax-slow absolute -bottom-20 right-10">
+    <div class="w-96 h-96 rounded-full bg-mint/10 blur-3xl animate-orb-drift-1"></div>
+  </div>
+
+  <!-- Ambient Floating Particle Stars -->
+  <div class="parallax-wrapper parallax-stars absolute inset-0 opacity-40">
+    <div class="star absolute top-12 left-[15%] w-1.5 h-1.5 rounded-full bg-mint animate-star-twinkle"></div>
+    <div class="star absolute top-1/4 left-[80%] w-2 h-2 rounded-full bg-light-slate animate-star-twinkle-delay-1"></div>
+    <div class="star absolute top-1/2 left-[30%] w-1 h-1 rounded-full bg-mint animate-star-twinkle-delay-2"></div>
+    <div class="star absolute top-[70%] left-[85%] w-2.5 h-2.5 rounded-full bg-ocean animate-star-twinkle"></div>
+    <div class="star absolute top-[85%] left-[10%] w-1.5 h-1.5 rounded-full bg-mint animate-star-twinkle-delay-1"></div>
+  </div>
 
   <!-- Ambient Dot Grid Pattern -->
-  <div class="parallax-layer parallax-grid absolute inset-0 opacity-[0.03] bg-[radial-gradient(var(--color-mint)_1px,transparent_1px)] [background-size:32px_32px]"></div>
+  <div class="parallax-wrapper parallax-grid absolute inset-0 opacity-[0.035] bg-[radial-gradient(var(--color-mint)_1px,transparent_1px)] [background-size:32px_32px]"></div>
 </div>
 
 <style>
+  /* Keyframe animations for continuous ambient drift & twinkle */
+  @keyframes orbDrift1 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.1); }
+  }
+
+  @keyframes orbDrift2 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    50% { transform: translate(-40px, 30px) scale(1.05); }
+  }
+
+  @keyframes orbPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  @keyframes starTwinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  .animate-orb-drift-1 { animation: orbDrift1 12s ease-in-out infinite; }
+  .animate-orb-drift-2 { animation: orbDrift2 16s ease-in-out infinite; }
+  .animate-orb-pulse { animation: orbPulse 10s ease-in-out infinite; }
+  .animate-star-twinkle { animation: starTwinkle 3s ease-in-out infinite; }
+  .animate-star-twinkle-delay-1 { animation: starTwinkle 4s ease-in-out infinite 1s; }
+  .animate-star-twinkle-delay-2 { animation: starTwinkle 5s ease-in-out infinite 2s; }
+
   /* CSS Scroll-driven animations when supported */
   @supports ((animation-timeline: scroll()) or (animation-timeline: view())) {
     .parallax-slow {
@@ -28,6 +76,10 @@
       animation: parallaxFast linear both;
       animation-timeline: scroll(root);
     }
+    .parallax-stars {
+      animation: parallaxStars linear both;
+      animation-timeline: scroll(root);
+    }
     .parallax-grid {
       animation: parallaxGrid linear both;
       animation-timeline: scroll(root);
@@ -35,24 +87,28 @@
 
     @keyframes parallaxSlow {
       from { transform: translateY(0px); }
-      to { transform: translateY(180px); }
+      to { transform: translateY(220px); }
     }
     @keyframes parallaxMedium {
       from { transform: translateY(0px); }
-      to { transform: translateY(-300px); }
+      to { transform: translateY(-320px); }
     }
     @keyframes parallaxFast {
       from { transform: translateY(0px); }
-      to { transform: translateY(450px); }
+      to { transform: translateY(500px); }
+    }
+    @keyframes parallaxStars {
+      from { transform: translateY(0px); }
+      to { transform: translateY(300px); }
     }
     @keyframes parallaxGrid {
       from { transform: translateY(0px); }
-      to { transform: translateY(-100px); }
+      to { transform: translateY(-120px); }
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .parallax-layer {
+    .parallax-wrapper, .animate-orb-drift-1, .animate-orb-drift-2, .animate-orb-pulse, .animate-star-twinkle {
       animation: none !important;
       transform: none !important;
     }
@@ -60,34 +116,47 @@
 </style>
 
 <script>
-  // Fallback for browsers without native CSS scroll-driven animations
-  if (!CSS.supports('(animation-timeline: scroll()) and (animation-range: entry)')) {
-    const layers = [
-      { el: document.querySelector('.parallax-slow'), speed: 0.15 },
-      { el: document.querySelector('.parallax-medium'), speed: -0.25 },
-      { el: document.querySelector('.parallax-fast'), speed: 0.4 },
-      { el: document.querySelector('.parallax-grid'), speed: -0.08 }
-    ];
+  // Interactive Smooth Mouse Parallax & Scroll Fallback
+  const layers = [
+    { selector: '.parallax-slow', scrollSpeed: 0.15, mouseFactor: 25 },
+    { selector: '.parallax-medium', scrollSpeed: -0.25, mouseFactor: -35 },
+    { selector: '.parallax-fast', scrollSpeed: 0.45, mouseFactor: 45 },
+    { selector: '.parallax-stars', scrollSpeed: 0.3, mouseFactor: 15 },
+    { selector: '.parallax-grid', scrollSpeed: -0.08, mouseFactor: -10 }
+  ];
 
-    let ticking = false;
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentMouseX = 0;
+  let currentMouseY = 0;
+  const nativeScrollSupported = CSS.supports('(animation-timeline: scroll()) and (animation-range: entry)');
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function updateParallax() {
-      const scrollY = window.scrollY;
-      layers.forEach(({ el, speed }) => {
-        if (el) {
-          (el as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
-        }
-      });
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
+  if (!isReducedMotion) {
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5);
+      mouseY = (e.clientY / window.innerHeight - 0.5);
     }, { passive: true });
 
-    updateParallax();
+    function renderLoop() {
+      // Lerp for smooth mouse movement inertia
+      currentMouseX += (mouseX - currentMouseX) * 0.05;
+      currentMouseY += (mouseY - currentMouseY) * 0.05;
+
+      const scrollY = window.scrollY;
+
+      layers.forEach(({ selector, scrollSpeed, mouseFactor }) => {
+        const el = document.querySelector(selector) as HTMLElement | null;
+        if (el) {
+          const moveX = currentMouseX * mouseFactor;
+          const moveY = (nativeScrollSupported ? 0 : scrollY * scrollSpeed) + (currentMouseY * mouseFactor);
+          el.style.transform = `translate3d(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px, 0)`;
+        }
+      });
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    renderLoop();
   }
 </script>
