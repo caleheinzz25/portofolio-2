@@ -86,6 +86,24 @@
     --color-mint: var(--color-accent, #22c55e);
 }
 
+[data-theme="amber"] {
+    --color-accent: #fbbf24;
+    --color-accent-hover: #d97706;
+    --color-accent-glow: rgba(251, 191, 36, 0.35);
+    --color-accent-light: rgba(251, 191, 36, 0.15);
+    --color-accent-rgb: 251, 191, 36;
+    --color-mint: var(--color-accent, #fbbf24);
+}
+
+[data-theme="pink"] {
+    --color-accent: #ec4899;
+    --color-accent-hover: #db2777;
+    --color-accent-glow: rgba(236, 72, 153, 0.35);
+    --color-accent-light: rgba(236, 72, 153, 0.15);
+    --color-accent-rgb: 236, 72, 153;
+    --color-mint: var(--color-accent, #ec4899);
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;
