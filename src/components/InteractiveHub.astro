@@ -138,9 +138,18 @@ const games = [
       <!-- TAB 3: Music Player -->
       <div id="tab-panel-music" class="hub-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
         <div class="max-w-3xl mx-auto space-y-6">
-          <div class="mb-2">
-            <h4 class="text-base font-serif font-bold text-light-slate">Background Music Player</h4>
-            <p class="text-xs text-slate">Listen to curated tracks with real-time visualizer.</p>
+          <div class="mb-4 space-y-2">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <h4 class="text-base font-serif font-bold text-light-slate flex items-center gap-2">
+                <span>🎵</span> My Favorite Music & Coding Playlist
+              </h4>
+              <span class="text-[11px] font-mono text-mint bg-mint/10 border border-mint/20 px-2.5 py-0.5 rounded-full font-semibold">
+                🎧 {songs.length} Curated Tracks
+              </span>
+            </div>
+            <p class="text-xs text-slate leading-relaxed bg-navy/60 border border-slate/15 p-3 rounded-lg">
+              Welcome to my personal soundscape! Music powers my focus and inspires deep work while writing clean code. This collection features my favorite uplifting, peaceful, and soulful tracks by <span class="text-mint font-semibold">Maher Zain</span>. Pick a song below to listen while exploring the portfolio!
+            </p>
           </div>
 
           <!-- Music Player Card -->
