@@ -104,6 +104,41 @@
     --color-mint: var(--color-accent, #ec4899);
 }
 
+/* Light mode theme overrides */
+[data-mode="light"] {
+    --color-navy: #f8fafc;
+    --color-light-navy: #ffffff;
+    --color-light-slate: #0f172a;
+    --color-slate: #475569;
+    --color-ocean: #334155;
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+[data-mode="light"] body {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+[data-mode="light"] ::-webkit-scrollbar-track {
+    background-color: #f1f5f9;
+}
+
+[data-mode="light"] ::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+}
+
+[data-mode="light"] .bg-navy\/90,
+[data-mode="light"] .bg-navy\/95,
+[data-mode="light"] .bg-navy\/80 {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+[data-mode="light"] .bg-light-navy\/50,
+[data-mode="light"] .bg-light-navy\/40 {
+    background-color: rgba(241, 245, 249, 0.9);
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;
