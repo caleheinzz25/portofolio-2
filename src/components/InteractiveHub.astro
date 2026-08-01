@@ -335,11 +335,82 @@ const games = [
     let historyIndex = -1;
     const sessionStartTime = Date.now();
 
+    let currentPath = "~";
+
+    interface FSFile {
+      name: string;
+      type: "file" | "dir";
+      content?: string;
+      link?: string;
+    }
+
+    const VIRTUAL_FS: Record<string, { type: "dir"; files: Record<string, FSFile> }> = {
+      "~": {
+        type: "dir",
+        files: {
+          "about": { name: "about/", type: "dir" },
+          "experience": { name: "experience/", type: "dir" },
+          "skills": { name: "skills/", type: "dir" },
+          "activity": { name: "activity/", type: "dir" },
+          "projects": { name: "projects/", type: "dir" },
+          "contact": { name: "contact/", type: "dir" },
+          "README.md": { name: "README.md", type: "file", content: "# MHisyam Portfolio Shell\nType 'cd contact' or 'cd about' to navigate. Type 'ls' to view contents." }
+        }
+      },
+      "~/contact": {
+        type: "dir",
+        files: {
+          "email.txt": { name: "email.txt", type: "file", content: "📧 Email: muhammad2504hisyam@gmail.com", link: "mailto:muhammad2504hisyam@gmail.com" },
+          "github.link": { name: "github.link", type: "file", content: "🐙 GitHub: https://github.com/caleheinzz25", link: "https://github.com/caleheinzz25" },
+          "resume.pdf": { name: "resume.pdf", type: "file", content: "📄 Resume: /resume.pdf", link: "/resume.pdf" },
+          "location.txt": { name: "location.txt", type: "file", content: "📍 Location: Indonesia" }
+        }
+      },
+      "~/about": {
+        type: "dir",
+        files: {
+          "bio.txt": { name: "bio.txt", type: "file", content: "👋 Hi! I'm Hisyam, a Software Engineer based in Indonesia specializing in modern web applications & scalable tools." },
+          "passions.txt": { name: "passions.txt", type: "file", content: "🚀 Passions: Fullstack Web Development, Developer Tooling, Open Source, & UI Design." }
+        }
+      },
+      "~/skills": {
+        type: "dir",
+        files: {
+          "frontend.txt": { name: "frontend.txt", type: "file", content: "⚡ Frontend: TypeScript, React, Astro, SolidJS, Tailwind CSS" },
+          "backend.txt": { name: "backend.txt", type: "file", content: "🛠️ Backend: Node.js, Express, PostgreSQL, REST APIs" },
+          "devops.txt": { name: "devops.txt", type: "file", content: "🐳 DevOps: Docker, Bun, Git, Vite, Linux" }
+        }
+      },
+      "~/experience": {
+        type: "dir",
+        files: {
+          "career.txt": { name: "career.txt", type: "file", content: "💼 Career: Software Engineer building high-performance web applications." }
+        }
+      },
+      "~/activity": {
+        type: "dir",
+        files: {
+          "recent_events.txt": { name: "recent_events.txt", type: "file", content: "🔥 Recent Activity: Active GitHub commits & repository updates." }
+        }
+      },
+      "~/projects": {
+        type: "dir",
+        files: {
+          "portfolio-v2": { name: "portfolio-v2", type: "file", content: "🌟 Portfolio v2: Built with Astro 5, SolidJS, Tailwind CSS v4" },
+          "hisyam-cli": { name: "hisyam-cli", type: "file", content: "💻 Interactive Developer Terminal Shell overlay" }
+        }
+      }
+    };
+
+    function getPromptText(): string {
+      return `guest@hisyam-cli:${currentPath}$`;
+    }
+
     const KNOWN_COMMANDS = [
       "help", "about", "skills", "projects", "contact",
       "whoami", "neofetch", "date", "uptime", "history",
       "fetch", "echo", "api", "music", "games", "theme",
-      "clear", "exit", "ls", "cat", "pwd", "sudo"
+      "clear", "exit", "ls", "cat", "cd", "pwd", "sudo"
     ];
 
     // Terminal ASCII Banner
@@ -435,7 +506,7 @@ const games = [
     function createInputLineHTML(): string {
       return `
         <form id="hub-terminal-form" class="flex items-center gap-2 mt-2">
-          <label for="hub-terminal-input" class="text-mint font-bold select-none flex-shrink-0">guest@hisyam-cli:~$</label>
+          <label for="hub-terminal-input" class="text-mint font-bold select-none flex-shrink-0">${getPromptText()}</label>
           <input
             id="hub-terminal-input"
             type="text"
@@ -526,7 +597,7 @@ const games = [
       if (oldForm) {
         const log = document.createElement("div");
         log.className = "flex items-center gap-2 my-1";
-        log.innerHTML = `<span class="text-mint font-bold select-none">guest@hisyam-cli:~$</span> <span class="text-light-slate">${escapeHTML(cmd)}</span>`;
+        log.innerHTML = `<span class="text-mint font-bold select-none">${getPromptText()}</span> <span class="text-light-slate">${escapeHTML(cmd)}</span>`;
         oldForm.replaceWith(log);
       }
     }
@@ -555,22 +626,19 @@ const games = [
   <p class="text-mint font-bold mb-2">Available Shell Commands:</p>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs">
     <div><span class="text-mint font-semibold">help</span>         - Available commands</div>
+    <div><span class="text-mint font-semibold">ls</span>           - List files/directories</div>
+    <div><span class="text-mint font-semibold">cd [dir]</span>     - Navigate directory (e.g. 'cd contact')</div>
+    <div><span class="text-mint font-semibold">cat [file]</span>   - Read file content (e.g. 'cat email.txt')</div>
+    <div><span class="text-mint font-semibold">pwd</span>          - Print working directory</div>
     <div><span class="text-mint font-semibold">neofetch</span>     - Display system & portfolio specs</div>
     <div><span class="text-mint font-semibold">whoami</span>       - Display visitor browser/OS info</div>
     <div><span class="text-mint font-semibold">fetch &lt;url&gt;</span>  - HTTP GET request inline</div>
     <div><span class="text-mint font-semibold">date / uptime</span>- Session timing metrics</div>
     <div><span class="text-mint font-semibold">history</span>      - Command history log</div>
     <div><span class="text-mint font-semibold">echo [text]</span>   - Print text with color flags</div>
-    <div><span class="text-mint font-semibold">about</span>        - About Hisyam</div>
-    <div><span class="text-mint font-semibold">skills</span>       - View tech stack</div>
-    <div><span class="text-mint font-semibold">projects</span>     - Explore projects</div>
-    <div><span class="text-mint font-semibold">contact</span>      - Contact info</div>
-    <div><span class="text-mint font-semibold">api</span>          - Open API Demo tab</div>
-    <div><span class="text-mint font-semibold">music</span>        - Open Music Player tab</div>
-    <div><span class="text-mint font-semibold">games</span>        - Open Mini Games tab</div>
+    <div><span class="text-mint font-semibold">api / music / games</span> - Open modal tabs</div>
     <div><span class="text-mint font-semibold">theme [name]</span> - Change color theme</div>
-    <div><span class="text-mint font-semibold">clear</span>        - Clear terminal screen</div>
-    <div><span class="text-mint font-semibold">exit</span>         - Close playground modal</div>
+    <div><span class="text-mint font-semibold">clear / exit</span> - Terminal screen / Close modal</div>
   </div>
 </div>
           `);
@@ -757,7 +825,7 @@ const games = [
           ensureInputForm();
           break;
 
-        // Easter eggs & Unix shortcuts
+        // Virtual Filesystem & Unix Navigation
         case "sudo":
           renderResponse(`<p class="text-amber-400 my-1">Nice try! You don't have root access on this portfolio 😏</p>`);
           break;
@@ -767,19 +835,86 @@ const games = [
           break;
         case "hello":
         case "hi":
-          renderResponse(`<p class="text-mint my-1">Hey there! 👋 Type <span class="font-bold">'help'</span> to get started.</p>`);
-          break;
-        case "ls":
-          renderResponse(`<p class="text-slate my-1">📁 <span class="text-mint font-semibold">about/</span>  📁 <span class="text-mint font-semibold">experience/</span>  📁 <span class="text-mint font-semibold">skills/</span>  📁 <span class="text-mint font-semibold">activity/</span>  📁 <span class="text-mint font-semibold">projects/</span>  📁 <span class="text-mint font-semibold">contact/</span></p>`);
-          break;
-        case "cat":
-          renderResponse(`<p class="text-slate my-1">🐱 Meow! Try running <span class="text-mint font-bold">'fetch https://catfact.ninja/fact'</span> for a cat fact.</p>`);
-          break;
-        case "pwd":
-          renderResponse(`<p class="text-slate my-1">/home/guest/hisyam-portfolio</p>`);
+          renderResponse(`<p class="text-mint my-1 font-semibold">Hey there! 👋 Type 'help' to get started or 'cd contact' to view contact info.</p>`);
           break;
         case "cd":
-          renderResponse(`<p class="text-slate my-1">Can't cd — this is a single-page web app! 😄</p>`);
+          if (args.length === 0 || args[0] === "~" || args[0] === "/" || args[0] === "..") {
+            currentPath = "~";
+            renderResponse(`<p class="text-mint my-1 font-semibold">Switched directory to ~</p>`);
+          } else {
+            const rawTarget = args[0].replace(/\/$/, "").replace(/^~\//, "").toLowerCase();
+            const targetPath = `~/${rawTarget}`;
+
+            if (VIRTUAL_FS[targetPath]) {
+              currentPath = targetPath;
+              renderResponse(`<p class="text-mint my-1 font-semibold font-mono">Switched directory to ${currentPath}</p>`);
+
+              // Auto scroll to page section if exists
+              const sectionEl = document.querySelector(`#${rawTarget}`);
+              if (sectionEl) {
+                sectionEl.scrollIntoView({ behavior: "smooth" });
+              }
+            } else {
+              renderResponse(`<p class="text-rose-400 my-1">cd: no such file or directory: ${escapeHTML(args[0])}</p>`);
+            }
+          }
+          break;
+        case "ls":
+          const currentDir = VIRTUAL_FS[currentPath];
+          if (currentDir && currentDir.files) {
+            const fileList = Object.values(currentDir.files).map((f) => {
+              if (f.type === "dir") {
+                return `<span class="text-mint font-bold hover:underline cursor-pointer">📁 ${f.name}</span>`;
+              } else if (f.link) {
+                return `<a href="${f.link}" target="_blank" rel="noopener noreferrer" class="text-mint font-semibold underline hover:text-light-slate">📄 ${f.name}</a>`;
+              } else {
+                return `<span class="text-light-slate">📄 ${f.name}</span>`;
+              }
+            });
+
+            renderResponse(`
+<div class="my-2 space-y-1 font-mono text-xs">
+  <p class="text-slate text-[11px] mb-1">Contents of ${currentPath}:</p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1.5">
+    ${fileList.join(" ")}
+  </div>
+</div>
+            `);
+          } else {
+            renderResponse(`<p class="text-slate my-1">Directory is empty.</p>`);
+          }
+          break;
+        case "cat":
+          if (args.length === 0) {
+            renderResponse(`<p class="text-rose-400 my-1">Usage: cat &lt;filename&gt; (e.g. 'cat email.txt')</p>`);
+            break;
+          }
+
+          const targetFileName = args[0].toLowerCase();
+          const activeDir = VIRTUAL_FS[currentPath];
+          let matchedFile: FSFile | undefined;
+
+          if (activeDir && activeDir.files) {
+            matchedFile = Object.values(activeDir.files).find((file) => {
+              const baseName = file.name.replace(/\/$/, "").toLowerCase();
+              return baseName === targetFileName || baseName.startsWith(targetFileName);
+            });
+          }
+
+          if (matchedFile && matchedFile.type === "file") {
+            let outHTML = escapeHTML(matchedFile.content || "");
+            if (matchedFile.link) {
+              outHTML += ` <a href="${matchedFile.link}" target="_blank" rel="noopener noreferrer" class="text-mint font-semibold underline hover:text-light-slate">[Open Link ↗]</a>`;
+            }
+            renderResponse(`<div class="my-2 p-3 bg-navy/80 border border-slate/20 rounded-md font-mono text-xs text-light-slate space-y-1">${outHTML}</div>`);
+          } else if (matchedFile && matchedFile.type === "dir") {
+            renderResponse(`<p class="text-rose-400 my-1">cat: ${escapeHTML(args[0])}: Is a directory. Use 'cd ${matchedFile.name.replace('/', '')}' to enter.</p>`);
+          } else {
+            renderResponse(`<p class="text-rose-400 my-1">cat: ${escapeHTML(args[0])}: No such file</p>`);
+          }
+          break;
+        case "pwd":
+          renderResponse(`<p class="text-mint my-1 font-mono">/home/guest/hisyam-portfolio${currentPath === "~" ? "" : "/" + currentPath.replace("~/", "")}</p>`);
           break;
 
         default:
