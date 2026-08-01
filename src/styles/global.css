@@ -2,16 +2,16 @@
 
 /* Custom theme configuration for Tailwind 4 */
 @theme {
-    --color-navy: var(--bg-navy, #0D1B2A);
-    --color-light-navy: var(--bg-light-navy, #1B2A4A);
+    --color-navy: #0D1B2A;
+    --color-light-navy: #1B2A4A;
     --color-accent: var(--color-accent);
     --color-accent-hover: var(--color-accent-hover);
     --color-accent-glow: var(--color-accent-glow);
     --color-accent-light: var(--color-accent-light);
     --color-mint: var(--color-accent, #f59e0b);
-    --color-light-slate: var(--text-light-slate, #B4E1EB);
-    --color-slate: var(--text-slate, #95BDD7);
-    --color-ocean: var(--text-ocean, #78A4CB);
+    --color-light-slate: #B4E1EB;
+    --color-slate: #95BDD7;
+    --color-ocean: #78A4CB;
 
     --font-family-mono: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --font-family-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -24,14 +24,6 @@
 
 /* Theme accent custom properties & presets */
 :root {
-    --bg-navy: #0D1B2A;
-    --bg-light-navy: #1B2A4A;
-    --text-light-slate: #B4E1EB;
-    --text-slate: #95BDD7;
-    --text-ocean: #78A4CB;
-    --card-bg: rgba(27, 42, 74, 0.6);
-    --card-border: rgba(149, 189, 215, 0.2);
-
     --color-accent: #f59e0b;
     --color-accent-hover: #d97706;
     --color-accent-glow: rgba(245, 158, 11, 0.35);
@@ -95,12 +87,12 @@
 }
 
 [data-theme="amber"] {
-    --color-accent: #d97706;
-    --color-accent-hover: #b45309;
-    --color-accent-glow: rgba(217, 119, 6, 0.35);
-    --color-accent-light: rgba(217, 119, 6, 0.15);
-    --color-accent-rgb: 217, 119, 6;
-    --color-mint: var(--color-accent, #d97706);
+    --color-accent: #fbbf24;
+    --color-accent-hover: #d97706;
+    --color-accent-glow: rgba(251, 191, 36, 0.35);
+    --color-accent-light: rgba(251, 191, 36, 0.15);
+    --color-accent-rgb: 251, 191, 36;
+    --color-mint: var(--color-accent, #fbbf24);
 }
 
 [data-theme="pink"] {
@@ -110,57 +102,6 @@
     --color-accent-light: rgba(236, 72, 153, 0.15);
     --color-accent-rgb: 236, 72, 153;
     --color-mint: var(--color-accent, #ec4899);
-}
-
-[data-mode="dark"] {
-    --bg-navy: #0D1B2A;
-    --bg-light-navy: #1B2A4A;
-    --text-light-slate: #B4E1EB;
-    --text-slate: #95BDD7;
-    --text-ocean: #78A4CB;
-    --card-bg: rgba(27, 42, 74, 0.6);
-    --card-border: rgba(149, 189, 215, 0.2);
-    color-scheme: dark;
-}
-
-[data-mode="light"] {
-    --bg-navy: #f8fafc;
-    --bg-light-navy: #ffffff;
-    --text-light-slate: #0f172a;
-    --text-slate: #334155;
-    --text-ocean: #64748b;
-    --card-bg: #ffffff;
-    --card-border: rgba(203, 213, 225, 0.8);
-    color-scheme: light;
-}
-
-[data-mode="light"] body {
-    background-color: #f8fafc;
-    color: #0f172a;
-}
-
-[data-mode="light"] ::-webkit-scrollbar-track {
-    background-color: #f1f5f9;
-}
-
-[data-mode="light"] ::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-}
-
-[data-mode="light"] .bg-navy\/90,
-[data-mode="light"] .bg-navy\/95,
-[data-mode="light"] .bg-navy\/80,
-[data-mode="light"] .bg-navy {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    color: #0f172a !important;
-}
-
-[data-mode="light"] .bg-light-navy\/50,
-[data-mode="light"] .bg-light-navy\/40,
-[data-mode="light"] .bg-light-navy\/80,
-[data-mode="light"] .bg-light-navy {
-    background-color: #ffffff !important;
-    color: #0f172a !important;
 }
 
 @keyframes fade-in {

@@ -14,13 +14,6 @@ const themes = [
 <script is:inline>
   (function () {
     try {
-      var savedMode = localStorage.getItem('portfolio-mode');
-      if (savedMode === 'light') {
-        document.documentElement.setAttribute('data-mode', 'light');
-      } else {
-        document.documentElement.setAttribute('data-mode', 'dark');
-      }
-
       var saved = localStorage.getItem('portfolio-accent');
       var validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan', 'terminal', 'amber', 'pink'];
       if (saved) {
@@ -37,7 +30,6 @@ const themes = [
         document.documentElement.setAttribute('data-theme', 'gold');
       }
     } catch (e) {
-      document.documentElement.setAttribute('data-mode', 'dark');
       document.documentElement.setAttribute('data-theme', 'gold');
     }
   })();
@@ -49,12 +41,12 @@ const themes = [
     id="color-palette-menu"
     class="hidden mb-3 p-4 bg-navy/95 border border-slate/30 rounded-2xl shadow-2xl backdrop-blur-xl w-72 sm:w-80 font-mono text-light-slate transition-all duration-300 transform origin-bottom-right select-none z-50 space-y-3"
     role="dialog"
-    aria-label="Color & Theme Selection Palette"
+    aria-label="Color Selection Palette"
   >
     <div class="flex items-center justify-between border-b border-slate/20 pb-2">
       <div class="flex items-center gap-2">
         <span class="text-mint text-base">🎨</span>
-        <span class="text-xs font-serif font-bold text-light-slate">Theme & Color Palette</span>
+        <span class="text-xs font-serif font-bold text-light-slate">Color Palette & Accents</span>
       </div>
       <button
         id="close-palette-btn"
@@ -66,32 +58,9 @@ const themes = [
       </button>
     </div>
 
-    <!-- Dark & Light Mode Selector -->
-    <div class="pb-2 border-b border-slate/20">
-      <p class="text-[11px] text-slate mb-2">Display Mode:</p>
-      <div class="grid grid-cols-2 gap-2 bg-light-navy/50 p-1 rounded-xl border border-slate/20">
-        <button
-          type="button"
-          id="mode-dark-btn"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer border border-transparent"
-        >
-          <span>🌙</span>
-          <span>Dark</span>
-        </button>
-        <button
-          type="button"
-          id="mode-light-btn"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer border border-transparent"
-        >
-          <span>☀️</span>
-          <span>Light</span>
-        </button>
-      </div>
-    </div>
-
     <!-- Presets Grid -->
     <div>
-      <p class="text-[11px] text-slate mb-2">Preset Accent Color:</p>
+      <p class="text-[11px] text-slate mb-2">Preset Themes:</p>
       <div class="grid grid-cols-4 gap-2">
         {
           themes.map((theme) => (
@@ -148,7 +117,7 @@ const themes = [
     type="button"
     class="flex items-center gap-2.5 px-3.5 py-2 bg-navy/90 border border-slate/30 hover:border-mint/60 rounded-full shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-pointer text-xs font-mono group focus:outline-none"
     aria-label="Toggle Color Palette"
-    title="Open Theme & Color Palette"
+    title="Open Color Palette"
   >
     <div class="w-6 h-6 rounded-full flex items-center justify-center text-mint bg-mint/10 border border-mint/30 group-hover:bg-mint/20">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -170,8 +139,6 @@ const themes = [
     const toggleBtn = document.getElementById("toggle-palette-btn");
     const closeBtn = document.getElementById("close-palette-btn");
     const menu = document.getElementById("color-palette-menu");
-    const darkBtn = document.getElementById("mode-dark-btn");
-    const lightBtn = document.getElementById("mode-light-btn");
     const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-option]');
     const colorInput = document.getElementById("custom-color-input") as HTMLInputElement | null;
     const hexInput = document.getElementById("custom-hex-input") as HTMLInputElement | null;
@@ -188,29 +155,6 @@ const themes = [
         menu.classList.remove("hidden");
       } else {
         menu.classList.add("hidden");
-      }
-    }
-
-    function setDisplayMode(mode: 'dark' | 'light') {
-      document.documentElement.setAttribute('data-mode', mode);
-      try {
-        localStorage.setItem('portfolio-mode', mode);
-      } catch (e) {}
-      updateModeUI();
-    }
-
-    function updateModeUI() {
-      const mode = document.documentElement.getAttribute('data-mode') || 'dark';
-      if (mode === 'light') {
-        lightBtn?.classList.add('bg-mint/20', 'text-mint', 'border-mint/40', 'shadow-sm');
-        lightBtn?.classList.remove('text-slate', 'hover:text-light-slate');
-        darkBtn?.classList.remove('bg-mint/20', 'text-mint', 'border-mint/40', 'shadow-sm');
-        darkBtn?.classList.add('text-slate', 'hover:text-light-slate');
-      } else {
-        darkBtn?.classList.add('bg-mint/20', 'text-mint', 'border-mint/40', 'shadow-sm');
-        darkBtn?.classList.remove('text-slate', 'hover:text-light-slate');
-        lightBtn?.classList.remove('bg-mint/20', 'text-mint', 'border-mint/40', 'shadow-sm');
-        lightBtn?.classList.add('text-slate', 'hover:text-light-slate');
       }
     }
 
@@ -253,8 +197,6 @@ const themes = [
           btn.classList.remove("ring-2", "ring-mint", "border-mint");
         }
       });
-
-      updateModeUI();
     }
 
     toggleBtn?.addEventListener("click", (e) => {
@@ -265,9 +207,6 @@ const themes = [
     closeBtn?.addEventListener("click", () => {
       toggleMenu(false);
     });
-
-    darkBtn?.addEventListener('click', () => setDisplayMode('dark'));
-    lightBtn?.addEventListener('click', () => setDisplayMode('light'));
 
     document.addEventListener("click", (e) => {
       if (root && !root.contains(e.target as Node)) {
