@@ -5,6 +5,7 @@ const themes = [
   { name: 'rose', label: 'Rose', color: '#f43f5e' },
   { name: 'violet', label: 'Violet', color: '#8b5cf6' },
   { name: 'cyan', label: 'Cyan', color: '#06b6d4' },
+  { name: 'terminal', label: 'Terminal (Matrix Green)', color: '#22c55e' },
 ];
 ---
 
@@ -12,7 +13,7 @@ const themes = [
   (function () {
     try {
       var savedTheme = localStorage.getItem('portfolio-accent');
-      var validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+      var validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan', 'terminal'];
       if (savedTheme && validThemes.indexOf(savedTheme) !== -1) {
         document.documentElement.setAttribute('data-theme', savedTheme);
       } else {
@@ -60,7 +61,7 @@ const themes = [
 <script>
   function setupThemeSwitcher() {
     const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-option]');
-    const validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan'];
+    const validThemes = ['gold', 'emerald', 'rose', 'violet', 'cyan', 'terminal'];
 
     function getActiveTheme(): string {
       return document.documentElement.getAttribute('data-theme') || 'gold';

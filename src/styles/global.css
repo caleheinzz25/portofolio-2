@@ -77,6 +77,15 @@
     --color-mint: var(--color-accent, #f59e0b);
 }
 
+[data-theme="terminal"] {
+    --color-accent: #22c55e;
+    --color-accent-hover: #16a34a;
+    --color-accent-glow: rgba(34, 197, 94, 0.4);
+    --color-accent-light: rgba(34, 197, 94, 0.18);
+    --color-accent-rgb: 34, 197, 94;
+    --color-mint: var(--color-accent, #22c55e);
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;
