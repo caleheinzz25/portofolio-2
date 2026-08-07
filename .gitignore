@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # agent teamwork logs
 .agents/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
