@@ -250,10 +250,10 @@ export default function MemoryMatch() {
                             aria-label={card.isFlipped || card.isMatched ? card.emoji : "Hidden card"}
                         >
                             <div class="mm-card-inner">
-                                <div class="mm-card-front">
+                                <div class="mm-card-face mm-card-front">
                                     <span class="mm-card-icon">?</span>
                                 </div>
-                                <div class="mm-card-back">
+                                <div class="mm-card-face mm-card-back">
                                     <span class="mm-card-emoji">{card.emoji}</span>
                                 </div>
                             </div>
@@ -264,8 +264,8 @@ export default function MemoryMatch() {
 
             {/* Win overlay */}
             <Show when={gameWon()}>
-                <div class="mm-overlay">
-                    <div class="mm-win-card">
+                <div class="mm-win-overlay">
+                    <div class="mm-win-content">
                         <div class="mm-win-icon">🎉</div>
                         <h2 class="mm-win-title">You Win!</h2>
                         <div class="mm-win-stats">
