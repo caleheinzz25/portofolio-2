@@ -1,0 +1,1010 @@
+---
+import ApiPlaygroundComponent from "./ApiPlayground";
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Read song files for embedded Music Player tab
+const songDir = path.join(process.cwd(), 'public', 'song');
+let songFiles: string[] = [];
+try {
+  songFiles = fs.readdirSync(songDir)
+    .filter((f: string) => f.endsWith('.mp3'))
+    .sort();
+} catch (e) {
+  songFiles = [];
+}
+
+const songs = songFiles.map((file: string) => {
+  const name = file.replace('.mp3', '').replace(/^\d+\s/, '');
+  return { file: `/song/${file}`, name };
+});
+
+const games = [
+  {
+    name: 'Snake Game',
+    description: 'Classic arcade snake game - eat food, grow longer, score high!',
+    icon: '🐍',
+    status: 'available',
+    href: '/games/snake'
+  },
+  {
+    name: 'Memory Match',
+    description: 'Test and train your memory with card pair matching.',
+    icon: '🃏',
+    status: 'available',
+    href: '/games/memory-match'
+  },
+  {
+    name: 'Typing Speed',
+    description: 'Challenge your typing speed and accuracy (WPM test).',
+    icon: '⌨️',
+    status: 'available',
+    href: '/games/typing-speed'
+  }
+];
+---
+
+<section id="playground" class="py-24 px-6 overflow-hidden">
+  <div class="max-w-5xl mx-auto">
+    <!-- Section Heading -->
+    <h2 class="section-heading" data-animate="fade-up">
+      <span class="text-mint font-mono text-lg">06.</span>
+      Interactive Playground
+    </h2>
+
+    <p class="text-slate mb-8 max-w-2xl" data-animate="fade-up" data-delay="100">
+      Explore interactive developer tools in one unified suite: execute terminal shell commands, test real-time REST API requests, stream curated coding playlists, or play retro mini-games.
+    </p>
+
+    <!-- Main Playground Container Box -->
+    <div
+      class="w-full bg-navy/85 border border-mint/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-md font-mono text-light-slate"
+      data-animate="fade-up"
+      data-delay="200"
+    >
+      <!-- Header Bar & Tabs -->
+      <div class="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-light-navy/80 border-b border-slate/20 select-none">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 mr-2">
+            <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+          </div>
+          <span class="text-sm font-serif font-bold text-light-slate flex items-center gap-2">
+            <span class="text-mint">⚡</span> Dev Suite & Interactive Playground
+          </span>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-1 bg-navy/80 p-1 rounded-xl border border-slate/20 text-xs font-mono">
+          <button
+            class="playground-tab-btn active px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+            data-tab="terminal"
+          >
+            <span>💻</span> <span class="hidden sm:inline">Terminal</span>
+          </button>
+          <button
+            class="playground-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+            data-tab="api"
+          >
+            <span>⚡</span> <span class="hidden sm:inline">API Demo</span>
+          </button>
+          <button
+            class="playground-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+            data-tab="music"
+          >
+            <span>🎵</span> <span class="hidden sm:inline">Music</span>
+          </button>
+          <button
+            class="playground-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
+            data-tab="games"
+          >
+            <span>🎮</span> <span class="hidden sm:inline">Mini Games</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content Panels Container -->
+      <div class="min-h-[500px] max-h-[680px] flex flex-col overflow-hidden relative bg-navy/60">
+        
+        <!-- TAB 1: Terminal Shell -->
+        <div id="tab-panel-terminal" class="playground-tab-panel active h-full flex flex-col p-4 md:p-6 overflow-hidden min-h-[500px]">
+          <!-- CRT Scanline Overlay -->
+          <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-25 z-10"></div>
+          <div id="playground-terminal-output" class="flex-1 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-4 z-20 scrollbar-thin scrollbar-thumb-slate/30 p-2">
+            <!-- Terminal content injected dynamically -->
+          </div>
+        </div>
+
+        <!-- TAB 2: API Demo Playground -->
+        <div id="tab-panel-api" class="playground-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+          <div class="max-w-4xl mx-auto">
+            <div class="mb-4">
+              <h4 class="text-base font-serif font-bold text-light-slate">Interactive API Response Demo</h4>
+              <p class="text-xs text-slate">Test live HTTP REST requests, measure response latency & inspect payloads.</p>
+            </div>
+            <ApiPlaygroundComponent client:visible />
+          </div>
+        </div>
+
+        <!-- TAB 3: Music Player -->
+        <div id="tab-panel-music" class="playground-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+          <div class="max-w-3xl mx-auto space-y-6">
+            <div class="mb-4 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h4 class="text-base font-serif font-bold text-light-slate flex items-center gap-2">
+                  <span>🎵</span> My Favorite Music & Coding Playlist
+                </h4>
+                <span class="text-[11px] font-mono text-mint bg-mint/10 border border-mint/20 px-2.5 py-0.5 rounded-full font-semibold">
+                  🎧 {songs.length} Curated Tracks
+                </span>
+              </div>
+              <p class="text-xs text-slate leading-relaxed bg-navy/60 border border-slate/15 p-3 rounded-lg">
+                Welcome to my personal soundscape! Music powers my focus and inspires deep work while writing clean code. This collection features my favorite uplifting, peaceful, and soulful tracks by <span class="text-mint font-semibold">Maher Zain</span>. Pick a song below to listen while exploring the portfolio!
+              </p>
+            </div>
+
+            <!-- Music Player Card -->
+            <div class="music-player-card bg-light-navy/50 border border-slate/20 rounded-xl p-6 relative overflow-hidden backdrop-blur-md">
+              <!-- Visualizer Background -->
+              <div class="visualizer-bg" id="playground-visualizer-bg">
+                {Array.from({length: 20}).map((_, i) => (
+                  <div class="viz-bar" style={`--i: ${i}; left: ${i * 5}%`}></div>
+                ))}
+              </div>
+
+              <!-- Now Playing -->
+              <div class="now-playing flex items-center gap-4 mb-5 relative z-10">
+                <div class="album-art relative w-16 h-16 rounded-full bg-mint/10 border-2 border-mint/30 flex items-center justify-center text-2xl shrink-0" id="playground-album-art">
+                  <span>🎵</span>
+                </div>
+                <div class="song-info overflow-hidden">
+                  <h4 class="song-title font-serif text-lg text-light-slate truncate" id="playground-song-title">Select a song</h4>
+                  <p class="song-artist text-xs text-mint font-mono mt-0.5">Maher Zain</p>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-container flex items-center gap-3 mb-4 relative z-10 font-mono text-xs text-slate">
+                <span id="playground-current-time">0:00</span>
+                <div class="progress-bar flex-1 h-1.5 bg-slate/20 rounded-full cursor-pointer relative hover:h-2 transition-all" id="playground-progress-bar">
+                  <div class="progress-fill h-full bg-linear-to-r from-mint to-ocean rounded-full w-0" id="playground-progress-fill"></div>
+                </div>
+                <span id="playground-duration-time">0:00</span>
+              </div>
+
+              <!-- Controls -->
+              <div class="player-controls flex items-center justify-center gap-4 relative z-10">
+                <button class="control-btn text-slate hover:text-mint transition-colors p-2 cursor-pointer" id="playground-prev-btn" title="Previous">
+                  <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="play-btn w-12 h-12 rounded-full border-2 border-mint/40 text-mint hover:bg-mint/10 flex items-center justify-center text-lg transition-transform hover:scale-105 cursor-pointer" id="playground-play-btn" title="Play/Pause">
+                  <i class="fas fa-play" id="playground-play-icon"></i>
+                </button>
+                <button class="control-btn text-slate hover:text-mint transition-colors p-2 cursor-pointer" id="playground-next-btn" title="Next">
+                  <i class="fas fa-step-forward"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Playlist -->
+            <div class="playlist-container bg-navy/80 border border-slate/15 rounded-xl overflow-hidden">
+              <div class="p-3 border-b border-slate/15 flex items-center justify-between text-xs text-light-slate font-semibold">
+                <span class="flex items-center gap-2"><i class="fas fa-list text-mint"></i> Playlist</span>
+                <span class="text-slate font-mono">{songs.length} songs</span>
+              </div>
+              <div class="playlist-scroll max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate/30" id="playground-playlist">
+                {songs.map((song, index) => (
+                  <button
+                    class="playlist-item w-full px-4 py-2.5 flex items-center gap-3 text-xs text-slate hover:text-light-slate hover:bg-mint/5 border-b border-slate/10 transition-colors text-left cursor-pointer"
+                    data-index={index}
+                    data-src={song.file}
+                    data-name={song.name}
+                  >
+                    <span class="font-mono text-mint/70">{String(index + 1).padStart(2, '0')}</span>
+                    <span class="flex-1 truncate">{song.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Mini Games Suite -->
+        <div id="tab-panel-games" class="playground-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
+          <div class="max-w-4xl mx-auto space-y-6">
+            <div class="mb-2">
+              <h4 class="text-base font-serif font-bold text-light-slate">Mini Games Arcade</h4>
+              <p class="text-xs text-slate">Play retro arcade games directly in your browser.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-4">
+              {games.map((game) => (
+                <div class="card bg-light-navy/40 border border-slate/20 rounded-xl p-5 hover:border-mint/40 transition-all duration-300 flex flex-col justify-between group">
+                  <div>
+                    <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">{game.icon}</div>
+                    <h5 class="text-base font-serif font-bold text-light-slate group-hover:text-mint transition-colors mb-2">
+                      {game.name}
+                    </h5>
+                    <p class="text-xs text-slate leading-relaxed mb-4">
+                      {game.description}
+                    </p>
+                  </div>
+                  <a
+                    href={game.href}
+                    class="btn-primary text-xs py-2 px-3 font-mono font-semibold flex items-center justify-center gap-1.5 w-full"
+                  >
+                    <span>▶ Play Now</span>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .playground-tab-btn.active {
+    background-color: var(--color-mint);
+    color: var(--color-navy);
+    font-weight: 700;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 40%, transparent);
+  }
+
+  /* Custom music styles */
+  .visualizer-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.08;
+  }
+  .viz-bar {
+    position: absolute;
+    bottom: 0;
+    width: 4%;
+    background: linear-gradient(to top, var(--color-mint), transparent);
+    border-radius: 4px 4px 0 0;
+    height: 15%;
+  }
+  .visualizer-bg.playing .viz-bar {
+    animation: vizPulse 0.8s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+  @keyframes vizPulse {
+    0% { height: 10%; }
+    100% { height: calc(25% + var(--i) * 3%); }
+  }
+
+  .playlist-item.active {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--color-mint);
+    border-left: 3px solid var(--color-mint);
+  }
+</style>
+
+<script is:inline define:vars={{ songs }}>
+  window.__playgroundSongs = songs;
+</script>
+
+<script>
+  function setupPlayground() {
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>(".playground-tab-btn");
+    const tabPanels = document.querySelectorAll<HTMLElement>(".playground-tab-panel");
+    const terminalOutput = document.getElementById("playground-terminal-output");
+
+    function loadSavedTerminalHistory(): string[] {
+      try {
+        const item = localStorage.getItem("terminal-command-history");
+        return item ? JSON.parse(item) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveTerminalHistory(hist: string[]) {
+      try {
+        localStorage.setItem("terminal-command-history", JSON.stringify(hist));
+      } catch (e) {}
+    }
+
+    let commandHistory: string[] = loadSavedTerminalHistory();
+    let historyIndex = -1;
+    const sessionStartTime = Date.now();
+    let currentPath = "~";
+
+    interface FSFile {
+      name: string;
+      type: "file" | "dir";
+      content?: string;
+      link?: string;
+    }
+
+    const VIRTUAL_FS: Record<string, { type: "dir"; files: Record<string, FSFile> }> = {
+      "~": {
+        type: "dir",
+        files: {
+          "about": { name: "about/", type: "dir" },
+          "experience": { name: "experience/", type: "dir" },
+          "skills": { name: "skills/", type: "dir" },
+          "activity": { name: "activity/", type: "dir" },
+          "projects": { name: "projects/", type: "dir" },
+          "contact": { name: "contact/", type: "dir" },
+          "README.md": { name: "README.md", type: "file", content: "# MHisyam Portfolio Shell\nType 'cd contact' or 'cd about' to navigate. Type 'ls' to view contents." }
+        }
+      },
+      "~/contact": {
+        type: "dir",
+        files: {
+          "email.txt": { name: "email.txt", type: "file", content: "📧 Email: muhammad2504hisyam@gmail.com", link: "mailto:muhammad2504hisyam@gmail.com" },
+          "github.link": { name: "github.link", type: "file", content: "🐙 GitHub: https://github.com/caleheinzz25", link: "https://github.com/caleheinzz25" },
+          "resume.pdf": { name: "resume.pdf", type: "file", content: "📄 Resume: /resume.pdf", link: "/resume.pdf" },
+          "location.txt": { name: "location.txt", type: "file", content: "📍 Location: Indonesia" }
+        }
+      },
+      "~/about": {
+        type: "dir",
+        files: {
+          "bio.txt": { name: "bio.txt", type: "file", content: "👨‍💻 Software Engineer specializing in modern web applications & scalable tools." }
+        }
+      },
+      "~/experience": {
+        type: "dir",
+        files: {
+          "roles.txt": { name: "roles.txt", type: "file", content: "💼 Full Stack Engineer | Frontend Specialist | Open Source Contributor" }
+        }
+      },
+      "~/skills": {
+        type: "dir",
+        files: {
+          "languages.txt": { name: "languages.txt", type: "file", content: "💻 Languages: TypeScript, JavaScript, HTML, CSS, Golang, SQL, Python" },
+          "frameworks.txt": { name: "frameworks.txt", type: "file", content: "🚀 Frameworks: Astro, React, SolidJS, Next.js, Node.js, Express, Tailwind CSS" },
+          "devops.txt": { name: "devops.txt", type: "file", content: "🐳 DevOps: Docker, Bun, Git, Vite, Linux" }
+        }
+      },
+      "~/projects": {
+        type: "dir",
+        files: {
+          "featured.txt": { name: "featured.txt", type: "file", content: "⭐ Check out the Projects section on the page for full interactive demo links!" }
+        }
+      },
+      "~/activity": {
+        type: "dir",
+        files: {
+          "stats.txt": { name: "stats.txt", type: "file", content: "📊 View recent GitHub activity feed in the Activity section!" }
+        }
+      }
+    };
+
+    function getPromptText(): string {
+      return `guest@hisyam-cli:${currentPath}$`;
+    }
+
+    const KNOWN_COMMANDS = [
+      "help", "about", "skills", "projects", "contact",
+      "whoami", "neofetch", "date", "uptime", "history",
+      "fetch", "echo", "api", "music", "games", "theme",
+      "clear", "ls", "cat", "cd", "pwd", "sudo"
+    ];
+
+    const BANNER_ASCII = `
+ <span class="text-mint font-bold">_     _ _                       _ _ </span>
+<span class="text-mint font-bold">| |__ (_) |  _   _  __ _ _ __ ___ | (_)</span>
+<span class="text-mint font-bold">| '_ \\| | | | | | | / _\` | '_ \` _ \\| | |</span>
+<span class="text-mint font-bold">| | | | | | | |_| | (_| | | | | | | | |</span>
+<span class="text-mint font-bold">|_| |_|_|_|  \\__, |\\__,_|_| |_| |_|_|_|</span>
+<span class="text-mint font-bold">             |___/                     </span>
+`;
+
+    const WELCOME_HEADER = `
+<div class="border-b border-slate/20 pb-3 mb-4 space-y-1">
+  <pre class="text-mint leading-tight font-mono text-[10px] sm:text-xs overflow-x-auto select-none">${BANNER_ASCII}</pre>
+  <p class="text-light-slate font-semibold">Welcome to <span class="text-mint">hisyam-cli v1.1.0</span> - Interactive Developer Shell</p>
+  <p class="text-slate text-xs">Type <span class="text-mint font-bold">'help'</span> to view commands or <span class="text-mint font-bold">'neofetch'</span> for system specs. Press <kbd class="px-1 py-0.5 rounded bg-slate/20 text-mint text-[10px]">Tab</kbd> to autocomplete.</p>
+</div>
+`;
+
+    function getFormattedUptime(): string {
+      const diffMs = Date.now() - sessionStartTime;
+      const totalSec = Math.floor(diffMs / 1000);
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return m > 0 ? `${m}m ${s}s` : `${s}s`;
+    }
+
+    function switchTab(targetTab: string) {
+      tabBtns.forEach((btn) => {
+        const tab = btn.dataset.tab;
+        if (tab === targetTab) {
+          btn.classList.add("active");
+          btn.classList.remove("text-slate");
+        } else {
+          btn.classList.remove("active");
+          btn.classList.add("text-slate");
+        }
+      });
+
+      tabPanels.forEach((panel) => {
+        if (panel.id === `tab-panel-${targetTab}`) {
+          panel.classList.remove("hidden");
+        } else {
+          panel.classList.add("hidden");
+        }
+      });
+
+      if (targetTab === "terminal") {
+        ensureInputForm();
+        setTimeout(() => focusTerminalInput(), 50);
+      }
+    }
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        if (tab) switchTab(tab);
+      });
+    });
+
+    // Terminal helper methods
+    function createInputLineHTML(): string {
+      return `
+        <form id="playground-terminal-form" class="flex items-center gap-2 mt-2">
+          <label for="playground-terminal-input" class="text-mint font-bold select-none flex-shrink-0">${getPromptText()}</label>
+          <input
+            id="playground-terminal-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            class="flex-1 bg-transparent border-none outline-none text-light-slate font-mono text-xs sm:text-sm focus:outline-none focus:ring-0 p-0 m-0"
+            placeholder="type a command..."
+          />
+        </form>
+      `;
+    }
+
+    function ensureInputForm() {
+      if (!terminalOutput) return;
+      let form = document.getElementById("playground-terminal-form");
+      if (!form) {
+        const container = document.createElement("div");
+        container.innerHTML = createInputLineHTML();
+        terminalOutput.appendChild(container.firstElementChild as HTMLElement);
+        setupTerminalListeners();
+      }
+    }
+
+    function focusTerminalInput() {
+      ensureInputForm();
+      const input = document.getElementById("playground-terminal-input") as HTMLInputElement | null;
+      input?.focus();
+    }
+
+    function initTerminalContent() {
+      if (!terminalOutput) return;
+      terminalOutput.innerHTML = WELCOME_HEADER;
+      ensureInputForm();
+    }
+
+    function setupTerminalListeners() {
+      const form = document.getElementById("playground-terminal-form") as HTMLFormElement | null;
+      const input = document.getElementById("playground-terminal-input") as HTMLInputElement | null;
+
+      if (!form || !input) return;
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const cmd = input.value.trim();
+        if (cmd) executeCommand(cmd);
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          const val = input.value.trim().toLowerCase();
+          if (!val) return;
+          const matches = KNOWN_COMMANDS.filter((c) => c.startsWith(val));
+          if (matches.length === 1) {
+            input.value = matches[0];
+          } else if (matches.length > 1) {
+            appendCommandLog(input.value);
+            renderResponse(`
+              <p class="text-slate text-xs my-1">Matches: ${matches.map((m) => `<span class="text-mint font-semibold">${m}</span>`).join(", ")}</p>
+            `);
+          }
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (commandHistory.length > 0) {
+            if (historyIndex === -1) historyIndex = commandHistory.length - 1;
+            else if (historyIndex > 0) historyIndex--;
+            input.value = commandHistory[historyIndex] || "";
+          }
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (historyIndex !== -1) {
+            if (historyIndex < commandHistory.length - 1) {
+              historyIndex++;
+              input.value = commandHistory[historyIndex] || "";
+            } else {
+              historyIndex = -1;
+              input.value = "";
+            }
+          }
+        }
+      });
+    }
+
+    function appendCommandLog(cmd: string) {
+      if (!terminalOutput) return;
+      const oldForm = document.getElementById("playground-terminal-form");
+      if (oldForm) {
+        const log = document.createElement("div");
+        log.className = "flex items-center gap-2 my-1";
+        log.innerHTML = `<span class="text-mint font-bold select-none">${getPromptText()}</span> <span class="text-light-slate">${escapeHTML(cmd)}</span>`;
+        oldForm.replaceWith(log);
+      }
+    }
+
+    function escapeHTML(str: string): string {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    async function executeCommand(rawCmd: string) {
+      const trimmed = rawCmd.trim();
+      if (!trimmed) return;
+
+      commandHistory.push(trimmed);
+      saveTerminalHistory(commandHistory);
+      historyIndex = -1;
+      appendCommandLog(trimmed);
+
+      const parts = trimmed.split(/\s+/);
+      const command = parts[0].toLowerCase();
+      const args = parts.slice(1);
+
+      switch (command) {
+        case "help":
+          renderResponse(`
+<div class="text-slate space-y-1 my-2">
+  <p class="text-mint font-bold mb-2">Available Shell Commands:</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs">
+    <div><span class="text-mint font-semibold">help</span>         - Available commands</div>
+    <div><span class="text-mint font-semibold">ls</span>           - List files/directories</div>
+    <div><span class="text-mint font-semibold">cd [dir]</span>     - Navigate directory (e.g. 'cd contact')</div>
+    <div><span class="text-mint font-semibold">cat [file]</span>   - Read file content (e.g. 'cat email.txt')</div>
+    <div><span class="text-mint font-semibold">pwd</span>          - Print working directory</div>
+    <div><span class="text-mint font-semibold">neofetch</span>     - Display system & portfolio specs</div>
+    <div><span class="text-mint font-semibold">whoami</span>       - Display visitor browser/OS info</div>
+    <div><span class="text-mint font-semibold">fetch &lt;url&gt;</span>  - HTTP GET request inline</div>
+    <div><span class="text-mint font-semibold">date / uptime</span>- Session timing metrics</div>
+    <div><span class="text-mint font-semibold">history</span>      - Command history log</div>
+    <div><span class="text-mint font-semibold">echo [text]</span>   - Print text with color flags</div>
+    <div><span class="text-mint font-semibold">api / music / games</span> - Switch playground tabs</div>
+    <div><span class="text-mint font-semibold">clear</span>        - Clear terminal screen</div>
+  </div>
+</div>
+          `);
+          break;
+
+        case "neofetch":
+          renderResponse(`
+<div class="my-3 p-3 bg-navy/90 rounded border border-slate/20 font-mono text-xs flex flex-col sm:flex-row gap-4 items-start">
+  <pre class="text-mint font-bold text-[10px] leading-none select-none">
+   ╔═════════════╗
+   ║  M.Hisyam   ║
+   ║  Developer  ║
+   ╚═════════════╝
+  </pre>
+  <div class="space-y-1 text-xs">
+    <p class="text-mint font-bold border-b border-slate/20 pb-1 mb-1">guest@hisyam-portfolio</p>
+    <p><span class="text-mint font-semibold">OS:</span> Web Browser Shell</p>
+    <p><span class="text-mint font-semibold">Host:</span> MHisyam Developer Portfolio v2.0</p>
+    <p><span class="text-mint font-semibold">Stack:</span> Astro v5 + SolidJS + Tailwind CSS v4</p>
+    <p><span class="text-mint font-semibold">Uptime:</span> ${getFormattedUptime()}</p>
+    <p><span class="text-mint font-semibold">Shell:</span> hisyam-cli v1.1.0</p>
+    <p><span class="text-mint font-semibold">Theme:</span> emerald</p>
+    <p><span class="text-mint font-semibold">Sections:</span> 7 Main Portfolio Sections</p>
+    <div class="flex gap-1.5 mt-2 pt-1 border-t border-slate/20">
+      <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+    </div>
+  </div>
+</div>
+          `);
+          break;
+
+        case "whoami":
+          const userAgent = navigator.userAgent;
+          let browserName = "Unknown Browser";
+          if (userAgent.includes("Firefox")) browserName = "Mozilla Firefox";
+          else if (userAgent.includes("Chrome")) browserName = "Google Chrome / Chromium";
+          else if (userAgent.includes("Safari")) browserName = "Apple Safari";
+          else if (userAgent.includes("Edg")) browserName = "Microsoft Edge";
+
+          const screenRes = `${window.screen.width} × ${window.screen.height}`;
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+          const isOnline = navigator.onLine ? "✔ Connected (Online)" : "✖ Offline";
+
+          renderResponse(`
+<div class="my-2 p-3 bg-navy/80 rounded border border-slate/20 font-mono text-xs space-y-1">
+  <p class="text-mint font-bold border-b border-slate/20 pb-1 mb-2">Visitor Client Diagnostics:</p>
+  <p><span class="text-mint">Browser:</span> ${browserName}</p>
+  <p><span class="text-mint">Screen:</span> ${screenRes}</p>
+  <p><span class="text-mint">Language:</span> ${navigator.language}</p>
+  <p><span class="text-mint">Timezone:</span> ${tz}</p>
+  <p><span class="text-mint">Status:</span> ${isOnline}</p>
+</div>
+          `);
+          break;
+
+        case "date":
+          renderResponse(`<p class="text-mint my-1">📅 ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'medium' })}</p>`);
+          break;
+
+        case "uptime":
+          renderResponse(`<p class="text-mint my-1">⏱️ Current session uptime: ${getFormattedUptime()}</p>`);
+          break;
+
+        case "history":
+          if (commandHistory.length === 0) {
+            renderResponse(`<p class="text-slate my-1">No command history recorded.</p>`);
+          } else {
+            const historyHTML = commandHistory
+              .map((c, idx) => `<div class="flex items-center gap-3"><span class="text-slate font-mono w-6 text-right">${idx + 1}.</span> <span class="text-light-slate">${escapeHTML(c)}</span></div>`)
+              .join("");
+            renderResponse(`
+<div class="my-2 space-y-1 font-mono text-xs">
+  <p class="text-mint font-bold mb-1">Session Command History:</p>
+  ${historyHTML}
+</div>
+            `);
+          }
+          break;
+
+        case "echo":
+          let colorClass = "text-light-slate";
+          let textToEcho = args.join(" ");
+
+          if (args[0]?.startsWith("--")) {
+            const flag = args[0].toLowerCase();
+            if (flag === "--mint") colorClass = "text-mint font-semibold";
+            else if (flag === "--red") colorClass = "text-red-400 font-semibold";
+            else if (flag === "--amber") colorClass = "text-amber-300 font-semibold";
+            else if (flag === "--purple") colorClass = "text-purple-400 font-semibold";
+            else if (flag === "--emerald") colorClass = "text-emerald-400 font-semibold";
+            textToEcho = args.slice(1).join(" ");
+          }
+
+          renderResponse(`<p class="${colorClass} my-1">${escapeHTML(textToEcho || "")}</p>`);
+          break;
+
+        case "fetch":
+          if (args.length === 0) {
+            renderResponse(`<p class="text-rose-400 my-1">Usage: fetch &lt;url&gt; (e.g. 'fetch https://catfact.ninja/fact')</p>`);
+            break;
+          }
+
+          let fetchUrl = args[0];
+          if (!fetchUrl.startsWith("http://") && !fetchUrl.startsWith("https://")) {
+            fetchUrl = "https://" + fetchUrl;
+          }
+
+          renderResponse(`<p class="text-slate text-xs animate-pulse my-1">⚡ Fetching ${escapeHTML(fetchUrl)}...</p>`);
+          
+          try {
+            const startT = performance.now();
+            const res = await fetch(fetchUrl);
+            const duration = Math.round(performance.now() - startT);
+            const text = await res.text();
+
+            let formatted = text;
+            try {
+              formatted = JSON.stringify(JSON.parse(text), null, 2);
+            } catch (e) {}
+
+            const truncated = formatted.length > 1500 ? formatted.slice(0, 1500) + "\n... (truncated)" : formatted;
+
+            renderResponse(`
+<div class="my-2 p-3 bg-navy/90 rounded border border-slate/20 font-mono text-xs space-y-2">
+  <div class="flex items-center justify-between border-b border-slate/20 pb-1">
+    <span class="text-mint font-bold">GET ${escapeHTML(fetchUrl)}</span>
+    <span class="${res.ok ? 'text-emerald-400' : 'text-rose-400'} font-bold">${res.status} ${res.statusText || 'OK'} (${duration}ms)</span>
+  </div>
+  <pre class="text-slate overflow-x-auto whitespace-pre">${escapeHTML(truncated)}</pre>
+</div>
+            `);
+          } catch (err: any) {
+            renderResponse(`<p class="text-rose-400 my-1">Failed to fetch ${escapeHTML(fetchUrl)}: ${escapeHTML(err?.message || "CORS or Network Error")}</p>`);
+          }
+          break;
+
+        case "api":
+          switchTab("api");
+          break;
+        case "music":
+          switchTab("music");
+          break;
+        case "games":
+          switchTab("games");
+          break;
+
+        case "about":
+          renderResponse(`<p class="text-light-slate my-1">Software Engineer specializing in modern web applications & scalable tools.</p>`, '#about');
+          break;
+
+        case "skills":
+          renderResponse(`<p class="text-light-slate my-1">TypeScript, React, Astro, SolidJS, Node.js, Tailwind CSS, PostgreSQL, Docker, Linux.</p>`, '#skills');
+          break;
+
+        case "projects":
+          renderResponse(`<p class="text-light-slate my-1">Check out featured repositories & open source contributions.</p>`, '#projects');
+          break;
+
+        case "contact":
+          renderResponse(`<p class="text-light-slate my-1">Get in touch via email or GitHub profile.</p>`, '#contact');
+          break;
+
+        case "theme":
+          renderResponse(`<p class="text-mint my-1">The portfolio is set to Emerald theme.</p>`);
+          break;
+
+        case "clear":
+          initTerminalContent();
+          break;
+
+        case "sudo":
+          renderResponse(`<p class="text-amber-400 my-1">Nice try! You don't have root access on this portfolio 😏</p>`);
+          break;
+        case "rm":
+        case "rmdir":
+          renderResponse(`<p class="text-rose-400 my-1">Whoa there! This portfolio is read-only 🛡️</p>`);
+          break;
+        case "hello":
+        case "hi":
+          renderResponse(`<p class="text-mint my-1 font-semibold">Hey there! 👋 Type 'help' to get started or 'cd contact' to view contact info.</p>`);
+          break;
+        case "cd":
+          if (args.length === 0 || args[0] === "~" || args[0] === "/" || args[0] === "..") {
+            currentPath = "~";
+            renderResponse(`<p class="text-mint my-1 font-semibold">Switched directory to ~</p>`);
+          } else {
+            const rawTarget = args[0].replace(/\/$/, "").replace(/^~\//, "").toLowerCase();
+            const targetPath = `~/${rawTarget}`;
+
+            if (VIRTUAL_FS[targetPath]) {
+              currentPath = targetPath;
+              renderResponse(`<p class="text-mint my-1 font-semibold font-mono">Switched directory to ${currentPath}</p>`);
+
+              const sectionEl = document.querySelector(`#${rawTarget}`);
+              if (sectionEl) {
+                sectionEl.scrollIntoView({ behavior: "smooth" });
+              }
+            } else {
+              renderResponse(`<p class="text-rose-400 my-1">cd: no such file or directory: ${escapeHTML(args[0])}</p>`);
+            }
+          }
+          break;
+        case "ls":
+          const currentDir = VIRTUAL_FS[currentPath];
+          if (currentDir && currentDir.files) {
+            const fileList = Object.values(currentDir.files).map((f) => {
+              if (f.type === "dir") {
+                return `<span class="text-mint font-bold hover:underline cursor-pointer">📁 ${f.name}</span>`;
+              } else if (f.link) {
+                return `<a href="${f.link}" target="_blank" rel="noopener noreferrer" class="text-mint font-semibold underline hover:text-light-slate">📄 ${f.name}</a>`;
+              } else {
+                return `<span class="text-light-slate">📄 ${f.name}</span>`;
+              }
+            });
+
+            renderResponse(`
+<div class="my-2 space-y-1 font-mono text-xs">
+  <p class="text-slate text-[11px] mb-1">Contents of ${currentPath}:</p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1.5">
+    ${fileList.join(" ")}
+  </div>
+</div>
+            `);
+          } else {
+            renderResponse(`<p class="text-slate my-1">Directory is empty.</p>`);
+          }
+          break;
+        case "cat":
+          if (args.length === 0) {
+            renderResponse(`<p class="text-rose-400 my-1">Usage: cat &lt;filename&gt; (e.g. 'cat email.txt')</p>`);
+            break;
+          }
+
+          const targetFileName = args[0].toLowerCase();
+          const activeDir = VIRTUAL_FS[currentPath];
+          let matchedFile: FSFile | undefined;
+
+          if (activeDir && activeDir.files) {
+            matchedFile = Object.values(activeDir.files).find((file) => {
+              const baseName = file.name.replace(/\/$/, "").toLowerCase();
+              return baseName === targetFileName || baseName.startsWith(targetFileName);
+            });
+          }
+
+          if (matchedFile && matchedFile.type === "file") {
+            let outHTML = escapeHTML(matchedFile.content || "");
+            if (matchedFile.link) {
+              outHTML += ` <a href="${matchedFile.link}" target="_blank" rel="noopener noreferrer" class="text-mint font-semibold underline hover:text-light-slate">[Open Link ↗]</a>`;
+            }
+            renderResponse(`<div class="my-2 p-3 bg-navy/80 border border-slate/20 rounded-md font-mono text-xs text-light-slate space-y-1">${outHTML}</div>`);
+          } else if (matchedFile && matchedFile.type === "dir") {
+            renderResponse(`<p class="text-rose-400 my-1">cat: ${escapeHTML(args[0])}: Is a directory. Use 'cd ${matchedFile.name.replace('/', '')}' to enter.</p>`);
+          } else {
+            renderResponse(`<p class="text-rose-400 my-1">cat: ${escapeHTML(args[0])}: No such file</p>`);
+          }
+          break;
+        case "pwd":
+          renderResponse(`<p class="text-mint my-1 font-mono">/home/guest/hisyam-portfolio${currentPath === "~" ? "" : "/" + currentPath.replace("~/", "")}</p>`);
+          break;
+
+        default:
+          renderResponse(`<p class="text-rose-400 my-1">Command not found: '${escapeHTML(trimmed)}'. Type 'help'.</p>`);
+          break;
+      }
+    }
+
+    function renderResponse(htmlContent: string, scrollTargetId?: string) {
+      if (!terminalOutput) return;
+
+      const oldForm = document.getElementById("playground-terminal-form");
+      const resContainer = document.createElement("div");
+      resContainer.className = "terminal-response-line my-1";
+      resContainer.innerHTML = htmlContent;
+
+      if (oldForm) {
+        oldForm.before(resContainer);
+      } else {
+        terminalOutput.appendChild(resContainer);
+      }
+
+      ensureInputForm();
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+      if (scrollTargetId) {
+        const targetEl = document.querySelector(scrollTargetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+
+    // Audio Music Player Logic
+    const songsList = (window as any).__playgroundSongs || [];
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    const audio = new Audio();
+
+    try {
+      const savedTrack = localStorage.getItem("music-player-last-track");
+      if (savedTrack !== null) {
+        const idx = parseInt(savedTrack, 10);
+        if (!isNaN(idx) && idx >= 0 && idx < songsList.length) {
+          currentTrackIndex = idx;
+        }
+      }
+    } catch (e) {}
+
+    const songTitleEl = document.getElementById("playground-song-title");
+    const playBtn = document.getElementById("playground-play-btn");
+    const playIcon = document.getElementById("playground-play-icon");
+    const prevBtn = document.getElementById("playground-prev-btn");
+    const nextBtn = document.getElementById("playground-next-btn");
+    const progressBar = document.getElementById("playground-progress-bar");
+    const progressFill = document.getElementById("playground-progress-fill");
+    const currentTimeEl = document.getElementById("playground-current-time");
+    const durationTimeEl = document.getElementById("playground-duration-time");
+    const albumArt = document.getElementById("playground-album-art");
+    const visualizerBg = document.getElementById("playground-visualizer-bg");
+    const playlistItems = document.querySelectorAll(".playlist-item");
+
+    function loadTrack(index: number) {
+      if (songsList.length === 0) return;
+      currentTrackIndex = (index + songsList.length) % songsList.length;
+      const track = songsList[currentTrackIndex];
+
+      audio.src = track.file;
+      if (songTitleEl) songTitleEl.textContent = track.name;
+
+      try {
+        localStorage.setItem("music-player-last-track", String(currentTrackIndex));
+      } catch (e) {}
+
+      playlistItems.forEach((item) => {
+        const itemIdx = parseInt(item.getAttribute("data-index") || "-1", 10);
+        if (itemIdx === currentTrackIndex) {
+          item.classList.add("active");
+        } else {
+          item.classList.remove("active");
+        }
+      });
+    }
+
+    function togglePlay() {
+      if (songsList.length === 0) return;
+      if (!audio.src) loadTrack(currentTrackIndex);
+
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play().catch((err) => console.log("Audio playback error:", err));
+      }
+    }
+
+    audio.addEventListener("play", () => {
+      isPlaying = true;
+      if (playIcon) playIcon.className = "fas fa-pause";
+      albumArt?.classList.add("animate-spin-slow");
+      visualizerBg?.classList.add("playing");
+    });
+
+    audio.addEventListener("pause", () => {
+      isPlaying = false;
+      if (playIcon) playIcon.className = "fas fa-play";
+      albumArt?.classList.remove("animate-spin-slow");
+      visualizerBg?.classList.remove("playing");
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!audio.duration) return;
+      const percent = (audio.currentTime / audio.duration) * 100;
+      if (progressFill) progressFill.style.width = `${percent}%`;
+      if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+      if (durationTimeEl) durationTimeEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("ended", () => {
+      loadTrack(currentTrackIndex + 1);
+      audio.play().catch(() => {});
+    });
+
+    function formatTime(sec: number): string {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? "0" : ""}${s}`;
+    }
+
+    playBtn?.addEventListener("click", togglePlay);
+    prevBtn?.addEventListener("click", () => {
+      loadTrack(currentTrackIndex - 1);
+      if (isPlaying) audio.play().catch(() => {});
+    });
+    nextBtn?.addEventListener("click", () => {
+      loadTrack(currentTrackIndex + 1);
+      if (isPlaying) audio.play().catch(() => {});
+    });
+
+    progressBar?.addEventListener("click", (e) => {
+      if (!audio.duration) return;
+      const rect = progressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      audio.currentTime = (clickX / width) * audio.duration;
+    });
+
+    playlistItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const idx = parseInt(item.getAttribute("data-index") || "0", 10);
+        loadTrack(idx);
+        audio.play().catch(() => {});
+      });
+    });
+
+    if (songsList.length > 0) {
+      loadTrack(currentTrackIndex);
+    }
+
+    // Initialize Terminal content
+    initTerminalContent();
+  }
+
+  document.addEventListener("DOMContentLoaded", setupPlayground);
+</script>
