@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import ScrollAnimations from "../components/ScrollAnimations.astro";
-import ParallaxBackground from "../components/ParallaxBackground.astro";
 import InteractiveHub from "../components/InteractiveHub.astro";
 
 interface Props {
@@ -43,7 +42,6 @@ const {
     />
   </head>
   <body class="antialiased relative">
-    <ParallaxBackground />
     <slot />
     <InteractiveHub />
     <ScrollAnimations />
