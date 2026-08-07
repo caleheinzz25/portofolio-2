@@ -5,6 +5,7 @@ const navItems = [
   { name: "Skills", href: "#skills" },
   { name: "Activity", href: "#activity" },
   { name: "Projects", href: "#projects" },
+  { name: "Playground", href: "#api-playground" },
   { name: "Contact", href: "#contact" },
 ];
 ---
@@ -38,10 +39,7 @@ const navItems = [
           </li>
         ))
       }
-      <li class="opacity-0 animate-fade-in flex items-center gap-3" style="animation-delay: 500ms">
-        <a href="#interactive-hub" class="btn-primary text-sm flex items-center gap-1.5" id="nav-playground-btn">
-          <span class="font-bold text-mint">&gt;_</span> Playground
-        </a>
+      <li class="opacity-0 animate-fade-in" style="animation-delay: 800ms">
         <a href="/resume.pdf" class="btn-primary text-sm" target="_blank">
           Resume
         </a>
@@ -83,12 +81,9 @@ const navItems = [
           ))
         }
         <li
-          class="mobile-nav-item pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 w-full px-6 max-w-xs"
+          class="mobile-nav-item pt-2 flex items-center justify-center w-full px-6 max-w-xs"
           style={`--item-index: ${navItems.length};`}
         >
-          <a href="#interactive-hub" class="btn-primary text-sm px-6 py-2.5 flex items-center justify-center gap-1.5 w-full sm:w-auto text-center">
-            <span class="font-bold text-mint">&gt;_</span> Playground
-          </a>
           <a href="/resume.pdf" class="btn-primary text-sm px-6 py-2.5 flex items-center justify-center w-full sm:w-auto text-center" target="_blank"> Resume </a>
         </li>
       </ul>

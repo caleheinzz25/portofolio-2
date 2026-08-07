@@ -1,5 +1,4 @@
 ---
-import ApiPlaygroundComponent from "./ApiPlayground";
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -81,12 +80,6 @@ const games = [
         </button>
         <button
           class="hub-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
-          data-tab="api"
-        >
-          <span>⚡</span> <span class="hidden sm:inline">API Demo</span>
-        </button>
-        <button
-          class="hub-tab-btn px-3 py-1.5 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-slate hover:text-light-slate"
           data-tab="music"
         >
           <span>🎵</span> <span class="hidden sm:inline">Music</span>
@@ -104,7 +97,7 @@ const games = [
           id="hub-esc-badge"
           class="text-xs font-mono text-slate flex items-center gap-1.5 bg-navy/80 px-2.5 py-1 rounded-lg border border-slate/20 hover:border-mint/50 hover:text-mint transition-all duration-200 cursor-pointer group"
           title="Click or press Esc to close modal"
-          aria-label="Close Playground Modal"
+          aria-label="Close Hub Modal"
         >
           <kbd class="text-[10px] font-bold text-mint bg-slate/20 px-1.5 py-0.5 rounded border border-slate/30 group-hover:bg-mint/20">Esc</kbd>
           <span class="text-[11px] hidden sm:inline">to close</span>
@@ -121,17 +114,6 @@ const games = [
         <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-25 z-10"></div>
         <div id="hub-terminal-output" class="flex-1 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-4 z-20 scrollbar-thin scrollbar-thumb-slate/30">
           <!-- Terminal content injected dynamically -->
-        </div>
-      </div>
-
-      <!-- TAB 2: API Demo Playground -->
-      <div id="tab-panel-api" class="hub-tab-panel hidden h-full overflow-y-auto p-4 md:p-6">
-        <div class="max-w-4xl mx-auto">
-          <div class="mb-4">
-            <h4 class="text-base font-serif font-bold text-light-slate">Interactive API Playground</h4>
-            <p class="text-xs text-slate">Test live HTTP REST requests, measure response latency & inspect payloads.</p>
-          </div>
-          <ApiPlaygroundComponent client:idle />
         </div>
       </div>
 
@@ -776,7 +758,8 @@ const games = [
           break;
 
         case "api":
-          switchTab("api");
+          renderResponse(`<p class="text-light-slate my-1">Navigating to API Response Playground section...</p>`, '#api-playground');
+          closeModal();
           break;
         case "music":
           switchTab("music");
