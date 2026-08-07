@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Game2048 from "../../games/Game2048.tsx";
+---
+
+<BaseLayout title="2048 Puzzle | Muhammad Hisyam">
+  <div class="min-h-screen bg-navy py-20 px-6">
+    <div class="max-w-2xl mx-auto">
+      <!-- Back Button -->
+      <a
+        href="/#playground"
+        class="inline-flex items-center gap-2 text-mint hover:text-mint/80 transition-colors mb-8 font-mono text-sm"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Mini Games
+      </a>
+
+      <!-- Game Container -->
+      <div class="bg-light-navy rounded-xl p-6 border border-slate/10 shadow-xl">
+        <h1 class="text-3xl font-serif font-bold text-light-slate mb-2 text-center">
+          🧩 2048
+        </h1>
+        <p class="text-slate text-center mb-6 text-sm">
+          Slide numbered tiles to merge matching pairs and reach 2048!
+        </p>
+
+        <Game2048 client:only="solid-js" />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

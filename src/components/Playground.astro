@@ -40,6 +40,41 @@ const games = [
     icon: '⌨️',
     status: 'available',
     href: '/games/typing-speed'
+  },
+  {
+    name: '2048 Puzzle',
+    description: 'Slide numbered tiles to merge matching pairs and reach 2048.',
+    icon: '🧩',
+    status: 'available',
+    href: '/games/2048'
+  },
+  {
+    name: 'Whack-a-Bug',
+    description: 'Squash software bugs as fast as you can in 30 seconds.',
+    icon: '🎯',
+    status: 'available',
+    href: '/games/whack-a-bug'
+  },
+  {
+    name: 'Sudoku',
+    description: 'Classic logic puzzle — fill in the grid without repeating numbers.',
+    icon: '🔢',
+    status: 'available',
+    href: '/games/sudoku'
+  },
+  {
+    name: 'Retro Pong',
+    description: 'Classic arcade Pong — defeat the AI bot in a 5-point match.',
+    icon: '🎮',
+    status: 'available',
+    href: '/games/pong'
+  },
+  {
+    name: 'Minesweeper',
+    description: 'Uncover empty grid cells without triggering hidden mines.',
+    icon: '💣',
+    status: 'available',
+    href: '/games/minesweeper'
   }
 ];
 ---
@@ -218,7 +253,7 @@ const games = [
               <p class="text-xs text-slate">Play retro arcade games directly in your browser.</p>
             </div>
 
-            <div class="grid sm:grid-cols-3 gap-4">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {games.map((game) => (
                 <div class="card bg-light-navy/40 border border-slate/20 rounded-xl p-5 hover:border-mint/40 transition-all duration-300 flex flex-col justify-between group">
                   <div>
