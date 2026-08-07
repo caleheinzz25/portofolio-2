@@ -1,0 +1,109 @@
+\documentclass[11pt,a4paper]{article}
+
+% Package Imports
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+% Color Definitions (Matching Emerald Theme Palette)
+\definecolor{emeraldColor}{HTML}{10B981}
+\definecolor{navyColor}{HTML}{0D1B2A}
+\definecolor{slateColor}{HTML}{4B5563}
+
+% Hyperlink Configuration
+\hypersetup{
+    colorlinks=true,
+    linkcolor=emeraldColor,
+    filecolor=emeraldColor,
+    urlcolor=emeraldColor,
+    pdftitle={Muhammad Hisyam - Curriculum Vitae},
+    pdfauthor={Muhammad Hisyam}
+}
+
+% Section Heading Formatting
+\titleformat{\section}
+  {\large\bfseries\color{navyColor}}
+  {}{0em}{}
+  [\color{emeraldColor}\titlerule]
+
+\titlespacing*{\section}{0pt}{12pt}{8pt}
+
+% Page Geometry & Style
+\pagestyle{empty}
+\setlist[itemize]{leftmargin=1.5em, itemsep=2pt, topsep=2pt}
+
+\begin{document}
+
+% ==================== HEADER ====================
+\begin{center}
+    {\Huge \bfseries \color{navyColor} MUHAMMAD HISYAM}\\[4pt]
+    {\fontfamily{phv}\selectfont \color{emeraldColor}\large Software Engineer}\\[8pt]
+    \small
+    Email: \href{mailto:muhammad2504hisyam@gmail.com}{muhammad2504hisyam@gmail.com} \quad $\cdot$ \quad
+    GitHub: \href{https://github.com/caleheinzz25}{github.com/caleheinzz25} \quad $\cdot$ \quad
+    Portfolio: \href{https://portofolio-2-three.vercel.app}{mhisyam.dev} \quad $\cdot$ \quad
+    Location: Indonesia
+\end{center}
+
+\vspace{-4pt}
+
+% ==================== EXECUTIVE SUMMARY ====================
+\section{PROFESSIONAL SUMMARY}
+Software Engineer specializing in building modern web applications, high-performance API services, and intuitive developer tooling. Experienced in crafting clean, accessible, and maintainable software using TypeScript, Astro, SolidJS, React, Node.js, and Golang. Passionate about system design, code quality, and open-source contribution.
+
+% ==================== TECHNICAL SKILLS ====================
+\section{TECHNICAL SKILLS}
+\begin{itemize}[label={}]
+    \item \textbf{Languages:} TypeScript, JavaScript, Golang, SQL, Python, HTML5, CSS3, LaTeX
+    \item \textbf{Frameworks \& Libraries:} Astro, React.js, SolidJS, Next.js, Node.js, Express.js, Tailwind CSS
+    \item \textbf{Databases \& Caching:} PostgreSQL, MongoDB, Redis, Valkey
+    \item \textbf{DevOps \& Tools:} Docker, Git, GitHub Actions, Vite, Bun, Linux / Unix CLI, PM2
+\end{itemize}
+
+% ==================== WORK EXPERIENCE ====================
+\section{WORK EXPERIENCE}
+
+\textbf{Software Engineer} \hfill \textit{2024 -- Present}\\
+\textcolor{slateColor}{\textit{Company Name} \hfill \textit{Location}}
+\begin{itemize}
+    \item Architected and deployed scalable web applications using Astro, React, and TypeScript.
+    \item Engineered high-throughput REST APIs and data transformation pipelines.
+    \item Optimized frontend performance and Core Web Vitals to achieve sub-second page loading speeds.
+\end{itemize}
+
+\vspace{4pt}
+
+\textbf{Frontend / Full Stack Developer} \hfill \textit{2022 -- 2024}\\
+\textcolor{slateColor}{\textit{Company Name} \hfill \textit{Location}}
+\begin{itemize}
+    \item Developed modular component libraries with React, SolidJS, and Tailwind CSS.
+    \item Collaborated with UI/UX designers to implement responsive, accessible (WCAG AA compliant) user interfaces.
+    \item Integrated CI/CD automated deployment pipelines and Docker containerization scripts.
+\end{itemize}
+
+% ==================== FEATURED PROJECTS ====================
+\section{FEATURED PROJECTS}
+
+\textbf{Developer Portfolio \& Interactive Hub} \hfill \href{https://github.com/caleheinzz25/portofolio-2}{GitHub Repository}
+\begin{itemize}
+    \item Built a modern, static-rendered portfolio with Astro 5, SolidJS, and Tailwind CSS 4.
+    \item Implemented an interactive Dev Suite featuring a retro Unix terminal shell (\texttt{hisyam-cli}), REST API response playground, audio music player, and mini-games arcade.
+\end{itemize}
+
+\vspace{4pt}
+
+\textbf{Interactive API Response Demo} \hfill \href{https://github.com/caleheinzz25}{Open Source}
+\begin{itemize}
+    \item Engineered a reactive HTTP client widget in SolidJS for live REST request testing, latency timing metrics, and JSON syntax highlighting.
+\end{itemize}
+
+% ==================== EDUCATION ====================
+\section{EDUCATION}
+
+\textbf{Bachelor of Science in Computer Science / Information Technology} \hfill \textit{Graduation Year}\\
+\textcolor{slateColor}{\textit{University Name, Location}}
+
+\end{document}
