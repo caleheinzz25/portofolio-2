@@ -1,370 +1,230 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 
-% ─── Packages ─────────────────────────────────────────────────────────────────
+% Package Imports
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[margin=0.55in, top=0.45in, bottom=0.45in]{geometry}
+\usepackage[margin=0.5in]{geometry}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\usepackage[most]{tcolorbox}
-\usepackage{multicol}
+\usepackage{titlesec}
 \usepackage{enumitem}
-\usepackage{lmodern}
-\usepackage{microtype}
-\usepackage{array}
 \usepackage{tabularx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
 
-% ─── Color Palette (Emerald × Navy Theme) ─────────────────────────────────────
-\definecolor{navy}{HTML}{0D1B2A}
-\definecolor{navyMid}{HTML}{1A2F45}
-\definecolor{emerald}{HTML}{10B981}
+% Custom Color Palette (Emerald & Modern Dark Theme)
+\definecolor{navyDark}{HTML}{0B132B}
+\definecolor{navyCard}{HTML}{1C2541}
+\definecolor{emeraldAccent}{HTML}{10B981}
 \definecolor{emeraldDark}{HTML}{059669}
-\definecolor{slate}{HTML}{475569}
-\definecolor{lightSlate}{HTML}{94A3B8}
-\definecolor{cardBg}{HTML}{F8FAFC}
-\definecolor{borderLight}{HTML}{E2E8F0}
+\definecolor{slateText}{HTML}{334155}
+\definecolor{slateLight}{HTML}{F1F5F9}
+\definecolor{borderGray}{HTML}{CBD5E1}
+\definecolor{tagBg}{HTML}{ECFDF5}
+\definecolor{tagBorder}{HTML}{A7F3D0}
 
-% Tag colours per technology
-\definecolor{clrTs}{HTML}{3178C6}
-\definecolor{clrRust}{HTML}{B7410E}
-\definecolor{clrGo}{HTML}{00ADD8}
-\definecolor{clrPy}{HTML}{3776AB}
-\definecolor{clrJava}{HTML}{ED8B00}
-\definecolor{clrNet}{HTML}{512BD4}
-\definecolor{clrTauri}{HTML}{24C8DB}
-\definecolor{clrSupa}{HTML}{3ECF8E}
-\definecolor{clrAstro}{HTML}{FF5D01}
-\definecolor{clrDocker}{HTML}{2496ED}
-\definecolor{clrGemini}{HTML}{8B5CF6}
-\definecolor{clrReact}{HTML}{61DAFB}
-\definecolor{clrNode}{HTML}{339933}
-\definecolor{clrMid}{HTML}{6B7280}
-
-% ─── tcolorbox Library ────────────────────────────────────────────────────────
-\tcbuselibrary{skins, breakable, raster}
-
-% ─── Styles ───────────────────────────────────────────────────────────────────
-% Inline badge / tech tag
-\newtcbox{\badge}[1][clrMid]{%
-  nobeforeafter, tcbox raise base,
-  enhanced, boxrule=0.6pt,
-  top=1.2pt, bottom=1.2pt, left=4pt, right=4pt,
-  arc=3pt,
-  colback=#1!10,
-  colframe=#1!50,
-  fontupper={\fontsize{6.5pt}{6.5pt}\selectfont\bfseries\color{#1!80!black}},
-  before upper={\vphantom{Eg}}
-}
-
-% Project card (left emerald border)
-\tcbset{
-  projectcard/.style={
-    enhanced, breakable,
-    colback=white,
-    colframe=borderLight,
-    boxrule=0.8pt,
-    leftrule=4pt,
-    colframe=emerald,
-    arc=4pt,
-    top=8pt, bottom=8pt, left=10pt, right=10pt,
-    shadow={1.5mm}{-1.5mm}{0mm}{black!6},
-    before skip=6pt, after skip=6pt,
-  }
-}
-
-% Stat card
-\tcbset{
-  statcard/.style={
-    enhanced,
-    colback=emerald!8,
-    colframe=emerald!35,
-    boxrule=1pt,
-    arc=6pt,
-    top=7pt, bottom=7pt, left=6pt, right=6pt,
-    halign=center,
-    before skip=0pt, after skip=0pt,
-  }
-}
-
-% Section divider
-\tcbset{
-  sectionhdr/.style={
-    enhanced,
-    colback=navy,
-    colframe=navy,
-    arc=4pt,
-    top=3pt, bottom=3pt, left=10pt, right=10pt,
-    before skip=10pt, after skip=5pt,
-  }
-}
-
-% Skills block
-\tcbset{
-  skillsblock/.style={
-    enhanced,
-    colback=cardBg,
-    colframe=borderLight,
-    boxrule=0.8pt,
-    arc=5pt,
-    top=8pt, bottom=8pt, left=10pt, right=10pt,
-    before skip=4pt, after skip=4pt,
-  }
-}
-
+% Hyperlink Configuration
 \hypersetup{
-  colorlinks=true,
-  urlcolor=emeraldDark,
-  linkcolor=emeraldDark,
-  pdftitle={Muhammad Hisyam - Portfolio},
-  pdfauthor={Muhammad Hisyam}
+    colorlinks=true,
+    linkcolor=emeraldDark,
+    filecolor=emeraldDark,
+    urlcolor=emeraldDark,
+    pdftitle={Muhammad Hisyam - Software Engineering Project Showcase},
+    pdfauthor={Muhammad Hisyam}
 }
 
 \pagestyle{empty}
-\setlist[itemize]{leftmargin=1.2em, itemsep=1pt, topsep=2pt, parsep=0pt}
+\setlist[itemize]{leftmargin=1.1em, itemsep=2.5pt, topsep=2.5pt, parsep=0pt}
 
-% ─── Helper: tag shorthand ────────────────────────────────────────────────────
-\newcommand{\tech}[2]{\badge[#1]{#2}\hspace{2pt}}
-
-% ─── Helpers for section headers ──────────────────────────────────────────────
-\newcommand{\sechdr}[1]{%
-  \begin{tcolorbox}[sectionhdr]
-    \textbf{\color{emerald}\small\textrm{$\bullet$}}\;%
-    {\small\bfseries\color{white}\MakeUppercase{#1}}
-  \end{tcolorbox}%
-}
+% Custom Tech Badge Tag
+\newcommand{\techtag}[1]{\setlength{\fboxsep}{2.5pt}\fcolorbox{tagBorder}{tagBg}{\color{emeraldDark}\sffamily\bfseries\scriptsize #1}\hspace{1pt}}
 
 \begin{document}
 
-% ═══════════════════════════════════════════════════════════════════
-% HEADER BANNER
-% ═══════════════════════════════════════════════════════════════════
+% ==================== HERO HEADER BANNER ====================
 \begin{tcolorbox}[
-  enhanced,
-  colback=navy,
-  colframe=navy,
-  arc=6pt,
-  top=16pt, bottom=14pt, left=14pt, right=14pt,
-  before skip=0pt, after skip=14pt,
-  interior style={
-    left color=navy,
-    right color=navyMid,
-  },
+    colback=navyDark,
+    colframe=emeraldAccent,
+    arc=3mm,
+    boxrule=1.5pt,
+    top=10pt,
+    bottom=10pt,
+    left=12pt,
+    right=12pt
 ]
-  % Name
-  \begin{center}
-    {\fontsize{28pt}{30pt}\selectfont\bfseries\color{white} MUHAMMAD HISYAM}\\[5pt]
-    {\large\color{emerald}\bfseries Full Stack \& AI Software Engineer}\\[10pt]
-    % Contact row
-    {\small\color{white!75!navy}
-      {\color{lightSlate}Email:}\;
-      \href{mailto:muhammad2504hisyam@gmail.com}{\color{emerald}muhammad2504hisyam@gmail.com}
-      \enspace\textcolor{emerald}{|}\enspace
-      {\color{lightSlate}GitHub:}\;
-      \href{https://github.com/caleheinzz25}{\color{emerald}caleheinzz25}
-      \enspace\textcolor{emerald}{|}\enspace
-      \href{https://www.linkedin.com/in/muhammad-hisyam-65502332a/}{\color{emerald}LinkedIn}
-      \enspace\textcolor{emerald}{|}\enspace
-      \href{https://mhisyam.com}{\color{emerald}mhisyam.com}
-      \enspace\textcolor{emerald}{|}\enspace
-      {\color{lightSlate}Bekasi, Indonesia}
+\begin{center}
+    {\Huge \bfseries \color{white} MUHAMMAD HISYAM}\\[3pt]
+    {\fontfamily{phv}\selectfont \color{emeraldAccent}\Large\bfseries SOFTWARE ENGINEERING PROJECT SHOWCASE}\\[5pt]
+    {\color{slateLight}\small Full Stack, Desktop Cross-Platform \& AI Deep Learning Applications}\\[8pt]
+    
+    {\color{white}\small
+        \href{mailto:muhammad2504hisyam@gmail.com}{\color{white}muhammad2504hisyam@gmail.com} \quad$\cdot$\quad
+        \href{https://github.com/caleheinzz25}{\color{emeraldAccent}github.com/caleheinzz25} \quad$\cdot$\quad
+        \href{https://www.linkedin.com/in/muhammad-hisyam-65502332a/}{\color{emeraldAccent}linkedin} \quad$\cdot$\quad
+        \href{https://mhisyam.com}{\color{emeraldAccent}mhisyam.com} \quad$\cdot$\quad
+        Bekasi, Indonesia
     }
-  \end{center}
+\end{center}
 \end{tcolorbox}
 
-% ═══════════════════════════════════════════════════════════════════
-% ABOUT / PROFILE STATEMENT
-% ═══════════════════════════════════════════════════════════════════
+\vspace{-4pt}
+
+% ==================== TECHNICAL MATRIX ====================
 \begin{tcolorbox}[
-  enhanced,
-  colback=emerald!6,
-  colframe=emerald,
-  boxrule=1pt,
-  arc=5pt,
-  top=6pt, bottom=6pt, left=12pt, right=12pt,
-  before skip=0pt, after skip=10pt,
+    colback=slateLight,
+    colframe=borderGray,
+    arc=2mm,
+    boxrule=1pt,
+    title={\color{navyDark}\bfseries\sffamily CORE TECHNICAL CAPABILITIES},
+    coltitle=navyDark,
+    colbacktitle=slateLight,
+    top=4pt,bottom=6pt,left=8pt,right=8pt
 ]
-\small\color{slate}
-Full Stack \& AI Software Engineer and Universitas Gunadarma Computer Science graduate.
-Creator of \textbf{26+ open-source projects} spanning desktop cross-platform applications, high-performance web systems,
-medical deep learning pipelines, and agentic AI. Expert in
-\textbf{C\#/.NET}, \textbf{TypeScript}, \textbf{Rust}, \textbf{Python}, \textbf{Golang}, \textbf{Java}, and \textbf{Supabase/PostgreSQL}.
+\small
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Languages} & C\#, TypeScript, JavaScript, Rust, Python, Golang, Java, PHP, PL/pgSQL, HTML5, CSS3 \\
+\textbf{Frontend \& Desktop} & Tauri (Rust Runtime), Astro 5, React.js, SolidJS, SvelteKit, Next.js, Vue.js, Tailwind CSS 4 \\
+\textbf{Backend \& Cloud} & .NET Core, Supabase, Node.js, Express.js, Go (Gin/Fiber), Java Spring Boot, Laravel, WebSockets \\
+\textbf{AI \& Deep Learning} & PyTorch, U-Net Architecture, OpenCV, Model Context Protocol (MCP), Google Gemini API \\
+\textbf{Database \& Infrastructure} & PostgreSQL, Supabase RLS, MongoDB, Redis, Docker, Git, Vite, Bun, Biome, Linux Shell \\
+\end{tabularx}
 \end{tcolorbox}
 
-% ═══════════════════════════════════════════════════════════════════
-% STATS ROW
-% ═══════════════════════════════════════════════════════════════════
-\begin{tcbraster}[
-  raster columns=4,
-  raster equal height=rows,
-  raster column skip=6pt,
-  raster row skip=0pt,
-  raster before skip=0pt,
-  raster after skip=10pt,
-]
-  \begin{tcolorbox}[statcard]
-    {\Large\bfseries\color{navy} 26+}\\[1pt]
-    {\tiny\color{slate} Open-Source Repos}
-  \end{tcolorbox}
-  \begin{tcolorbox}[statcard]
-    {\Large\bfseries\color{navy} 7+}\\[1pt]
-    {\tiny\color{slate} Featured Projects}
-  \end{tcolorbox}
-  \begin{tcolorbox}[statcard]
-    {\Large\bfseries\color{navy} 12+}\\[1pt]
-    {\tiny\color{slate} Languages \& Runtimes}
-  \end{tcolorbox}
-  \begin{tcolorbox}[statcard]
-    {\Large\bfseries\color{navy} 8}\\[1pt]
-    {\tiny\color{slate} Embedded Mini-Games}
-  \end{tcolorbox}
-\end{tcbraster}
+\vspace{4pt}
 
-% ═══════════════════════════════════════════════════════════════════
-% FEATURED PROJECTS
-% ═══════════════════════════════════════════════════════════════════
-\sechdr{Featured Project Showcase}
+% ==================== FEATURED PROJECTS SHOWCASE ====================
+\begin{center}
+{\Large\bfseries\color{navyDark}\sffamily FEATURED SYSTEM SHOWCASE \& CASE STUDIES}
+\end{center}
+\vspace{2pt}
 
-% ─── Project 1: RetailHub ─────────────────────────────────────────
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} RetailHub}
-  \hfill
-  {\small\href{https://github.com/caleheinzz25/retailhub}{\color{emeraldDark}$\hookrightarrow$\, github.com/caleheinzz25/retailhub}}\\
-  {\small\color{lightSlate} Retail Management \& Cross-Platform POS Platform}\\[5pt]
-  \tech{clrTauri}{Tauri}\tech{clrRust}{Rust}\tech{clrTs}{TypeScript}%
-  \tech{clrSupa}{Supabase}\tech{clrNet}{.NET}\badge[clrMid]{TanStack Router}\\[6pt]
-  \begin{itemize}\small
-    \item Cross-platform desktop Point of Sale (POS) \& inventory management system using Tauri (Rust runtime) + TypeScript frontend.
-    \item Supabase PostgreSQL architecture with Row Level Security (RLS), PL/pgSQL stored functions, and real-time multi-terminal sync.
-  \end{itemize}
-\end{tcolorbox}
-
-% ─── Project 2: Portfolio ─────────────────────────────────────────
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} Developer Portfolio \& Interactive Dev Suite}
-  \hfill
-  {\small\href{https://mhisyam.com}{\color{emeraldDark}$\hookrightarrow$\, mhisyam.com}}\\
-  {\small\color{lightSlate} Astro 5 Island Architecture with 8 Embedded Mini-Games Arcade}\\[5pt]
-  \tech{clrAstro}{Astro 5}\tech{clrTs}{TypeScript}\tech{clrGo}{SolidJS}%
-  \badge[clrMid]{Tailwind CSS 4}\hspace{2pt}\badge[clrMid]{HTML5 Canvas}\\[6pt]
-  \begin{itemize}\small
-    \item Ultra-fast static portfolio with embedded Unix terminal shell (\texttt{hisyam-cli}), REST API demo client, and audio music player.
-    \item 8 playable mini-games: 2048, Whack-a-Bug, Sudoku, Pong, Minesweeper, Snake, Memory Match, Typing Speed.
-    \item Automated build pipeline fetching live GitHub profile stats and repository telemetry.
-  \end{itemize}
-\end{tcolorbox}
-
-% ─── Project 3: U-Net ─────────────────────────────────────────────
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} Pneumonia U-Net Segmentation Pipeline}
-  \hfill
-  {\small\href{https://github.com/caleheinzz25/pneumonia-segmentation-unet}{\color{emeraldDark}$\hookrightarrow$\, Repository}}\\
-  {\small\color{lightSlate} Medical AI — Deep Learning Semantic Segmentation}\\[5pt]
-  \tech{clrPy}{Python}\tech{clrPy}{PyTorch}%
-  \badge[clrMid]{U-Net}\hspace{2pt}\badge[clrMid]{OpenCV}\hspace{2pt}\badge[clrMid]{NumPy}\\[6pt]
-  \begin{itemize}\small
-    \item End-to-end medical image segmentation pipeline using PyTorch U-Net encoder-decoder architecture for chest X-ray analysis.
-    \item Evaluated with Dice Similarity Coefficient (DSC) and Intersection over Union (IoU) metrics.
-  \end{itemize}
-\end{tcolorbox}
-
-% ─── Project 4 + 5 side note (compact) ───────────────────────────
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} Gemini Model Context Protocol (MCP) Client}
-  \hfill
-  {\small\href{https://github.com/caleheinzz25/mcp-client-gemini}{\color{emeraldDark}$\hookrightarrow$\, Repository}}\\
-  {\small\color{lightSlate} Agentic AI Tooling — Structured Workflow Automation}\\[5pt]
-  \tech{clrTs}{TypeScript}\tech{clrGemini}{Gemini API}%
-  \badge[clrMid]{MCP Protocol}\hspace{2pt}\badge[clrNode]{Node.js}\\[6pt]
-  \begin{itemize}\small
-    \item Extensible MCP client enabling agentic AI tool-use integrations and structured workflow orchestration with Google Gemini.
-  \end{itemize}
-\end{tcolorbox}
-
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} Golang \& SvelteKit Real-Time Chat}
-  \hfill
-  {\small\href{https://github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}{\color{emeraldDark}$\hookrightarrow$\, Repository}}\\
-  {\small\color{lightSlate} Concurrent WebSocket Backend + Reactive SvelteKit Frontend}\\[5pt]
-  \tech{clrGo}{Golang}\badge[clrMid]{Goroutines}\hspace{2pt}\badge[clrMid]{WebSockets}%
-  \hspace{2pt}\badge[clrMid]{SvelteKit}\\[6pt]
-  \begin{itemize}\small
-    \item Multi-room concurrent WebSocket chat server built with Go channels \& goroutines, paired with reactive SvelteKit UI.
-  \end{itemize}
-\end{tcolorbox}
-
-\begin{tcolorbox}[projectcard]
-  {\bfseries\large\color{navy} Secure Java JWT Authentication Microservice}
-  \hfill
-  {\small\href{https://github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}{\color{emeraldDark}$\hookrightarrow$\, Repository}}\\
-  {\small\color{lightSlate} Enterprise-Grade Auth — Access + Refresh + Version Tokens}\\[5pt]
-  \tech{clrJava}{Java}\badge[clrMid]{Spring Boot}\hspace{2pt}\badge[clrMid]{Spring Security}%
-  \hspace{2pt}\badge[clrMid]{JWT}\hspace{2pt}\badge[clrMid]{PostgreSQL}\\[6pt]
-  \begin{itemize}\small
-    \item Enterprise JWT auth microservice: access tokens, sliding session refresh tokens, and instant token version invalidation.
-  \end{itemize}
-\end{tcolorbox}
-
-% ═══════════════════════════════════════════════════════════════════
-% TECHNICAL ARSENAL
-% ═══════════════════════════════════════════════════════════════════
-\sechdr{Technical Arsenal}
-
-\begin{tcolorbox}[skillsblock]
-\begin{multicols}{2}
-
-{\footnotesize\bfseries\color{navy} Languages \& Platforms}\\[2pt]
-\tech{clrNet}{C\#}\tech{clrTs}{TypeScript}\tech{clrRust}{Rust}%
-\tech{clrPy}{Python}\tech{clrGo}{Golang}\tech{clrJava}{Java}%
-\badge[clrMid]{PHP}\hspace{2pt}\badge[clrMid]{PL/pgSQL}\\[7pt]
-
-{\footnotesize\bfseries\color{navy} Desktop \& Frontend}\\[2pt]
-\tech{clrTauri}{Tauri}\tech{clrAstro}{Astro 5}\tech{clrReact}{React.js}%
-\badge[clrMid]{SolidJS}\hspace{2pt}\badge[clrMid]{SvelteKit}%
-\hspace{2pt}\badge[clrMid]{Next.js}\hspace{2pt}\badge[clrMid]{Vue.js}\\[7pt]
-
-{\footnotesize\bfseries\color{navy} AI \& Deep Learning}\\[2pt]
-\tech{clrPy}{PyTorch}\tech{clrGemini}{Gemini API}%
-\badge[clrMid]{U-Net}\hspace{2pt}\badge[clrMid]{OpenCV}%
-\hspace{2pt}\badge[clrMid]{MCP Protocol}
-
-\columnbreak
-
-{\footnotesize\bfseries\color{navy} Backend \& APIs}\\[2pt]
-\tech{clrNet}{.NET}\tech{clrGo}{Go Gin/Fiber}%
-\tech{clrJava}{Spring Boot}\tech{clrNode}{Node.js}%
-\badge[clrMid]{Express.js}\hspace{2pt}\badge[clrMid]{Laravel}\\[7pt]
-
-{\footnotesize\bfseries\color{navy} Database}\\[2pt]
-\tech{clrSupa}{Supabase}\badge[clrMid]{PostgreSQL}%
-\hspace{2pt}\badge[clrMid]{MongoDB}\hspace{2pt}\badge[clrMid]{Redis}\\[7pt]
-
-{\footnotesize\bfseries\color{navy} DevOps \& Toolchain}\\[2pt]
-\tech{clrDocker}{Docker}\badge[clrMid]{GitHub Actions}%
-\hspace{2pt}\badge[clrMid]{Linux}\hspace{2pt}\badge[clrMid]{Bun}%
-\hspace{2pt}\badge[clrMid]{CI/CD}\hspace{2pt}\badge[clrMid]{Nginx}
-
-\end{multicols}
-\end{tcolorbox}
-
-% ═══════════════════════════════════════════════════════════════════
-% EDUCATION
-% ═══════════════════════════════════════════════════════════════════
-\sechdr{Education}
-
+% ----- PROJECT 1: RETAILHUB -----
 \begin{tcolorbox}[
-  enhanced,
-  colback=navy!4,
-  colframe=navy,
-  boxrule=0pt, leftrule=5pt,
-  arc=0pt,
-  top=8pt, bottom=8pt, left=12pt, right=12pt,
-  before skip=4pt, after skip=0pt,
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 1. RetailHub -- Point of Sale \& Inventory Management Platform \hfill \small\href{https://github.com/caleheinzz25/retailhub}{\color{emeraldAccent}[GitHub Repo]}},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
 ]
-  {\bfseries\color{navy} Universitas Gunadarma}
-  \hfill {\small\color{lightSlate} Bekasi, Indonesia}\\
-  {\small\color{emeraldDark}\bfseries Bachelor of Computer Science (Informatika) --- Fresh Graduate}\\[3pt]
-  {\small\color{slate} Focus on Software Engineering, Web Systems, and Applied Artificial Intelligence.
-  Maintainer of 26+ open-source repositories spanning AI, web apps, desktop tools, and backend APIs.}
+\textbf{Technologies:} \techtag{Tauri} \techtag{Rust} \techtag{TypeScript} \techtag{TanStack Router} \techtag{Supabase} \techtag{PostgreSQL} \techtag{Tailwind CSS}\\[5pt]
+\textbf{Architecture \& Key Features:}
+\begin{itemize}
+    \item High-performance desktop and cross-platform cashier POS application engineered with Tauri (Rust native backend runtime) and TypeScript frontend.
+    \item Multi-tenant database design using Supabase PostgreSQL, incorporating Row Level Security (RLS) policies and PL/pgSQL stored routines.
+    \item Real-time inventory sync across multiple checkout terminals using Supabase WebSockets channels and instant offline-first local caching mechanisms.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{3pt}
+
+% ----- PROJECT 2: PORTFOLIO DEV SUITE -----
+\begin{tcolorbox}[
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 2. Interactive Developer Portfolio \& Dev Suite Arcade \hfill \small\href{https://github.com/caleheinzz25/portofolio-2}{\color{emeraldAccent}[GitHub Repo]} \quad \href{https://mhisyam.com}{\color{emeraldAccent}[Live Site]}},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
+]
+\textbf{Technologies:} \techtag{Astro 5} \techtag{SolidJS} \techtag{Tailwind CSS 4} \techtag{TypeScript} \techtag{HTML5 Canvas}\\[5pt]
+\textbf{Architecture \& Key Features:}
+\begin{itemize}
+    \item Built using Astro 5 zero-JS island architecture combined with SolidJS fine-grained reactive primitives.
+    \item Integrated an embedded Unix terminal shell (\texttt{hisyam-cli}), REST API request inspector demo, background audio player, and \textbf{8 playable mini-games} (2048, Whack-a-Bug, Sudoku, Pong, Minesweeper, Snake, Memory Match, Typing Speed).
+    \item Automated telemetry pipeline fetching real-time GitHub repository data and build diagnostics.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{3pt}
+
+% ----- PROJECT 3: PNEUMONIA U-NET -----
+\begin{tcolorbox}[
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 3. Pneumonia U-Net Medical Image Segmentation \hfill \small\href{https://github.com/caleheinzz25/pneumonia-segmentation-unet}{\color{emeraldAccent}[GitHub Repo]}},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
+]
+\textbf{Technologies:} \techtag{Python} \techtag{PyTorch} \techtag{OpenCV} \techtag{Torchvision} \techtag{Matplotlib}\\[5pt]
+\textbf{Architecture \& Key Features:}
+\begin{itemize}
+    \item Deep learning medical computer vision pipeline utilizing PyTorch and U-Net encoder-decoder network architecture.
+    \item Automated mask generation for chest X-ray scans to isolate and segment pulmonary infection regions accurately.
+    \item Evaluated against medical benchmark metrics achieving high Dice Similarity Coefficient (DSC) and Intersection over Union (IoU) scores.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{3pt}
+
+% ----- PROJECT 4: GEMINI MCP CLIENT -----
+\begin{tcolorbox}[
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 4. Gemini Model Context Protocol (MCP) Client \hfill \small\href{https://github.com/caleheinzz25/mcp-client-gemini}{\color{emeraldAccent}[GitHub Repo]}},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
+]
+\textbf{Technologies:} \techtag{TypeScript} \techtag{Node.js} \techtag{Google Gemini API} \techtag{MCP Protocol}\\[5pt]
+\textbf{Architecture \& Key Features:}
+\begin{itemize}
+    \item Agentic AI integration client implementing Anthropic's open Model Context Protocol (MCP) specification for Google Gemini models.
+    \item Enables local system tool discovery, structured JSON function calling, and automated agent workflow execution.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{3pt}
+
+% ----- PROJECT 5: REALTIME ENERGY TELEMETRY -----
+\begin{tcolorbox}[
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 5. Real-Time Energy Telemetry \& Sensor Analytics \hfill \small\href{https://github.com/caleheinzz25/realtime-energy-monitoring}{\color{emeraldAccent}[GitHub Repo]}},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
+]
+\textbf{Technologies:} \techtag{TypeScript} \techtag{React.js} \techtag{Node.js} \techtag{WebSockets} \techtag{Chart.js}\\[5pt]
+\textbf{Architecture \& Key Features:}
+\begin{itemize}
+    \item IoT energy consumption analytics dashboard processing high-frequency live sensor streams over WebSockets.
+    \item Features custom time-series data visualization, threshold alert notifications, and automated reconnection fallback mechanisms.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{3pt}
+
+% ----- PROJECT 6 & 7 GRID -----
+\begin{tcolorbox}[
+    colback=white,
+    colframe=navyDark,
+    arc=2.5mm,
+    boxrule=1.2pt,
+    title={\color{white}\bfseries\sffamily 6 \& 7. Microservices \& Distributed Concurrent Backend Systems},
+    coltitle=white,
+    colbacktitle=navyDark,
+    top=6pt,bottom=6pt,left=10pt,right=10pt
+]
+\begin{itemize}
+    \item \textbf{Golang \& SvelteKit Real-Time Chat App} \hfill \href{https://github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}{\color{emeraldDark}[GitHub Repo]}\\
+    \techtag{Go} \techtag{Goroutines} \techtag{WebSockets} \techtag{SvelteKit}\\
+    Concurrent multi-room chat server powered by Golang channels paired with a reactive SvelteKit frontend.
+    \vspace{3pt}
+    \item \textbf{Secure Java JWT Authentication Microservice} \hfill \href{https://github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}{\color{emeraldDark}[GitHub Repo]}\\
+    \techtag{Java} \techtag{Spring Boot} \techtag{JWT} \techtag{PostgreSQL}\\
+    Enterprise authentication service featuring sliding refresh tokens and version-based session invalidation.
+\end{itemize}
 \end{tcolorbox}
 
 \end{document}
