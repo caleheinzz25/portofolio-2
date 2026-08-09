@@ -1,229 +1,186 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 
 % Package Imports
 \usepackage[utf8]{inputenc}
 \usepackage[margin=0.5in]{geometry}
-\usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{hyperref}
 \usepackage{enumitem}
-\usepackage{tabularx}
-\usepackage{tcolorbox}
-\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage[many]{tcolorbox}
+\usepackage{array}
 
-% Custom Color Palette (Emerald & Modern Dark Theme)
-\definecolor{navyDark}{HTML}{0B132B}
-\definecolor{navyCard}{HTML}{1C2541}
-\definecolor{emeraldAccent}{HTML}{10B981}
-\definecolor{emeraldDark}{HTML}{059669}
-\definecolor{slateText}{HTML}{334155}
-\definecolor{slateLight}{HTML}{F1F5F9}
-\definecolor{borderGray}{HTML}{CBD5E1}
+% Define Emerald Theme Color Palette
+\definecolor{primaryNavy}{HTML}{0F172A}
+\definecolor{emeraldGreen}{HTML}{10B981}
+\definecolor{mintGreen}{HTML}{059669}
+\definecolor{lightMint}{HTML}{D1FAE5}
+\definecolor{darkSlate}{HTML}{334155}
+\definecolor{lightBg}{HTML}{F8FAFC}
+\definecolor{cardBorder}{HTML}{CBD5E1}
 \definecolor{tagBg}{HTML}{ECFDF5}
-\definecolor{tagBorder}{HTML}{A7F3D0}
+\definecolor{tagText}{HTML}{047857}
 
-% Hyperlink Configuration
+% Hyperlink Setup
 \hypersetup{
     colorlinks=true,
-    linkcolor=emeraldDark,
-    filecolor=emeraldDark,
-    urlcolor=emeraldDark,
-    pdftitle={Muhammad Hisyam - Software Engineering Project Showcase},
+    linkcolor=mintGreen,
+    filecolor=mintGreen,
+    urlcolor=mintGreen,
+    pdftitle={Muhammad Hisyam - Portfolio Showcase},
     pdfauthor={Muhammad Hisyam}
 }
 
+% Page Style
 \pagestyle{empty}
-\setlist[itemize]{leftmargin=1.1em, itemsep=2.5pt, topsep=2.5pt, parsep=0pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2.5pt, topsep=2pt, parsep=0pt}
 
-% Custom Tech Badge Tag
-\newcommand{\techtag}[1]{\setlength{\fboxsep}{2.5pt}\fcolorbox{tagBorder}{tagBg}{\color{emeraldDark}\sffamily\bfseries\scriptsize #1}\hspace{1pt}}
+% Section Header Formatting
+\titleformat{\section}
+  {\large\bfseries\color{primaryNavy}}
+  {}{0em}{}
+  [\color{emeraldGreen}\titlerule]
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+
+% Custom Pill Tag Command
+\newcommand{\skilltag}[1]{%
+  \tcbox[on line, boxsep=0.5pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
+         colframe=emeraldGreen!40, colback=tagBg, coltext=tagText,
+         boxrule=0.5pt, arc=3pt, fontupper=\small\bfseries]{#1}%
+}
+
+% Custom Project Card Environment
+\newtcolorbox{projectcard}[2]{
+  colframe=emeraldGreen!60,
+  colback=lightBg,
+  coltitle=primaryNavy,
+  fonttitle=\bfseries\large,
+  title={#1 \hfill \small\color{mintGreen}\href{#2}{[GitHub Repo]}},
+  boxrule=0.8pt,
+  arc=4pt,
+  top=5pt, bottom=5pt, left=8pt, right=8pt,
+  before skip=5pt, after skip=5pt
+}
 
 \begin{document}
 
-% ==================== HERO HEADER BANNER ====================
+% ==================== DECORATED HEADER WITH PHOTO SLOT ====================
 \begin{tcolorbox}[
-    colback=navyDark,
-    colframe=emeraldAccent,
-    arc=3mm,
-    boxrule=1.5pt,
-    top=10pt,
-    bottom=10pt,
-    left=12pt,
-    right=12pt
+  colframe=primaryNavy,
+  colback=primaryNavy,
+  arc=6pt,
+  boxrule=0pt,
+  top=10pt, bottom=10pt, left=12pt, right=12pt
 ]
-\begin{center}
-    {\Huge \bfseries \color{white} MUHAMMAD HISYAM}\\[3pt]
-    {\fontfamily{phv}\selectfont \color{emeraldAccent}\Large\bfseries SOFTWARE ENGINEERING PROJECT SHOWCASE}\\[5pt]
-    {\color{slateLight}\small Full Stack, Desktop Cross-Platform \& AI Deep Learning Applications}\\[8pt]
-    
-    {\color{white}\small
-        \href{mailto:muhammad2504hisyam@gmail.com}{\color{white}muhammad2504hisyam@gmail.com} \quad$\cdot$\quad
-        \href{https://github.com/caleheinzz25}{\color{emeraldAccent}github.com/caleheinzz25} \quad$\cdot$\quad
-        \href{https://www.linkedin.com/in/muhammad-hisyam-65502332a/}{\color{emeraldAccent}linkedin} \quad$\cdot$\quad
-        \href{https://mhisyam.com}{\color{emeraldAccent}mhisyam.com} \quad$\cdot$\quad
-        Bekasi, Indonesia
-    }
-\end{center}
+\begin{minipage}[c]{0.73\textwidth}
+    {\Huge \bfseries \color{white} MUHAMMAD HISYAM}\\[4pt]
+    {\large \bfseries \color{emeraldGreen} Full Stack \& AI Software Engineer}\\[8pt]
+    \small \color{lightBg}
+    \textbf{Email:} \href{mailto:muhammad2504hisyam@gmail.com}{\color{lightMint}muhammad2504hisyam@gmail.com} \quad $\cdot$ \quad
+    \textbf{Location:} Bekasi, Indonesia\\[3.5pt]
+    \textbf{GitHub:} \href{https://github.com/caleheinzz25}{\color{lightMint}github.com/caleheinzz25} \quad $\cdot$ \quad
+    \textbf{LinkedIn:} \href{https://www.linkedin.com/in/muhammad-hisyam-65502332a/}{\color{lightMint}linkedin.com/in/muhammad-hisyam-65502332a}\\[3.5pt]
+    \textbf{Portfolio:} \href{https://mhisyam.com}{\color{lightMint}mhisyam.com}
+\end{minipage}%
+\begin{minipage}[c]{0.26\textwidth}
+    \centering
+    \begin{tikzpicture}
+        % Decorative outer emerald glowing border ring
+        \draw[emeraldGreen, line width=2.5pt] (0,0) circle (1.35cm);
+        \draw[lightMint, line width=1pt] (0,0) circle (1.43cm);
+        % Profile Photo Clipping
+        \begin{scope}
+            \clip (0,0) circle (1.3cm);
+            \node at (0,0) {\includegraphics[width=2.7cm, height=2.7cm, keepaspectratio=false]{profile.png}};
+        \end{scope}
+    \end{tikzpicture}
+\end{minipage}
 \end{tcolorbox}
 
 \vspace{-4pt}
 
-% ==================== TECHNICAL MATRIX ====================
-\begin{tcolorbox}[
-    colback=slateLight,
-    colframe=borderGray,
-    arc=2mm,
-    boxrule=1pt,
-    title={\color{navyDark}\bfseries\sffamily CORE TECHNICAL CAPABILITIES},
-    coltitle=navyDark,
-    colbacktitle=slateLight,
-    top=4pt,bottom=6pt,left=8pt,right=8pt
-]
-\small
-\begin{tabularx}{\textwidth}{@{}l X@{}}
-\textbf{Languages} & C\#, TypeScript, JavaScript, Rust, Python, Golang, Java, PHP, PL/pgSQL, HTML5, CSS3 \\
-\textbf{Frontend \& Desktop} & Tauri (Rust Runtime), Astro 5, React.js, SolidJS, SvelteKit, Next.js, Vue.js, Tailwind CSS 4 \\
-\textbf{Backend \& Cloud} & .NET Core, Supabase, Node.js, Express.js, Go (Gin/Fiber), Java Spring Boot, Laravel, WebSockets \\
-\textbf{AI \& Deep Learning} & PyTorch, U-Net Architecture, OpenCV, Model Context Protocol (MCP), Google Gemini API \\
-\textbf{Database \& Infrastructure} & PostgreSQL, Supabase RLS, MongoDB, Redis, Docker, Git, Vite, Bun, Biome, Linux Shell \\
-\end{tabularx}
+% ==================== ABOUT & SUMMARY ====================
+\section{ABOUT ME}
+\begin{tcolorbox}[colframe=cardBorder, colback=white, boxrule=0.6pt, arc=4pt, top=6pt, bottom=6pt]
+\color{darkSlate}
+Fresh Graduate Computer Science Engineer from \textbf{Universitas Gunadarma} specializing in cross-platform desktop architecture, reactive web applications, medical deep learning pipelines, and agentic AI integrations. Creator of 26+ open-source and enterprise-grade software projects built with \textbf{.NET / C\#}, \textbf{Rust (Tauri)}, \textbf{TypeScript}, \textbf{Python (PyTorch)}, \textbf{Golang}, \textbf{Java}, and \textbf{Supabase/PostgreSQL}.
 \end{tcolorbox}
 
-\vspace{4pt}
+% ==================== SKILLS & TECHNOLOGIES ====================
+\section{SKILLS \& TECH STACK}
+\begin{tcolorbox}[colframe=cardBorder, colback=lightBg, boxrule=0.6pt, arc=4pt, top=6pt, bottom=6pt]
+\small
+\textbf{Languages:} \skilltag{C\#} \skilltag{TypeScript} \skilltag{JavaScript} \skilltag{Rust} \skilltag{Python} \skilltag{Golang} \skilltag{Java} \skilltag{PHP} \skilltag{SQL}\\[4pt]
+\textbf{Frontend \& Desktop:} \skilltag{Tauri} \skilltag{Astro 5} \skilltag{React.js} \skilltag{SolidJS} \skilltag{SvelteKit} \skilltag{Next.js} \skilltag{Tailwind CSS 4} \skilltag{TanStack Router}\\[4pt]
+\textbf{Backend \& Cloud:} \skilltag{.NET} \skilltag{Supabase} \skilltag{Node.js} \skilltag{Express.js} \skilltag{Go (Gin/Fiber)} \skilltag{Spring Boot} \skilltag{Laravel} \skilltag{REST APIs} \skilltag{WebSockets}\\[4pt]
+\textbf{AI \& Machine Learning:} \skilltag{PyTorch} \skilltag{U-Net} \skilltag{OpenCV} \skilltag{Model Context Protocol (MCP)} \skilltag{Gemini API}\\[4pt]
+\textbf{Databases \& DevOps:} \skilltag{PostgreSQL} \skilltag{Supabase RLS} \skilltag{MongoDB} \skilltag{Redis} \skilltag{Docker} \skilltag{Git} \skilltag{Vite} \skilltag{Bun} \skilltag{Linux CLI}
+\end{tcolorbox}
 
 % ==================== FEATURED PROJECTS SHOWCASE ====================
-\begin{center}
-{\Large\bfseries\color{navyDark}\sffamily FEATURED SYSTEM SHOWCASE \& CASE STUDIES}
-\end{center}
-\vspace{2pt}
+\section{FEATURED PROJECTS}
 
-% ----- PROJECT 1: RETAILHUB -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 1. RetailHub -- Point of Sale \& Inventory Management Platform \hfill \small\href{https://github.com/caleheinzz25/retailhub}{\color{emeraldAccent}[GitHub Repo]}},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
-\textbf{Technologies:} \techtag{Tauri} \techtag{Rust} \techtag{TypeScript} \techtag{TanStack Router} \techtag{Supabase} \techtag{PostgreSQL} \techtag{Tailwind CSS}\\[5pt]
-\textbf{Architecture \& Key Features:}
+\begin{projectcard}{RetailHub -- Retail POS \& Inventory Management Platform}{https://github.com/caleheinzz25/retailhub}
+\textbf{Tech Stack:} \skilltag{Tauri} \skilltag{Rust} \skilltag{TypeScript} \skilltag{Supabase} \skilltag{TanStack Router} \skilltag{Tailwind CSS}
 \begin{itemize}
-    \item High-performance desktop and cross-platform cashier POS application engineered with Tauri (Rust native backend runtime) and TypeScript frontend.
-    \item Multi-tenant database design using Supabase PostgreSQL, incorporating Row Level Security (RLS) policies and PL/pgSQL stored routines.
-    \item Real-time inventory sync across multiple checkout terminals using Supabase WebSockets channels and instant offline-first local caching mechanisms.
+    \item Engineered a high-performance cross-platform desktop POS \& inventory management system using Tauri (Rust backend) and Vite.
+    \item Implemented real-time database synchronization via Supabase PostgreSQL, Row Level Security (RLS) policies, and custom PL/pgSQL database functions.
 \end{itemize}
-\end{tcolorbox}
+\end{projectcard}
 
-\vspace{3pt}
-
-% ----- PROJECT 2: PORTFOLIO DEV SUITE -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 2. Interactive Developer Portfolio \& Dev Suite Arcade \hfill \small\href{https://github.com/caleheinzz25/portofolio-2}{\color{emeraldAccent}[GitHub Repo]} \quad \href{https://mhisyam.com}{\color{emeraldAccent}[Live Site]}},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
-\textbf{Technologies:} \techtag{Astro 5} \techtag{SolidJS} \techtag{Tailwind CSS 4} \techtag{TypeScript} \techtag{HTML5 Canvas}\\[5pt]
-\textbf{Architecture \& Key Features:}
+\begin{projectcard}{Developer Portfolio \& Interactive Dev Suite}{https://github.com/caleheinzz25/portofolio-2}
+\textbf{Tech Stack:} \skilltag{Astro 5} \skilltag{SolidJS} \skilltag{TypeScript} \skilltag{Tailwind CSS 4} \skilltag{Unix Shell CLI}
 \begin{itemize}
-    \item Built using Astro 5 zero-JS island architecture combined with SolidJS fine-grained reactive primitives.
-    \item Integrated an embedded Unix terminal shell (\texttt{hisyam-cli}), REST API request inspector demo, background audio player, and \textbf{8 playable mini-games} (2048, Whack-a-Bug, Sudoku, Pong, Minesweeper, Snake, Memory Match, Typing Speed).
-    \item Automated telemetry pipeline fetching real-time GitHub repository data and build diagnostics.
+    \item Built an interactive developer portfolio featuring an embedded retro Unix terminal shell (\texttt{hisyam-cli}), REST API response client, audio player, and 8 mini-games arcade.
+    \item Optimized performance achieving 100\% lighthouse scores via Astro static page generation and SolidJS component hydration.
 \end{itemize}
-\end{tcolorbox}
+\end{projectcard}
 
-\vspace{3pt}
-
-% ----- PROJECT 3: PNEUMONIA U-NET -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 3. Pneumonia U-Net Medical Image Segmentation \hfill \small\href{https://github.com/caleheinzz25/pneumonia-segmentation-unet}{\color{emeraldAccent}[GitHub Repo]}},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
-\textbf{Technologies:} \techtag{Python} \techtag{PyTorch} \techtag{OpenCV} \techtag{Torchvision} \techtag{Matplotlib}\\[5pt]
-\textbf{Architecture \& Key Features:}
+\begin{projectcard}{Pneumonia Medical Image Segmentation U-Net}{https://github.com/caleheinzz25/pneumonia-segmentation-unet}
+\textbf{Tech Stack:} \skilltag{Python} \skilltag{PyTorch} \skilltag{U-Net} \skilltag{OpenCV} \skilltag{Deep Learning}
 \begin{itemize}
-    \item Deep learning medical computer vision pipeline utilizing PyTorch and U-Net encoder-decoder network architecture.
-    \item Automated mask generation for chest X-ray scans to isolate and segment pulmonary infection regions accurately.
-    \item Evaluated against medical benchmark metrics achieving high Dice Similarity Coefficient (DSC) and Intersection over Union (IoU) scores.
+    \item Designed a deep learning semantic segmentation pipeline in PyTorch for detecting infected lung regions in chest X-ray medical scans.
+    \item Automated dataset preprocessing, data augmentation, loss tracking, and IoU / Dice metric evaluations.
 \end{itemize}
-\end{tcolorbox}
+\end{projectcard}
 
-\vspace{3pt}
-
-% ----- PROJECT 4: GEMINI MCP CLIENT -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 4. Gemini Model Context Protocol (MCP) Client \hfill \small\href{https://github.com/caleheinzz25/mcp-client-gemini}{\color{emeraldAccent}[GitHub Repo]}},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
-\textbf{Technologies:} \techtag{TypeScript} \techtag{Node.js} \techtag{Google Gemini API} \techtag{MCP Protocol}\\[5pt]
-\textbf{Architecture \& Key Features:}
+\begin{projectcard}{Gemini Model Context Protocol (MCP) Client}{https://github.com/caleheinzz25/mcp-client-gemini}
+\textbf{Tech Stack:} \skilltag{TypeScript} \skilltag{Node.js} \skilltag{MCP SDK} \skilltag{Gemini API} \skilltag{Agentic AI}
 \begin{itemize}
-    \item Agentic AI integration client implementing Anthropic's open Model Context Protocol (MCP) specification for Google Gemini models.
-    \item Enables local system tool discovery, structured JSON function calling, and automated agent workflow execution.
+    \item Developed a modular MCP client enabling agentic AI workflows, tool calls, filesystem access, and server integrations with Gemini.
 \end{itemize}
-\end{tcolorbox}
+\end{projectcard}
 
-\vspace{3pt}
-
-% ----- PROJECT 5: REALTIME ENERGY TELEMETRY -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 5. Real-Time Energy Telemetry \& Sensor Analytics \hfill \small\href{https://github.com/caleheinzz25/realtime-energy-monitoring}{\color{emeraldAccent}[GitHub Repo]}},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
-\textbf{Technologies:} \techtag{TypeScript} \techtag{React.js} \techtag{Node.js} \techtag{WebSockets} \techtag{Chart.js}\\[5pt]
-\textbf{Architecture \& Key Features:}
+\begin{projectcard}{Golang \& SvelteKit Real-Time Chat App}{https://github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}
+\textbf{Tech Stack:} \skilltag{Go} \skilltag{WebSockets} \skilltag{SvelteKit} \skilltag{Tailwind CSS}
 \begin{itemize}
-    \item IoT energy consumption analytics dashboard processing high-frequency live sensor streams over WebSockets.
-    \item Features custom time-series data visualization, threshold alert notifications, and automated reconnection fallback mechanisms.
+    \item Implemented a low-latency concurrent chat application powered by a Golang WebSocket server backend and a reactive SvelteKit interface.
 \end{itemize}
-\end{tcolorbox}
+\end{projectcard}
 
-\vspace{3pt}
-
-% ----- PROJECT 6 & 7 GRID -----
-\begin{tcolorbox}[
-    colback=white,
-    colframe=navyDark,
-    arc=2.5mm,
-    boxrule=1.2pt,
-    title={\color{white}\bfseries\sffamily 6 \& 7. Microservices \& Distributed Concurrent Backend Systems},
-    coltitle=white,
-    colbacktitle=navyDark,
-    top=6pt,bottom=6pt,left=10pt,right=10pt
-]
+\begin{projectcard}{Secure Java JWT Authentication Service}{https://github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}
+\textbf{Tech Stack:} \skilltag{Java} \skilltag{Spring Boot} \skilltag{JWT} \skilltag{PostgreSQL}
 \begin{itemize}
-    \item \textbf{Golang \& SvelteKit Real-Time Chat App} \hfill \href{https://github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}{\color{emeraldDark}[GitHub Repo]}\\
-    \techtag{Go} \techtag{Goroutines} \techtag{WebSockets} \techtag{SvelteKit}\\
-    Concurrent multi-room chat server powered by Golang channels paired with a reactive SvelteKit frontend.
-    \vspace{3pt}
-    \item \textbf{Secure Java JWT Authentication Microservice} \hfill \href{https://github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}{\color{emeraldDark}[GitHub Repo]}\\
-    \techtag{Java} \techtag{Spring Boot} \techtag{JWT} \techtag{PostgreSQL}\\
-    Enterprise authentication service featuring sliding refresh tokens and version-based session invalidation.
+    \item Built an enterprise authentication microservice featuring access/refresh tokens, sliding expiration, and instant version revocation.
+\end{itemize}
+\end{projectcard}
+
+% ==================== EDUCATION & HIGHLIGHTS ====================
+\section{EDUCATION \& HIGHLIGHTS}
+\begin{tcolorbox}[colframe=cardBorder, colback=white, boxrule=0.6pt, arc=4pt, top=6pt, bottom=6pt]
+\begin{minipage}[t]{0.68\textwidth}
+    \textbf{\large Universitas Gunadarma} \hfill \textit{Bekasi, Indonesia}\\
+    \textcolor{darkSlate}{\textbf{Bachelor of Computer Science (Teknik Informatika)} — Fresh Graduate}
+\end{minipage}%
+\begin{minipage}[t]{0.30\textwidth}
+    \hfill \skilltag{Fresh Graduate}
+\end{minipage}
+\vspace{4pt}
+\begin{itemize}
+    \item Maintainer of 26+ open-source GitHub repositories spanning AI, Web, Desktop, and Microservices.
+    \item Active contributor to community and open-source software solutions including SmartAssist AI and Woven.
 \end{itemize}
 \end{tcolorbox}
 
