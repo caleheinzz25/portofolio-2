@@ -1,0 +1,149 @@
+\documentclass[11pt,a4paper]{article}
+
+% Package Imports
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.6in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+
+% Color Definitions (Matching Emerald Theme Palette)
+\definecolor{emeraldColor}{HTML}{10B981}
+\definecolor{navyColor}{HTML}{0D1B2A}
+\definecolor{slateColor}{HTML}{4B5563}
+\definecolor{lightBg}{HTML}{F3F4F6}
+
+% Hyperlink Configuration
+\hypersetup{
+    colorlinks=true,
+    linkcolor=emeraldColor,
+    filecolor=emeraldColor,
+    urlcolor=emeraldColor,
+    pdftitle={Muhammad Hisyam - Software Engineering Portfolio Showcase},
+    pdfauthor={Muhammad Hisyam}
+}
+
+% Section Heading Formatting
+\titleformat{\section}
+  {\Large\bfseries\color{navyColor}}
+  {}{0em}{}
+  [\color{emeraldColor}\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{navyColor}}
+  {}{0em}{}
+
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{3pt}
+
+% Page Geometry & Style
+\pagestyle{empty}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2pt, topsep=2pt, parsep=0pt}
+
+\begin{document}
+
+% ==================== HEADER ====================
+\begin{center}
+    {\Huge \bfseries \color{navyColor} MUHAMMAD HISYAM}\\[4pt]
+    {\fontfamily{phv}\selectfont \color{emeraldColor}\Large Full Stack \& AI Software Engineer — Project Portfolio Showcase}\\[6pt]
+    \small
+    Email: \href{mailto:muhammad2504hisyam@gmail.com}{muhammad2504hisyam@gmail.com} \quad $\cdot$ \quad
+    GitHub: \href{https://github.com/caleheinzz25}{github.com/caleheinzz25} \quad $\cdot$ \quad
+    LinkedIn: \href{https://www.linkedin.com/in/muhammad-hisyam-65502332a/}{linkedin.com/in/muhammad-hisyam-65502332a}\\[3pt]
+    Portfolio Web: \href{https://mhisyam.com}{mhisyam.com} \quad $\cdot$ \quad
+    Location: Bekasi, Indonesia
+\end{center}
+
+\vspace{-4pt}
+
+% ==================== OVERVIEW ====================
+\section{OVERVIEW \& ARCHITECTURAL PROFILE}
+Full Stack \& AI Software Engineer and Universitas Gunadarma Computer Science graduate specializing in modern web applications, desktop cross-platform software, high-performance backends, and medical deep learning. Maintainer of 26+ open-source repositories spanning TypeScript, Rust, Python, Golang, C\#/.NET, and Java.
+
+% ==================== CORE TECHNICAL MATRIX ====================
+\section{CORE TECHNICAL MATRIX}
+\begin{table}[h!]
+\small
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Languages} & C\#, TypeScript, JavaScript, Rust, Python, Golang, Java, PHP, PL/pgSQL, HTML5, CSS3, LaTeX \\
+\textbf{Desktop \& Frontend} & Tauri (Rust Runtime), Astro 5, React.js, SolidJS, SvelteKit, Next.js, Vue.js, Tailwind CSS, TanStack Router \\
+\textbf{Backend \& Cloud} & .NET, Supabase, Node.js, Express.js, Go (Gin/Fiber), Java Spring Boot, Laravel, REST APIs, WebSockets \\
+\textbf{AI \& Deep Learning} & PyTorch, U-Net Semantic Segmentation, OpenCV, Model Context Protocol (MCP), Google Gemini API \\
+\textbf{Database \& DevOps} & PostgreSQL, Supabase RLS, MongoDB, Redis, Docker, Git, GitHub Actions, Vite, Bun, Biome, Linux CLI \\
+\end{tabularx}
+\end{table}
+
+\vspace{-10pt}
+
+% ==================== FEATURED PROJECTS ====================
+\section{FEATURED PROJECT SHOWCASE}
+
+\subsection{1. RetailHub -- Retail Management \& POS Platform}
+\textbf{Tech Stack:} Tauri (Rust backend runtime), TypeScript, Vite, TanStack Router, Supabase (PostgreSQL), Tailwind CSS\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/retailhub}{github.com/caleheinzz25/retailhub}
+\begin{itemize}
+    \item Engineered a high-performance cross-platform desktop Point of Sale (POS) and inventory management platform for retail operations.
+    \item Designed Supabase PostgreSQL architecture utilizing Row Level Security (RLS) policies and custom PL/pgSQL database functions.
+    \item Integrated real-time database subscription listeners for instant stock synchronization and transactional receipt tracking across devices.
+\end{itemize}
+
+\subsection{2. Developer Portfolio \& Interactive Dev Suite}
+\textbf{Tech Stack:} Astro 5, SolidJS, Tailwind CSS 4, TypeScript, HTML5 Canvas\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/portofolio-2}{github.com/caleheinzz25/portofolio-2} \quad $\cdot$ \quad \textbf{Live Web:} \href{https://mhisyam.com}{mhisyam.com}
+\begin{itemize}
+    \item Developed a ultra-fast static-first developer portfolio website using Astro 5 island architecture and SolidJS reactive components.
+    \item Embedded an interactive Unix-style terminal shell (\texttt{hisyam-cli}), REST API request client demo, audio music player, and 8 playable mini-games (2048, Whack-a-Bug, Sudoku, Pong, Minesweeper, Snake, Memory Match, Typing Speed).
+    \item Built automated build workflows fetching live GitHub repository statistics and profile metadata.
+\end{itemize}
+
+\subsection{3. Pneumonia U-Net Semantic Segmentation Pipeline}
+\textbf{Tech Stack:} Python, PyTorch, Torchvision, OpenCV, Matplotlib, NumPy\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/pneumonia-segmentation-unet}{github.com/caleheinzz25/pneumonia-segmentation-unet}
+\begin{itemize}
+    \item Built an end-to-end deep learning medical image segmentation pipeline utilizing PyTorch and U-Net encoder-decoder architecture.
+    \item Processed chest X-ray image datasets to generate accurate binary segmentation masks highlighting pulmonary infection regions.
+    \item Implemented evaluation metrics including Dice Similarity Coefficient (DSC) and Intersection over Union (IoU).
+\end{itemize}
+
+\subsection{4. Gemini Model Context Protocol (MCP) Client}
+\textbf{Tech Stack:} TypeScript, Node.js, Google Gemini API, MCP Protocol\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/mcp-client-gemini}{github.com/caleheinzz25/mcp-client-gemini}
+\begin{itemize}
+    \item Implemented an extensible Model Context Protocol (MCP) client connecting agentic AI models with local tool definitions.
+    \item Integrated Google Gemini API for structured function calling, prompt execution, and automated workflow orchestration.
+\end{itemize}
+
+\subsection{5. Real-Time Energy Telemetry Monitoring System}
+\textbf{Tech Stack:} TypeScript, React, Node.js, WebSockets, Chart.js\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/realtime-energy-monitoring}{github.com/caleheinzz25/realtime-energy-monitoring}
+\begin{itemize}
+    \item Developed a real-time IoT energy consumption telemetry dashboard rendering high-frequency sensor streams.
+    \item Implemented WebSocket connection handlers with automatic reconnects and dynamic threshold alert metrics.
+\end{itemize}
+
+\subsection{6. Golang \& SvelteKit Real-Time Concurrent Chat System}
+\textbf{Tech Stack:} Go (Golang), Goroutines, Gorilla WebSockets, SvelteKit, TypeScript\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}{github.com/caleheinzz25/golang-sveltekit-realtime-chatapp}
+\begin{itemize}
+    \item Built a concurrent multi-room real-time messaging application leveraging Golang channels and goroutines.
+    \item Paired with a SvelteKit reactive frontend delivering instant message broadcasting and online presence indicators.
+\end{itemize}
+
+\subsection{7. Secure Java JWT Authentication Microservice}
+\textbf{Tech Stack:} Java, Spring Boot, Spring Security, JWT, PostgreSQL\\
+\textbf{Repository:} \href{https://github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}{github.com/caleheinzz25/jwt-auth-with-refreshToken-and-versionToken}
+\begin{itemize}
+    \item Designed a enterprise-grade Java security microservice implementing access tokens, sliding session refresh tokens, and instant token version invalidation.
+\end{itemize}
+
+% ==================== EDUCATION ====================
+\section{EDUCATION \& ACADEMIC BACKGROUND}
+\textbf{Universitas Gunadarma} \hfill \textit{Bekasi, Indonesia}\\
+\textcolor{slateColor}{\textit{Bachelor of Computer Science (Informatika) — Fresh Graduate}}
+\begin{itemize}
+    \item Specialized in Software Engineering, Web Systems, and Applied Artificial Intelligence.
+\end{itemize}
+
+\end{document}
